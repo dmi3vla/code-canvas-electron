@@ -1,0 +1,312 @@
+const { app, BrowserWindow, dialog, ipcMain, Menu } = require('electron');
+const fs = require('fs/promises');
+const path = require('path');
+
+const TEXT_EXTENSIONS = new Set([
+  '.js',
+  '.jsx',
+  '.ts',
+  '.tsx',
+  '.mjs',
+  '.cjs',
+  '.json',
+  '.css',
+  '.scss',
+  '.html',
+  '.md',
+  '.py',
+  '.go',
+  '.rs',
+  '.java',
+  '.kt',
+  '.swift',
+  '.yaml',
+  '.yml'
+]);
+
+const CODE_GRAPH_EXTENSIONS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs', '.py']);
+const MAX_SCAN_FILES = 180;
+const MAX_PREVIEW_CHARS = 2400;
+
+function createWindow() {
+  const win = new BrowserWindow({
+    width: 1600,
+    height: 1000,
+    backgroundColor: '#0b1020',
+    autoHideMenuBar: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  });
+
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Open Project Folder',
+          click: () => win.webContents.send('menu-action', { type: 'import-project' })
+        },
+        {
+          label: 'Open Canvas',
+          click: () => win.webContents.send('menu-action', { type: 'open-canvas' })
+        },
+        {
+          label: 'Save Canvas',
+          click: () => win.webContents.send('menu-action', { type: 'save-canvas' })
+        },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        { role: 'reload' },
+        { role: 'forceReload' },
+        { role: 'toggleDevTools' },
+        { type: 'separator' },
+        { role: 'resetZoom' },
+        { role: 'zoomIn' },
+        { role: 'zoomOut' }
+      ]
+    }
+  ]);
+  Menu.setApplicationMenu(menu);
+
+  win.loadFile(path.join(__dirname, 'src', 'index.html'));
+}
+
+app.whenReady().then(() => {
+  createWindow();
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
+});
+
+function normalizeRel(baseDir, candidate) {
+  let rel = path.relative(baseDir, candidate);
+  if (!rel.startsWith('.')) rel = `./${rel}`;
+  return rel.replace(/\\/g, '/');
+}
+
+function resolveImportPath(baseDir, fromFile, rawImport) {
+  if (!rawImport || rawImport.startsWith('.') === false) return null;
+
+  const fromDir = path.dirname(fromFile);
+  const candidates = [
+    rawImport,
+    `${rawImport}.js`,
+    `${rawImport}.jsx`,
+    `${rawImport}.ts`,
+    `${rawImport}.tsx`,
+    `${rawImport}.mjs`,
+    `${rawImport}.cjs`,
+    `${rawImport}.py`,
+    path.join(rawImport, 'index.js'),
+    path.join(rawImport, 'index.ts'),
+    path.join(rawImport, 'index.tsx'),
+    path.join(rawImport, 'index.jsx'),
+    path.join(rawImport, '__init__.py')
+  ];
+
+  const absoluteCandidates = candidates.map((candidate) => path.resolve(fromDir, candidate));
+  return absoluteCandidates.map((abs) => normalizeRel(baseDir, abs));
+}
+
+function parseDependencies(baseDir, relPath, content) {
+  const edges = [];
+  const importRegex = /import\s+(?:[\s\S]*?\s+from\s+)?['"]([^'"]+)['"]/g;
+  const requireRegex = /require\(\s*['"]([^'"]+)['"]\s*\)/g;
+  const dynamicImportRegex = /import\(\s*['"]([^'"]+)['"]\s*\)/g;
+  const pythonImportRegex = /^\s*(?:from\s+([.\w/]+)\s+import|import\s+([.\w/]+))/gm;
+
+  const collectors = [
+    { regex: importRegex, type: 'import' },
+    { regex: requireRegex, type: 'require' },
+    { regex: dynamicImportRegex, type: 'dynamic-import' }
+  ];
+
+  for (const collector of collectors) {
+    for (const match of content.matchAll(collector.regex)) {
+      const targets = resolveImportPath(baseDir, path.join(baseDir, relPath), match[1]) || [];
+      for (const target of targets) {
+        edges.push({ from: relPath, to: target, kind: collector.type });
+      }
+    }
+  }
+
+  for (const match of content.matchAll(pythonImportRegex)) {
+    const importPath = match[1] || match[2];
+    if (!importPath || importPath.startsWith('.')) continue;
+  }
+
+  return edges;
+}
+
+async function listProjectFiles(dir, rootDir, bucket = []) {
+  if (bucket.length >= MAX_SCAN_FILES) return bucket;
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (bucket.length >= MAX_SCAN_FILES) break;
+    if (entry.name.startsWith('.git') || entry.name === 'node_modules' || entry.name === 'dist' || entry.name === 'build') {
+      continue;
+    }
+
+    const absolute = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      await listProjectFiles(absolute, rootDir, bucket);
+      continue;
+    }
+
+    const ext = path.extname(entry.name).toLowerCase();
+    if (!TEXT_EXTENSIONS.has(ext)) continue;
+
+    bucket.push({
+      absolute,
+      relative: path.relative(rootDir, absolute).replace(/\\/g, '/'),
+      ext
+    });
+  }
+
+  return bucket;
+}
+
+function makeGridPosition(index) {
+  const columns = 4;
+  const col = index % columns;
+  const row = Math.floor(index / columns);
+  return {
+    x: col * 360,
+    y: row * 260
+  };
+}
+
+async function scanProject(folderPath) {
+  const fileEntries = await listProjectFiles(folderPath, folderPath);
+  const nodes = [];
+  const edges = [];
+  const fileSet = new Set(fileEntries.map((file) => `./${file.relative}`));
+
+  for (const [index, file] of fileEntries.entries()) {
+    const content = await fs.readFile(file.absolute, 'utf8').catch(() => '');
+    const position = makeGridPosition(index);
+    const rel = `./${file.relative}`;
+
+    nodes.push({
+      id: `file-${index}`,
+      type: 'file',
+      title: path.basename(file.relative),
+      subtitle: path.dirname(file.relative) === '.' ? 'workspace root' : path.dirname(file.relative),
+      path: rel,
+      language: file.ext.replace('.', '') || 'text',
+      content: content.slice(0, MAX_PREVIEW_CHARS),
+      x: position.x,
+      y: position.y,
+      width: 320,
+      height: 210
+    });
+
+    if (CODE_GRAPH_EXTENSIONS.has(file.ext)) {
+      const discoveredEdges = parseDependencies(folderPath, file.relative, content);
+      for (const edge of discoveredEdges) {
+        if (fileSet.has(edge.to)) {
+          edges.push(edge);
+        }
+      }
+    }
+  }
+
+  const pathToNodeId = new Map(nodes.map((node) => [node.path, node.id]));
+  const normalizedEdges = [];
+  const seen = new Set();
+
+  for (const edge of edges) {
+    const fromId = pathToNodeId.get(`./${edge.from}`);
+    const toId = pathToNodeId.get(edge.to);
+    if (!fromId || !toId || fromId === toId) continue;
+    const key = `${fromId}:${toId}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    normalizedEdges.push({
+      id: `edge-${normalizedEdges.length + 1}`,
+      fromNode: fromId,
+      fromSide: 'right',
+      toNode: toId,
+      toSide: 'left',
+      label: edge.kind
+    });
+  }
+
+  return {
+    folderName: path.basename(folderPath),
+    nodes,
+    edges: normalizedEdges
+  };
+}
+
+ipcMain.handle('dialog:pickProject', async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openDirectory']
+  });
+
+  if (result.canceled || !result.filePaths[0]) {
+    return { canceled: true };
+  }
+
+  const folderPath = result.filePaths[0];
+  const graph = await scanProject(folderPath);
+  return {
+    canceled: false,
+    folderPath,
+    ...graph
+  };
+});
+
+ipcMain.handle('dialog:saveCanvas', async (_, canvasData) => {
+  const result = await dialog.showSaveDialog({
+    defaultPath: 'workspace.canvas',
+    filters: [{ name: 'Canvas', extensions: ['canvas', 'json'] }]
+  });
+
+  if (result.canceled || !result.filePath) {
+    return { canceled: true };
+  }
+
+  await fs.writeFile(result.filePath, JSON.stringify(canvasData, null, 2), 'utf8');
+  return { canceled: false, filePath: result.filePath };
+});
+
+ipcMain.handle('dialog:openCanvas', async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [{ name: 'Canvas', extensions: ['canvas', 'json'] }]
+  });
+
+  if (result.canceled || !result.filePaths[0]) {
+    return { canceled: true };
+  }
+
+  const filePath = result.filePaths[0];
+  const content = await fs.readFile(filePath, 'utf8');
+  return {
+    canceled: false,
+    filePath,
+    data: JSON.parse(content)
+  };
+});
+
+ipcMain.handle('file:readText', async (_, targetPath) => {
+  const content = await fs.readFile(targetPath, 'utf8');
+  return { content };
+});
+
+ipcMain.handle('app:getVersion', () => app.getVersion());
+

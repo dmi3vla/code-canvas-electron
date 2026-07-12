@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Canvas Desktop</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <div>
+            <div class="brand-title">Code Canvas Desktop</div>
+            <div class="brand-subtitle">Infinite canvas + code graph + `.canvas` workflow</div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <button id="new-canvas-btn">Новый</button>
+          <button id="open-canvas-btn">Открыть `.canvas`</button>
+          <button id="save-canvas-btn">Сохранить</button>
+          <button id="import-project-btn" class="primary">Импорт папки проекта</button>
+          <button id="add-note-btn">Заметка</button>
+          <button id="add-code-btn">Код</button>
+          <button id="auto-layout-btn">Авто-раскладка</button>
+          <button id="fit-view-btn">Fit</button>
+        </div>
+      </header>
+
+      <div class="main-layout">
+        <aside id="left-sidebar" class="sidebar left">
+          <button id="toggle-left-sidebar-btn" class="sidebar-toggle sidebar-toggle-left" title="Свернуть левую панель">
+            ◀
+          </button>
+          <section class="panel">
+            <div class="panel-title">Режим</div>
+            <div class="mode-stack">
+              <button id="pan-mode-btn" class="mode-btn active">Pan</button>
+              <button id="link-mode-btn" class="mode-btn">Link</button>
+              <button id="select-mode-btn" class="mode-btn">Select</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">Импорт</div>
+            <div class="panel-copy">
+              Импортируйте папку проекта, чтобы получить file/code nodes и автоматические связи по `import`/`require`.
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">Подсказки</div>
+            <ul class="shortcut-list">
+              <li>Двойной клик по пустому месту: новая заметка</li>
+              <li>Колесо мыши: zoom</li>
+              <li>Перетаскивание фона: pan</li>
+              <li>Перетаскивание ноды: move</li>
+              <li>Shift + drag от коннектора: связь</li>
+              <li>Delete / Backspace: удалить выделенное</li>
+            </ul>
+          </section>
+        </aside>
+
+        <main class="canvas-stage">
+          <button id="left-sidebar-rail-btn" class="sidebar-rail sidebar-rail-left hidden" title="Показать левую панель">
+            Режим
+          </button>
+          <div id="canvas-root" class="canvas-root">
+            <svg id="edges-layer" class="edges-layer"></svg>
+            <div id="canvas-content" class="canvas-content"></div>
+          </div>
+
+          <button id="right-sidebar-rail-btn" class="sidebar-rail sidebar-rail-right hidden" title="Показать инспектор">
+            Инспектор
+          </button>
+
+          <div id="statusbar" class="statusbar">
+            <span id="status-text">Готово</span>
+            <span id="view-text">100%</span>
+          </div>
+        </main>
+
+        <aside id="right-sidebar" class="sidebar right">
+          <button id="toggle-right-sidebar-btn" class="sidebar-toggle sidebar-toggle-right" title="Свернуть инспектор">
+            ▶
+          </button>
+          <section class="panel">
+            <div class="panel-title">Инспектор</div>
+            <div id="inspector-empty" class="panel-copy">
+              Выберите ноду или связь, чтобы редактировать свойства.
+            </div>
+
+            <div id="inspector-node" class="inspector-block hidden">
+              <label class="field">
+                <span>Заголовок</span>
+                <input id="node-title-input" type="text" />
+              </label>
+
+              <label class="field">
+                <span>Тип</span>
+                <select id="node-type-input">
+                  <option value="text">Text</option>
+                  <option value="code">Code</option>
+                  <option value="file">File</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Подзаголовок / путь</span>
+                <input id="node-subtitle-input" type="text" />
+              </label>
+
+              <label class="field">
+                <span>Содержимое</span>
+                <textarea id="node-content-input" rows="16"></textarea>
+              </label>
+            </div>
+
+            <div id="inspector-edge" class="inspector-block hidden">
+              <label class="field">
+                <span>Подпись связи</span>
+                <input id="edge-label-input" type="text" />
+              </label>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">AI / Expand</div>
+            <div class="panel-copy">
+              В этой версии заложен UI-слой под expansion workflow: можно развить через OpenRouter или локальный LLM через IPC без перестройки канваса.
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
+
+    <template id="node-template">
+      <article class="node">
+        <div class="node-header">
+          <div class="node-meta">
+            <div class="node-title"></div>
+            <div class="node-subtitle"></div>
+          </div>
+          <div class="node-tag"></div>
+        </div>
+        <div class="node-body"></div>
+        <div class="connector connector-left" data-side="left"></div>
+        <div class="connector connector-right" data-side="right"></div>
+        <div class="node-resize-handle" title="Изменить размер"></div>
+      </article>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

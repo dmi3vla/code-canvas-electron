@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "name": "demo.canvas",
+    "sourceFolder": null
+  },
+  "viewport": {
+    "x": 220,
+    "y": 120,
+    "scale": 1
+  },
+  "nodes": [
+    {
+      "id": "node-demo-1",
+      "type": "text",
+      "title": "Research",
+      "subtitle": "planning",
+      "content": "# Feature stack\n- Infinite canvas\n- Code graph\n- Electron shell",
+      "x": 0,
+      "y": 0,
+      "width": 300,
+      "height": 180
+    },
+    {
+      "id": "node-demo-2",
+      "type": "code",
+      "title": "scanner.ts",
+      "subtitle": "src/scanner.ts",
+      "content": "export async function scanProject(root: string) {\n  // parse imports\n}",
+      "x": 380,
+      "y": 40,
+      "width": 320,
+      "height": 200
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-demo-1",
+      "fromNode": "node-demo-1",
+      "fromSide": "right",
+      "toNode": "node-demo-2",
+      "toSide": "left",
+      "label": "relates"
+    }
+  ]
+}

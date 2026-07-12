@@ -1,0 +1,22 @@
+{
+  "name": "code-canvas-electron",
+  "version": "0.1.0",
+  "description": "Standalone Electron app that combines infinite canvas editing with code canvas style project visualization.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron ."
+  },
+  "keywords": [
+    "electron",
+    "canvas",
+    "code-visualization",
+    "obsidian-canvas",
+    "infinite-canvas"
+  ],
+  "author": "Trae Design",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^31.0.2"
+  }
+}
