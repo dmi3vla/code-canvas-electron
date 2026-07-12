@@ -17,6 +17,13 @@ const nodeTypeInput = document.getElementById('node-type-input');
 const nodeSubtitleInput = document.getElementById('node-subtitle-input');
 const nodeContentInput = document.getElementById('node-content-input');
 const edgeLabelInput = document.getElementById('edge-label-input');
+const openInEditorBtn = document.getElementById('open-in-editor-btn');
+
+const editorPanel = document.getElementById('editor-panel');
+const editorPanelMount = document.getElementById('editor-panel-mount');
+const editorPanelTitle = document.getElementById('editor-panel-title');
+const editorPanelCloseBtn = document.getElementById('editor-panel-close-btn');
+let editorMounted = false;
 
 const buttons = {
   newCanvas: document.getElementById('new-canvas-btn'),
@@ -411,6 +418,40 @@ function renderNode(node) {
   contentLayer.appendChild(fragment);
 }
 
+async function openNodeInEditor(node) {
+  if (!node.path) {
+    // Нет реального файла на диске (заметка/чистый code-сниппет без path) —
+    // открываем то, что есть в самой ноде, без обращения к fs.
+    editorPanelTitle.textContent = node.title || 'Без имени';
+    editorPanel.classList.remove('hidden');
+    if (!editorMounted) {
+      window.CodeCanvasEditor.mount(editorPanelMount);
+      editorMounted = true;
+    }
+    window.CodeCanvasEditor.openFile(node.title || '', node.content || '');
+    return;
+  }
+
+  try {
+    const { content } = await window.electronAPI.readTextFile(node.path);
+    editorPanelTitle.textContent = node.path;
+    editorPanel.classList.remove('hidden');
+    if (!editorMounted) {
+      window.CodeCanvasEditor.mount(editorPanelMount);
+      editorMounted = true;
+    }
+    // anchor: если у ноды задана целевая строка (например, из footprint/codemap
+    // location — задел под Фазу 1), подсвечиваем её сразу при открытии.
+    window.CodeCanvasEditor.openFile(node.path, content, node.anchorLine);
+  } catch (err) {
+    statusText.textContent = `Не удалось открыть файл: ${err.message || err}`;
+  }
+}
+
+function closeEditorPanel() {
+  editorPanel.classList.add('hidden');
+}
+
 function renderInspector() {
   inspectorEmpty.classList.add('hidden');
   inspectorNode.classList.add('hidden');
@@ -424,6 +465,14 @@ function renderInspector() {
     nodeTypeInput.value = node.type || 'text';
     nodeSubtitleInput.value = node.subtitle || node.path || '';
     nodeContentInput.value = node.content || '';
+
+    if (node.type === 'file' || node.type === 'code') {
+      openInEditorBtn.classList.remove('hidden');
+      openInEditorBtn.onclick = () => openNodeInEditor(node);
+    } else {
+      openInEditorBtn.classList.add('hidden');
+      openInEditorBtn.onclick = null;
+    }
     return;
   }
 
@@ -628,6 +677,8 @@ function resetCanvas() {
   render();
   setStatus('Создан новый canvas');
 }
+
+editorPanelCloseBtn.addEventListener('click', closeEditorPanel);
 
 buttons.newCanvas.addEventListener('click', resetCanvas);
 buttons.openCanvas.addEventListener('click', openCanvas);

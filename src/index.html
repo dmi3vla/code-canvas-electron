@@ -72,6 +72,14 @@
             <div id="canvas-content" class="canvas-content"></div>
           </div>
 
+          <section id="editor-panel" class="editor-panel hidden">
+            <div class="editor-panel-header">
+              <span id="editor-panel-title">Файл не открыт</span>
+              <button id="editor-panel-close-btn" title="Закрыть редактор">✕</button>
+            </div>
+            <div id="editor-panel-mount" class="editor-panel-mount"></div>
+          </section>
+
           <button id="right-sidebar-rail-btn" class="sidebar-rail sidebar-rail-right hidden" title="Показать инспектор">
             Инспектор
           </button>
@@ -116,6 +124,10 @@
                 <span>Содержимое</span>
                 <textarea id="node-content-input" rows="16"></textarea>
               </label>
+
+              <button id="open-in-editor-btn" class="hidden" style="width: 100%; margin-top: 8px;">
+                Открыть в редакторе ↗
+              </button>
             </div>
 
             <div id="inspector-edge" class="inspector-block hidden">
@@ -152,6 +164,7 @@
       </article>
     </template>
 
+    <script src="../dist/editor.bundle.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
