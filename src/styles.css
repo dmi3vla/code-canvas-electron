@@ -708,3 +708,77 @@ button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+/* ── Trace area groups (Windsurf-like colored regions) ───────── */
+
+.area-group {
+  position: absolute;
+  z-index: 0;
+  box-sizing: border-box;
+  border-radius: 22px;
+  border: 1.5px solid var(--area-border, rgba(165, 216, 255, 0.4));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 48px),
+    var(--area-fill, rgba(165, 216, 255, 0.14));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 40px rgba(0, 0, 0, 0.22);
+  pointer-events: auto;
+  user-select: none;
+  overflow: hidden;
+}
+
+.area-group.selected {
+  border-color: var(--area-accent, #a5d8ff);
+  box-shadow:
+    0 0 0 1px var(--area-accent, #a5d8ff),
+    0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+.area-group-label {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  right: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--area-accent, #a5d8ff);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+}
+
+.area-group-sub {
+  position: absolute;
+  top: 30px;
+  left: 16px;
+  right: 16px;
+  font-size: 11px;
+  color: rgba(200, 214, 240, 0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Content nodes sit above areas */
+.node {
+  z-index: 2;
+}
+
+.node.has-accent {
+  border-color: color-mix(in srgb, var(--node-accent, #59a4ff) 55%, rgba(92, 121, 181, 0.24));
+}
+
+.node.has-accent .node-tag {
+  color: var(--node-accent, #9cd0ff);
+  border-color: color-mix(in srgb, var(--node-accent, #59a4ff) 40%, transparent);
+}
+
+.node.has-accent.selected {
+  border-color: var(--node-accent, #59a4ff);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--node-accent, #59a4ff) 45%, transparent),
+    0 24px 55px rgba(0, 0, 0, 0.52);
+}

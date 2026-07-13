@@ -62,6 +62,22 @@ const buttons = {
 
 const DEFAULT_QUERY = 'Обзор архитектуры и основных потоков выполнения';
 
+/** Windsurf-like area palette (trace regions) */
+const TRACE_AREA_PALETTE = [
+  { accent: '#a5d8ff', fill: 'rgba(165, 216, 255, 0.14)', border: 'rgba(165, 216, 255, 0.42)' },
+  { accent: '#ffd8a8', fill: 'rgba(255, 216, 168, 0.14)', border: 'rgba(255, 216, 168, 0.42)' },
+  { accent: '#d0bfff', fill: 'rgba(208, 191, 255, 0.14)', border: 'rgba(208, 191, 255, 0.42)' },
+  { accent: '#b2f2bb', fill: 'rgba(178, 242, 187, 0.14)', border: 'rgba(178, 242, 187, 0.42)' },
+  { accent: '#fcc2d7', fill: 'rgba(252, 194, 215, 0.14)', border: 'rgba(252, 194, 215, 0.42)' },
+  { accent: '#ffec99', fill: 'rgba(255, 236, 153, 0.14)', border: 'rgba(255, 236, 153, 0.42)' },
+  { accent: '#99e9f2', fill: 'rgba(153, 233, 242, 0.14)', border: 'rgba(153, 233, 242, 0.42)' },
+  { accent: '#eebefa', fill: 'rgba(238, 190, 250, 0.14)', border: 'rgba(238, 190, 250, 0.42)' }
+];
+
+function paletteForIndex(index) {
+  return TRACE_AREA_PALETTE[index % TRACE_AREA_PALETTE.length];
+}
+
 const state = {
   nodes: [],
   edges: [],
@@ -379,7 +395,131 @@ function renderEdges() {
   }
 }
 
+/**
+ * Ensure every traceId has a colored group area (for old caches without groups).
+ * Also refresh group bounds around current child positions.
+ */
+function ensureTraceAreas() {
+  const PAD_X = 40;
+  const PAD_Y = 28;
+  const TITLE_H = 44;
+  const byTrace = new Map();
+
+  for (const node of state.nodes) {
+    if (node.type === 'group' || !node.traceId) continue;
+    const key = String(node.traceId);
+    if (!byTrace.has(key)) byTrace.set(key, []);
+    byTrace.get(key).push(node);
+  }
+
+  if (byTrace.size === 0) return;
+
+  const existingGroups = state.nodes.filter((n) => n.type === 'group');
+  let colorIndex = 0;
+
+  for (const [traceId, children] of byTrace) {
+    let group = existingGroups.find((g) => String(g.traceId) === traceId);
+    const palette = paletteForIndex(colorIndex++);
+    const minX = Math.min(...children.map((n) => n.x));
+    const minY = Math.min(...children.map((n) => n.y));
+    const maxX = Math.max(...children.map((n) => n.x + (n.width || 300)));
+    const maxY = Math.max(...children.map((n) => n.y + (n.height || 180)));
+
+    const bounds = {
+      x: minX - PAD_X,
+      y: minY - TITLE_H - PAD_Y,
+      width: maxX - minX + PAD_X * 2,
+      height: maxY - minY + TITLE_H + PAD_Y * 2
+    };
+
+    // title from codemap act if available
+    let title = group?.title;
+    if (!title && state.codemap?.traces) {
+      const tr = state.codemap.traces.find((t) => String(t.id) === traceId);
+      if (tr) title = `${traceId}. ${tr.title || 'Trace'}`;
+    }
+    if (!title) title = `Trace ${traceId}`;
+
+    for (const child of children) {
+      if (!child.color) child.color = group?.color || palette.accent;
+    }
+
+    if (group) {
+      Object.assign(group, bounds);
+      if (!group.color) group.color = palette.accent;
+      if (!group.fill) group.fill = palette.fill;
+      if (!group.border) group.border = palette.border;
+      if (!group.title) group.title = title;
+    } else {
+      state.nodes.push({
+        id: `area-trace-${traceId}`,
+        type: 'group',
+        title,
+        subtitle: '',
+        content: '',
+        ...bounds,
+        traceId,
+        color: palette.accent,
+        fill: palette.fill,
+        border: palette.border,
+        zIndex: 0
+      });
+    }
+  }
+}
+
+function renderGroup(node) {
+  const el = document.createElement('div');
+  el.className = 'area-group';
+  if (state.selection.type === 'node' && state.selection.id === node.id) {
+    el.classList.add('selected');
+  }
+  el.dataset.nodeId = node.id;
+  el.style.left = `${node.x}px`;
+  el.style.top = `${node.y}px`;
+  el.style.width = `${node.width || 400}px`;
+  el.style.height = `${node.height || 260}px`;
+  el.style.setProperty('--area-fill', node.fill || 'rgba(165, 216, 255, 0.12)');
+  el.style.setProperty('--area-border', node.border || 'rgba(165, 216, 255, 0.4)');
+  el.style.setProperty('--area-accent', node.color || '#a5d8ff');
+
+  const label = document.createElement('div');
+  label.className = 'area-group-label';
+  label.textContent = node.title || node.traceId || 'Area';
+  el.appendChild(label);
+
+  if (node.subtitle) {
+    const sub = document.createElement('div');
+    sub.className = 'area-group-sub';
+    sub.textContent = node.subtitle;
+    el.appendChild(sub);
+  }
+
+  // group is selectable / draggable as a unit (moves children with same traceId)
+  el.addEventListener('mousedown', (event) => {
+    event.stopPropagation();
+    const world = worldFromClient(event.clientX, event.clientY);
+    select('node', node.id);
+    state.interaction.drag = {
+      nodeId: node.id,
+      offsetX: world.x - node.x,
+      offsetY: world.y - node.y,
+      isGroup: true,
+      childOrigins: state.nodes
+        .filter((n) => n.type !== 'group' && String(n.traceId) === String(node.traceId))
+        .map((n) => ({ id: n.id, x: n.x, y: n.y }))
+    };
+  });
+
+  contentLayer.appendChild(el);
+}
+
 function renderNode(node) {
+  if (node.type === 'group') {
+    renderGroup(node);
+    return;
+  }
+
   const fragment = nodeTemplate.content.cloneNode(true);
   const element = fragment.querySelector('.node');
   const title = fragment.querySelector('.node-title');
@@ -400,6 +540,10 @@ function renderNode(node) {
   element.style.top = `${node.y}px`;
   element.style.setProperty('--node-width', `${node.width || 300}px`);
   element.style.height = `${node.height || 180}px`;
+  if (node.color) {
+    element.style.setProperty('--node-accent', node.color);
+    element.classList.add('has-accent');
+  }
 
   title.textContent = node.title || 'Untitled';
   subtitle.textContent = node.subtitle || node.path || '';
@@ -462,6 +606,10 @@ function renderNode(node) {
 }
 
 async function openNodeInEditor(node) {
+  if (!node || node.type === 'group') {
+    setStatus(node?.title ? `Область: ${node.title}` : 'Группа без файла');
+    return;
+  }
   if (!node.path) {
     // Нет реального файла на диске (заметка/чистый code-сниппет без path) —
     // открываем то, что есть в самой ноде, без обращения к fs.
@@ -511,7 +659,7 @@ function renderInspector() {
     nodeSubtitleInput.value = node.subtitle || node.path || '';
     nodeContentInput.value = node.content || '';
 
-    if (node.type === 'file' || node.type === 'code') {
+    if ((node.type === 'file' || node.type === 'code') && node.path) {
       openInEditorBtn.classList.remove('hidden');
       openInEditorBtn.onclick = () => openNodeInEditor(node);
     } else {
@@ -534,9 +682,16 @@ function renderInspector() {
 
 function render() {
   updateSidebarUI();
+  ensureTraceAreas();
   applyViewTransform();
   contentLayer.innerHTML = '';
-  for (const node of state.nodes) {
+  // groups first (behind), then content nodes
+  const ordered = [...state.nodes].sort((a, b) => {
+    const az = a.type === 'group' ? 0 : 1;
+    const bz = b.type === 'group' ? 0 : 1;
+    return az - bz;
+  });
+  for (const node of ordered) {
     renderNode(node);
   }
   renderEdges();
@@ -569,15 +724,49 @@ function toggleSidebar(side, collapsed) {
 }
 
 function autoLayout() {
-  const columns = Math.max(1, Math.floor(root.clientWidth / 360));
-  state.nodes.forEach((node, index) => {
-    const col = index % columns;
-    const row = Math.floor(index / columns);
-    node.x = col * 360;
-    node.y = row * 240;
-  });
+  // Semantic layout: stack trace areas vertically, locations left→right inside each
+  const contentNodes = state.nodes.filter((n) => n.type !== 'group' && n.traceId);
+  if (contentNodes.length) {
+    const byTrace = new Map();
+    for (const node of contentNodes) {
+      const key = String(node.traceId);
+      if (!byTrace.has(key)) byTrace.set(key, []);
+      byTrace.get(key).push(node);
+    }
+    const COL = 360;
+    const NODE_H = 210;
+    const PAD_X = 40;
+    const PAD_Y = 28;
+    const TITLE_H = 44;
+    const GAP_Y = 72;
+    let cursorY = 0;
+    let idx = 0;
+    for (const [traceId, children] of byTrace) {
+      children.sort((a, b) => String(a.locationId || a.id).localeCompare(String(b.locationId || b.id)));
+      children.forEach((node, i) => {
+        node.x = PAD_X + i * COL;
+        node.y = cursorY + TITLE_H + PAD_Y;
+        if (!node.color) node.color = paletteForIndex(idx).accent;
+      });
+      const areaH = TITLE_H + PAD_Y * 2 + NODE_H;
+      cursorY += areaH + GAP_Y;
+      idx += 1;
+    }
+    // drop old groups — ensureTraceAreas rebuilds them
+    state.nodes = state.nodes.filter((n) => n.type !== 'group');
+  } else {
+    const columns = Math.max(1, Math.floor(root.clientWidth / 360));
+    state.nodes
+      .filter((n) => n.type !== 'group')
+      .forEach((node, index) => {
+        const col = index % columns;
+        const row = Math.floor(index / columns);
+        node.x = col * 360;
+        node.y = row * 240;
+      });
+  }
   render();
-  setStatus('Авто-раскладка применена');
+  setStatus('Авто-раскладка по областям (traces)');
 }
 
 function fitView() {
@@ -645,7 +834,11 @@ function serializeCanvas() {
       anchorLine: node.anchorLine ?? null,
       language: node.language || '',
       locationId: node.locationId || null,
-      traceId: node.traceId || null
+      traceId: node.traceId || null,
+      color: node.color || null,
+      fill: node.fill || null,
+      border: node.border || null,
+      zIndex: node.zIndex ?? (node.type === 'group' ? 0 : 1)
     })),
     edges: state.edges.map((edge) => ({ ...edge }))
   };
@@ -663,13 +856,17 @@ function loadCanvas(payload) {
     content: node.content || node.text || '',
     x: node.x ?? 0,
     y: node.y ?? 0,
-    width: node.width || 300,
-    height: node.height || 180,
+    width: node.width || (node.type === 'group' ? 400 : 300),
+    height: node.height || (node.type === 'group' ? 260 : 180),
     path: node.path || '',
     anchorLine: node.anchorLine ?? null,
     language: node.language || '',
     locationId: node.locationId || null,
-    traceId: node.traceId || null
+    traceId: node.traceId || null,
+    color: node.color || null,
+    fill: node.fill || null,
+    border: node.border || null,
+    zIndex: node.zIndex ?? (node.type === 'group' ? 0 : 1)
   }));
   state.edges = edges.map((edge, index) => ({
     id: edge.id || createId(`edge${index}`),
@@ -1174,8 +1371,23 @@ window.addEventListener('mousemove', (event) => {
     const node = getNodeById(state.interaction.drag.nodeId);
     if (!node) return;
     const world = worldFromClient(event.clientX, event.clientY);
-    node.x = world.x - state.interaction.drag.offsetX;
-    node.y = world.y - state.interaction.drag.offsetY;
+    const nextX = world.x - state.interaction.drag.offsetX;
+    const nextY = world.y - state.interaction.drag.offsetY;
+    const dx = nextX - node.x;
+    const dy = nextY - node.y;
+    node.x = nextX;
+    node.y = nextY;
+    // Moving a group area moves all nodes of that trace together
+    if (state.interaction.drag.isGroup && node.type === 'group') {
+      for (const child of state.nodes) {
+        if (child.type === 'group') continue;
+        if (String(child.traceId) !== String(node.traceId)) continue;
+        child.x += dx;
+        child.y += dy;
+      }
+    } else if (node.traceId) {
+      // keep parent area snug while dragging a child — bounds refresh on render
+    }
     render();
     return;
   }
