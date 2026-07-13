@@ -1,6 +1,21 @@
 const { app, BrowserWindow, dialog, ipcMain, Menu } = require('electron');
 const fs = require('fs/promises');
 const path = require('path');
+const {
+  initSettings,
+  getSettings,
+  setSetting,
+  setSettings,
+  getSettingsFilePath
+} = require('./src/agent/settings');
+const {
+  readProjectCache,
+  writeProjectCanvasCache,
+  deleteProjectCache,
+  CANVAS_CACHE_NAME,
+  CODEMAP_CACHE_NAME
+} = require('./src/cache/project-cache');
+const { codemapToCanvas } = require('./src/builder/codemap-adapter');
 
 const TEXT_EXTENSIONS = new Set([
   '.js',
@@ -28,6 +43,9 @@ const CODE_GRAPH_EXTENSIONS = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs', '.c
 const MAX_SCAN_FILES = 180;
 const MAX_PREVIEW_CHARS = 2400;
 
+/** @type {string|null} */
+let currentProjectPath = null;
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 1600,
@@ -47,6 +65,10 @@ function createWindow() {
       submenu: [
         {
           label: 'Open Project Folder',
+          click: () => win.webContents.send('menu-action', { type: 'open-project' })
+        },
+        {
+          label: 'Import Project Graph (structural)',
           click: () => win.webContents.send('menu-action', { type: 'import-project' })
         },
         {
@@ -56,6 +78,11 @@ function createWindow() {
         {
           label: 'Save Canvas',
           click: () => win.webContents.send('menu-action', { type: 'save-canvas' })
+        },
+        { type: 'separator' },
+        {
+          label: 'Settings…',
+          click: () => win.webContents.send('menu-action', { type: 'open-settings' })
         },
         { type: 'separator' },
         { role: 'quit' }
@@ -80,6 +107,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  initSettings();
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -252,6 +280,107 @@ async function scanProject(folderPath) {
   };
 }
 
+/**
+ * Resolve a file path for reading: absolute as-is, relative via project root.
+ */
+function resolveReadPath(targetPath, projectRoot = currentProjectPath) {
+  if (!targetPath) throw new Error('path is required');
+  if (path.isAbsolute(targetPath)) return targetPath;
+  const root = projectRoot || currentProjectPath;
+  if (!root) throw new Error('relative path requires an open project');
+  // strip leading ./
+  const cleaned = targetPath.replace(/^\.\//, '');
+  return path.resolve(root, cleaned);
+}
+
+// ─── Project open (cache-first) ─────────────────────────────────
+
+ipcMain.handle('project:open', async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openDirectory']
+  });
+
+  if (result.canceled || !result.filePaths[0]) {
+    return { canceled: true };
+  }
+
+  const folderPath = result.filePaths[0];
+  currentProjectPath = folderPath;
+
+  const cache = await readProjectCache(folderPath);
+
+  return {
+    canceled: false,
+    folderPath,
+    folderName: path.basename(folderPath),
+    cacheHit: cache.cacheHit,
+    corrupt: Boolean(cache.corrupt),
+    cacheError: cache.error || null,
+    canvas: cache.canvas,
+    codemap: cache.codemap,
+    cacheFiles: {
+      canvas: CANVAS_CACHE_NAME,
+      codemap: CODEMAP_CACHE_NAME
+    }
+  };
+});
+
+ipcMain.handle('project:getCurrent', () => {
+  if (!currentProjectPath) return null;
+  return {
+    path: currentProjectPath,
+    name: path.basename(currentProjectPath)
+  };
+});
+
+ipcMain.handle('project:writeCache', async (_, { canvas, codemap }) => {
+  if (!currentProjectPath) {
+    throw new Error('No project open');
+  }
+  const written = await writeProjectCanvasCache(currentProjectPath, canvas, codemap);
+  return { ok: true, ...written, projectRoot: currentProjectPath };
+});
+
+ipcMain.handle('project:deleteCache', async () => {
+  if (!currentProjectPath) {
+    throw new Error('No project open');
+  }
+  await deleteProjectCache(currentProjectPath);
+  return { ok: true };
+});
+
+// Apply offline codemap fixture → canvas + write cache (Phase 1 smoke / Phase 2 will call agent)
+ipcMain.handle('codemap:applyAndCache', async (_, { codemap, query }) => {
+  if (!currentProjectPath) {
+    throw new Error('No project open');
+  }
+  if (!codemap) {
+    throw new Error('codemap is required');
+  }
+
+  const canvas = codemapToCanvas(codemap, {
+    sourceFolder: currentProjectPath,
+    query: query || codemap.query || null
+  });
+
+  // stamp query on codemap for sidebar restore
+  const codemapToSave = {
+    ...codemap,
+    query: query || codemap.query || null,
+    workspacePath: currentProjectPath
+  };
+
+  const written = await writeProjectCanvasCache(currentProjectPath, canvas, codemapToSave);
+  return {
+    ok: true,
+    canvas,
+    codemap: codemapToSave,
+    ...written,
+    projectRoot: currentProjectPath
+  };
+});
+
+// Legacy structural import (file graph) — kept as menu fallback
 ipcMain.handle('dialog:pickProject', async () => {
   const result = await dialog.showOpenDialog({
     properties: ['openDirectory']
@@ -262,6 +391,7 @@ ipcMain.handle('dialog:pickProject', async () => {
   }
 
   const folderPath = result.filePaths[0];
+  currentProjectPath = folderPath;
   const graph = await scanProject(folderPath);
   return {
     canceled: false,
@@ -272,7 +402,9 @@ ipcMain.handle('dialog:pickProject', async () => {
 
 ipcMain.handle('dialog:saveCanvas', async (_, canvasData) => {
   const result = await dialog.showSaveDialog({
-    defaultPath: 'workspace.canvas',
+    defaultPath: currentProjectPath
+      ? path.join(currentProjectPath, 'workspace.canvas')
+      : 'workspace.canvas',
     filters: [{ name: 'Canvas', extensions: ['canvas', 'json'] }]
   });
 
@@ -304,9 +436,22 @@ ipcMain.handle('dialog:openCanvas', async () => {
 });
 
 ipcMain.handle('file:readText', async (_, targetPath) => {
-  const content = await fs.readFile(targetPath, 'utf8');
-  return { content };
+  const absolute = resolveReadPath(targetPath);
+  const content = await fs.readFile(absolute, 'utf8');
+  return { content, path: absolute };
 });
 
-ipcMain.handle('app:getVersion', () => app.getVersion());
+// ─── Settings (windsurf-compatible) ─────────────────────────────
 
+ipcMain.handle('settings:get', () => getSettings());
+
+ipcMain.handle('settings:set', (_, key, value) => {
+  if (typeof key === 'object' && key !== null) {
+    return setSettings(key);
+  }
+  return setSetting(key, value);
+});
+
+ipcMain.handle('settings:getPath', () => getSettingsFilePath());
+
+ipcMain.handle('app:getVersion', () => app.getVersion());

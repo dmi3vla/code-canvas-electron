@@ -13,19 +13,21 @@
           <div class="brand-mark"></div>
           <div>
             <div class="brand-title">Code Canvas Desktop</div>
-            <div class="brand-subtitle">Infinite canvas + code graph + `.canvas` workflow</div>
+            <div class="brand-subtitle" id="brand-subtitle">Выберите папку проекта</div>
           </div>
         </div>
 
         <div class="toolbar">
+          <button id="open-project-btn" class="primary">Открыть проект</button>
           <button id="new-canvas-btn">Новый</button>
           <button id="open-canvas-btn">Открыть `.canvas`</button>
           <button id="save-canvas-btn">Сохранить</button>
-          <button id="import-project-btn" class="primary">Импорт папки проекта</button>
+          <button id="import-project-btn" title="Структурный import/require граф">Import graph</button>
           <button id="add-note-btn">Заметка</button>
           <button id="add-code-btn">Код</button>
           <button id="auto-layout-btn">Авто-раскладка</button>
           <button id="fit-view-btn">Fit</button>
+          <button id="settings-btn">Settings</button>
         </div>
       </header>
 
@@ -43,22 +45,46 @@
             </div>
           </section>
 
-          <section class="panel">
-            <div class="panel-title">Импорт</div>
-            <div class="panel-copy">
-              Импортируйте папку проекта, чтобы получить file/code nodes и автоматические связи по `import`/`require`.
+          <section class="panel" id="project-panel">
+            <div class="panel-title">Проект</div>
+            <div id="project-path-label" class="panel-copy">Папка не выбрана</div>
+            <div id="cache-status-label" class="panel-copy muted-line"></div>
+          </section>
+
+          <section class="panel" id="query-panel">
+            <div class="panel-title">Codemap query</div>
+            <textarea
+              id="codemap-query-input"
+              rows="3"
+              placeholder="Обзор архитектуры и основных потоков выполнения"
+            ></textarea>
+            <div class="btn-row">
+              <button id="generate-codemap-btn" class="primary" disabled title="Генерация GPT — Фаза 2">
+                Generate
+              </button>
+              <button id="regenerate-codemap-btn" disabled title="Перезаписать кэш">
+                Перегенерировать
+              </button>
+            </div>
+            <div class="panel-copy muted-line" id="generate-hint">
+              GPT-агент подключается в Фазе 2. Сейчас: открытие кэша `.code-canvas.canvas` из корня проекта.
+            </div>
+          </section>
+
+          <section class="panel" id="acts-panel">
+            <div class="panel-title">Acts (traces)</div>
+            <div id="acts-list" class="acts-list">
+              <div class="panel-copy">Нет codemap. Откройте проект с кэшем или сгенерируйте карту.</div>
             </div>
           </section>
 
           <section class="panel">
             <div class="panel-title">Подсказки</div>
             <ul class="shortcut-list">
-              <li>Двойной клик по пустому месту: новая заметка</li>
-              <li>Колесо мыши: zoom</li>
-              <li>Перетаскивание фона: pan</li>
-              <li>Перетаскивание ноды: move</li>
-              <li>Shift + drag от коннектора: связь</li>
-              <li>Delete / Backspace: удалить выделенное</li>
+              <li>Открыть проект: кэш из корня без GPT</li>
+              <li>Двойной клик по пустому месту: заметка</li>
+              <li>Колесо: zoom · drag фона: pan</li>
+              <li>Delete: удалить выделенное</li>
             </ul>
           </section>
         </aside>
@@ -85,7 +111,7 @@
           </button>
 
           <div id="statusbar" class="statusbar">
-            <span id="status-text">Готово</span>
+            <span id="status-text">Выберите папку проекта</span>
             <span id="view-text">100%</span>
           </div>
         </main>
@@ -138,13 +164,42 @@
             </div>
           </section>
 
-          <section class="panel">
-            <div class="panel-title">AI / Expand</div>
-            <div class="panel-copy">
-              В этой версии заложен UI-слой под expansion workflow: можно развить через OpenRouter или локальный LLM через IPC без перестройки канваса.
+          <section class="panel" id="settings-panel">
+            <div class="panel-title">AI / GPT Settings</div>
+            <div class="panel-copy muted-line" id="settings-path-label">~/.cometix/codemap/settings.json</div>
+            <label class="field">
+              <span>API Key</span>
+              <input id="settings-api-key" type="password" autocomplete="off" placeholder="sk-…" />
+            </label>
+            <label class="field">
+              <span>Base URL</span>
+              <input id="settings-base-url" type="text" />
+            </label>
+            <label class="field">
+              <span>Model</span>
+              <input id="settings-model" type="text" />
+            </label>
+            <label class="field">
+              <span>Language</span>
+              <input id="settings-language" type="text" />
+            </label>
+            <div class="btn-row">
+              <button id="settings-save-btn" class="primary">Сохранить</button>
             </div>
+            <div id="settings-key-status" class="panel-copy muted-line">Ключ: не загружен</div>
           </section>
         </aside>
+      </div>
+    </div>
+
+    <!-- Splash: block until project chosen -->
+    <div id="project-splash" class="project-splash">
+      <div class="splash-card">
+        <div class="splash-mark"></div>
+        <h1>Code Canvas</h1>
+        <p>Выберите папку проекта. Если в корне есть <code>.code-canvas.canvas</code>, карта откроется без генерации.</p>
+        <button id="splash-open-project-btn" class="primary">Выбрать папку проекта</button>
+        <p class="splash-hint">Настройки GPT: общий файл windsurf <code>~/.cometix/codemap/settings.json</code></p>
       </div>
     </div>
 

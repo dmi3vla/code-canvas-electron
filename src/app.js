@@ -8,6 +8,12 @@ const leftSidebar = document.getElementById('left-sidebar');
 const rightSidebar = document.getElementById('right-sidebar');
 const leftSidebarRailBtn = document.getElementById('left-sidebar-rail-btn');
 const rightSidebarRailBtn = document.getElementById('right-sidebar-rail-btn');
+const projectSplash = document.getElementById('project-splash');
+const brandSubtitle = document.getElementById('brand-subtitle');
+const projectPathLabel = document.getElementById('project-path-label');
+const cacheStatusLabel = document.getElementById('cache-status-label');
+const actsList = document.getElementById('acts-list');
+const codemapQueryInput = document.getElementById('codemap-query-input');
 
 const inspectorEmpty = document.getElementById('inspector-empty');
 const inspectorNode = document.getElementById('inspector-node');
@@ -25,7 +31,16 @@ const editorPanelTitle = document.getElementById('editor-panel-title');
 const editorPanelCloseBtn = document.getElementById('editor-panel-close-btn');
 let editorMounted = false;
 
+const settingsApiKey = document.getElementById('settings-api-key');
+const settingsBaseUrl = document.getElementById('settings-base-url');
+const settingsModel = document.getElementById('settings-model');
+const settingsLanguage = document.getElementById('settings-language');
+const settingsPathLabel = document.getElementById('settings-path-label');
+const settingsKeyStatus = document.getElementById('settings-key-status');
+
 const buttons = {
+  openProject: document.getElementById('open-project-btn'),
+  splashOpenProject: document.getElementById('splash-open-project-btn'),
   newCanvas: document.getElementById('new-canvas-btn'),
   openCanvas: document.getElementById('open-canvas-btn'),
   saveCanvas: document.getElementById('save-canvas-btn'),
@@ -34,12 +49,18 @@ const buttons = {
   addCode: document.getElementById('add-code-btn'),
   autoLayout: document.getElementById('auto-layout-btn'),
   fitView: document.getElementById('fit-view-btn'),
+  settings: document.getElementById('settings-btn'),
+  settingsSave: document.getElementById('settings-save-btn'),
+  generateCodemap: document.getElementById('generate-codemap-btn'),
+  regenerateCodemap: document.getElementById('regenerate-codemap-btn'),
   panMode: document.getElementById('pan-mode-btn'),
   linkMode: document.getElementById('link-mode-btn'),
   selectMode: document.getElementById('select-mode-btn'),
   toggleLeftSidebar: document.getElementById('toggle-left-sidebar-btn'),
   toggleRightSidebar: document.getElementById('toggle-right-sidebar-btn')
 };
+
+const DEFAULT_QUERY = 'Обзор архитектуры и основных потоков выполнения';
 
 const state = {
   nodes: [],
@@ -66,8 +87,14 @@ const state = {
   },
   meta: {
     sourceFolder: null,
-    name: 'Untitled.canvas'
-  }
+    name: 'Untitled.canvas',
+    query: null,
+    generatedAt: null
+  },
+  /** @type {object|null} full codemap for acts sidebar */
+  codemap: null,
+  projectReady: false,
+  cacheHit: false
 };
 
 function createId(prefix) {
@@ -360,7 +387,7 @@ function renderNode(node) {
 
   title.textContent = node.title || 'Untitled';
   subtitle.textContent = node.subtitle || node.path || '';
-  tag.textContent = node.type;
+  tag.textContent = node.locationId || node.type;
 
   if (node.type === 'text') {
     body.innerHTML = renderMarkdown(node.content || '');
@@ -433,16 +460,18 @@ async function openNodeInEditor(node) {
   }
 
   try {
-    const { content } = await window.electronAPI.readTextFile(node.path);
-    editorPanelTitle.textContent = node.path;
+    const result = await window.electronAPI.readTextFile(node.path);
+    const content = result.content;
+    const resolvedPath = result.path || node.path;
+    editorPanelTitle.textContent = node.anchorLine
+      ? `${resolvedPath}:${node.anchorLine}`
+      : resolvedPath;
     editorPanel.classList.remove('hidden');
     if (!editorMounted) {
       window.CodeCanvasEditor.mount(editorPanelMount);
       editorMounted = true;
     }
-    // anchor: если у ноды задана целевая строка (например, из footprint/codemap
-    // location — задел под Фазу 1), подсвечиваем её сразу при открытии.
-    window.CodeCanvasEditor.openFile(node.path, content, node.anchorLine);
+    window.CodeCanvasEditor.openFile(resolvedPath, content, node.anchorLine);
   } catch (err) {
     statusText.textContent = `Не удалось открыть файл: ${err.message || err}`;
   }
@@ -579,12 +608,28 @@ function serializeCanvas() {
     version: '1.0',
     metadata: {
       name: state.meta.name,
-      sourceFolder: state.meta.sourceFolder
+      sourceFolder: state.meta.sourceFolder,
+      query: state.meta.query || null,
+      generatedAt: state.meta.generatedAt || null,
+      cacheVersion: 1
     },
     viewport: { ...state.view },
     nodes: state.nodes.map((node) => ({
-      ...node,
-      text: node.type === 'text' ? node.content : undefined
+      id: node.id,
+      type: node.type,
+      title: node.title,
+      subtitle: node.subtitle,
+      content: node.content,
+      text: node.type === 'text' ? node.content : undefined,
+      x: node.x,
+      y: node.y,
+      width: node.width,
+      height: node.height,
+      path: node.path || '',
+      anchorLine: node.anchorLine ?? null,
+      language: node.language || '',
+      locationId: node.locationId || null,
+      traceId: node.traceId || null
     })),
     edges: state.edges.map((edge) => ({ ...edge }))
   };
@@ -604,7 +649,11 @@ function loadCanvas(payload) {
     y: node.y ?? 0,
     width: node.width || 300,
     height: node.height || 180,
-    path: node.path || ''
+    path: node.path || '',
+    anchorLine: node.anchorLine ?? null,
+    language: node.language || '',
+    locationId: node.locationId || null,
+    traceId: node.traceId || null
   }));
   state.edges = edges.map((edge, index) => ({
     id: edge.id || createId(`edge${index}`),
@@ -621,7 +670,9 @@ function loadCanvas(payload) {
   };
   state.meta = {
     name: payload.metadata?.name || state.meta.name,
-    sourceFolder: payload.metadata?.sourceFolder || null
+    sourceFolder: payload.metadata?.sourceFolder || state.meta.sourceFolder || null,
+    query: payload.metadata?.query || state.meta.query || null,
+    generatedAt: payload.metadata?.generatedAt || null
   };
   clearSelection();
   render();
@@ -650,6 +701,172 @@ async function openCanvas() {
   }
 }
 
+function hideSplash() {
+  if (projectSplash) projectSplash.classList.add('hidden');
+}
+
+function showSplash() {
+  if (projectSplash) projectSplash.classList.remove('hidden');
+}
+
+function updateProjectChrome() {
+  const folder = state.meta.sourceFolder;
+  if (projectPathLabel) {
+    projectPathLabel.textContent = folder || 'Папка не выбрана';
+  }
+  if (brandSubtitle) {
+    brandSubtitle.textContent = folder
+      ? folder.split(/[\\/]/).pop()
+      : 'Выберите папку проекта';
+  }
+  if (cacheStatusLabel) {
+    if (!folder) {
+      cacheStatusLabel.textContent = '';
+    } else if (state.cacheHit) {
+      cacheStatusLabel.textContent = 'Кэш: .code-canvas.canvas (без GPT)';
+    } else {
+      cacheStatusLabel.textContent = 'Кэш отсутствует — нужна генерация (Фаза 2)';
+    }
+  }
+  if (buttons.regenerateCodemap) {
+    buttons.regenerateCodemap.disabled = !state.projectReady;
+  }
+  // Generate stays disabled until Phase 2 agent is wired
+  if (buttons.generateCodemap) {
+    buttons.generateCodemap.disabled = true;
+  }
+}
+
+function renderActsList(codemap) {
+  if (!actsList) return;
+  if (!codemap || !Array.isArray(codemap.traces) || codemap.traces.length === 0) {
+    actsList.innerHTML =
+      '<div class="panel-copy">Нет codemap. Откройте проект с кэшем или сгенерируйте карту.</div>';
+    return;
+  }
+
+  actsList.innerHTML = '';
+  for (const trace of codemap.traces) {
+    const item = document.createElement('details');
+    item.className = 'act-item';
+    item.dataset.traceId = String(trace.id);
+
+    const summary = document.createElement('summary');
+    summary.textContent = `${trace.id}. ${trace.title || 'Trace'}`;
+    item.appendChild(summary);
+
+    const desc = document.createElement('div');
+    desc.className = 'act-desc';
+    desc.textContent = trace.description || '';
+    item.appendChild(desc);
+
+    if (trace.traceTextDiagram) {
+      const pre = document.createElement('pre');
+      pre.className = 'act-diagram';
+      pre.textContent = trace.traceTextDiagram;
+      item.appendChild(pre);
+    }
+
+    if (trace.traceGuide) {
+      const guide = document.createElement('div');
+      guide.className = 'act-guide';
+      guide.innerHTML = renderMarkdown(trace.traceGuide);
+      item.appendChild(guide);
+    }
+
+    const locs = document.createElement('div');
+    locs.className = 'act-locations';
+    for (const loc of trace.locations || []) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'act-loc-btn';
+      btn.textContent = `${loc.id}: ${loc.title || loc.path}:${loc.lineNumber}`;
+      btn.addEventListener('click', () => {
+        const node = state.nodes.find(
+          (n) => n.locationId === loc.id || n.id === `node-${loc.id}`
+        );
+        if (node) {
+          select('node', node.id);
+          openNodeInEditor(node);
+        } else {
+          setStatus(`Нода ${loc.id} не найдена на canvas`);
+        }
+      });
+      locs.appendChild(btn);
+    }
+    item.appendChild(locs);
+
+    summary.addEventListener('click', () => {
+      // focus first location of this trace on canvas
+      const first = (trace.locations || [])[0];
+      if (!first) return;
+      const node = state.nodes.find(
+        (n) => n.locationId === first.id || n.traceId === String(trace.id)
+      );
+      if (node) select('node', node.id);
+    });
+
+    actsList.appendChild(item);
+  }
+}
+
+function emptyReadyCanvas() {
+  state.nodes = [];
+  state.edges = [];
+  state.view = { x: 220, y: 120, scale: 1 };
+  state.codemap = null;
+  clearSelection();
+  renderActsList(null);
+  render();
+}
+
+async function openProject() {
+  try {
+    const result = await window.electronAPI.openProject();
+    if (result.canceled) return;
+
+    state.meta.sourceFolder = result.folderPath;
+    state.meta.name = `${result.folderName || 'workspace'}.canvas`;
+    state.projectReady = true;
+    hideSplash();
+
+    if (result.corrupt) {
+      state.cacheHit = false;
+      emptyReadyCanvas();
+      updateProjectChrome();
+      setStatus(`Кэш повреждён: ${result.cacheError || 'ошибка JSON'}. Нужна перегенерация.`);
+      return;
+    }
+
+    if (result.cacheHit && result.canvas) {
+      state.cacheHit = true;
+      state.codemap = result.codemap || null;
+      if (result.codemap?.query && codemapQueryInput) {
+        codemapQueryInput.value = result.codemap.query;
+      }
+      loadCanvas(result.canvas);
+      // ensure sourceFolder is the opened path even if metadata differs
+      state.meta.sourceFolder = result.folderPath;
+      renderActsList(state.codemap);
+      fitView();
+      updateProjectChrome();
+      setStatus(`Открыт сохранённый codemap · ${result.cacheFiles?.canvas || '.code-canvas.canvas'}`);
+      return;
+    }
+
+    // cache miss — empty project, wait for generate (Phase 2)
+    state.cacheHit = false;
+    emptyReadyCanvas();
+    if (codemapQueryInput && !codemapQueryInput.value.trim()) {
+      codemapQueryInput.value = DEFAULT_QUERY;
+    }
+    updateProjectChrome();
+    setStatus(`Проект открыт · кэш не найден · query + Generate (Фаза 2)`);
+  } catch (error) {
+    setStatus(`Ошибка открытия проекта: ${error.message}`);
+  }
+}
+
 async function importProject() {
   try {
     const result = await window.electronAPI.pickProject();
@@ -658,10 +875,16 @@ async function importProject() {
     state.edges = result.edges || [];
     state.meta.sourceFolder = result.folderPath;
     state.meta.name = `${result.folderName || 'workspace'}.canvas`;
+    state.projectReady = true;
+    state.cacheHit = false;
+    state.codemap = null;
+    hideSplash();
     clearSelection();
+    renderActsList(null);
     autoLayout();
     fitView();
-    setStatus(`Импортировано файлов: ${state.nodes.length}`);
+    updateProjectChrome();
+    setStatus(`Структурный import: файлов ${state.nodes.length}`);
   } catch (error) {
     setStatus(`Ошибка импорта: ${error.message}`);
   }
@@ -672,20 +895,85 @@ function resetCanvas() {
   state.nodes = fresh.nodes;
   state.edges = fresh.edges;
   state.view = { x: 220, y: 120, scale: 1 };
-  state.meta = { sourceFolder: null, name: 'Untitled.canvas' };
+  state.meta = {
+    sourceFolder: state.meta.sourceFolder,
+    name: 'Untitled.canvas',
+    query: null,
+    generatedAt: null
+  };
+  state.codemap = null;
+  state.cacheHit = false;
   clearSelection();
+  renderActsList(null);
   render();
-  setStatus('Создан новый canvas');
+  setStatus('Создан новый canvas (кэш проекта не затронут)');
+}
+
+async function loadSettingsIntoForm() {
+  try {
+    const settings = await window.electronAPI.getSettings();
+    const settingsPath = await window.electronAPI.getSettingsPath();
+    if (settingsApiKey) settingsApiKey.value = settings.openaiApiKey || '';
+    if (settingsBaseUrl) settingsBaseUrl.value = settings.openaiBaseUrl || '';
+    if (settingsModel) settingsModel.value = settings.model || '';
+    if (settingsLanguage) settingsLanguage.value = settings.language || '';
+    if (settingsPathLabel) settingsPathLabel.textContent = settingsPath;
+    if (settingsKeyStatus) {
+      settingsKeyStatus.textContent = settings.openaiApiKey
+        ? 'Ключ: задан'
+        : 'Ключ: не задан';
+    }
+  } catch (error) {
+    setStatus(`Ошибка загрузки settings: ${error.message}`);
+  }
+}
+
+async function saveSettingsFromForm() {
+  try {
+    await window.electronAPI.setSettings({
+      openaiApiKey: settingsApiKey?.value?.trim() || '',
+      openaiBaseUrl: settingsBaseUrl?.value?.trim() || '',
+      model: settingsModel?.value?.trim() || '',
+      language: settingsLanguage?.value?.trim() || ''
+    });
+    await loadSettingsIntoForm();
+    setStatus('Настройки GPT сохранены (~/.cometix/codemap/settings.json)');
+  } catch (error) {
+    setStatus(`Ошибка сохранения settings: ${error.message}`);
+  }
+}
+
+function focusSettingsPanel() {
+  const panel = document.getElementById('settings-panel');
+  if (panel) {
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    panel.classList.add('panel-highlight');
+    setTimeout(() => panel.classList.remove('panel-highlight'), 1200);
+  }
+  if (state.ui.rightSidebarCollapsed) toggleSidebar('right', false);
 }
 
 editorPanelCloseBtn.addEventListener('click', closeEditorPanel);
 
+buttons.openProject?.addEventListener('click', openProject);
+buttons.splashOpenProject?.addEventListener('click', openProject);
 buttons.newCanvas.addEventListener('click', resetCanvas);
 buttons.openCanvas.addEventListener('click', openCanvas);
 buttons.saveCanvas.addEventListener('click', saveCanvas);
 buttons.importProject.addEventListener('click', importProject);
 buttons.autoLayout.addEventListener('click', autoLayout);
 buttons.fitView.addEventListener('click', fitView);
+buttons.settings?.addEventListener('click', () => {
+  focusSettingsPanel();
+  loadSettingsIntoForm();
+});
+buttons.settingsSave?.addEventListener('click', saveSettingsFromForm);
+buttons.generateCodemap?.addEventListener('click', () => {
+  setStatus('Generate: агент GPT подключается в Фазе 2');
+});
+buttons.regenerateCodemap?.addEventListener('click', () => {
+  setStatus('Перегенерация: агент GPT подключается в Фазе 2');
+});
 buttons.addNote.addEventListener('click', () => {
   addNode({
     type: 'text',
@@ -895,37 +1183,34 @@ window.addEventListener('keydown', (event) => {
 });
 
 window.electronAPI.onMenuAction((payload) => {
+  if (payload.type === 'open-project') openProject();
   if (payload.type === 'import-project') importProject();
   if (payload.type === 'open-canvas') openCanvas();
   if (payload.type === 'save-canvas') saveCanvas();
+  if (payload.type === 'open-settings') {
+    focusSettingsPanel();
+    loadSettingsIntoForm();
+  }
 });
 
 async function init() {
-  const fresh = defaultCanvas();
-  state.nodes = fresh.nodes;
-  state.edges = [
-    {
-      id: createId('edge'),
-      fromNode: state.nodes[0].id,
-      fromSide: 'right',
-      toNode: state.nodes[1].id,
-      toSide: 'left',
-      label: 'imports'
-    },
-    {
-      id: createId('edge'),
-      fromNode: state.nodes[0].id,
-      fromSide: 'bottom',
-      toNode: state.nodes[2].id,
-      toSide: 'top',
-      label: 'idea'
-    }
-  ];
+  // Empty canvas until project is chosen (splash gate)
+  state.nodes = [];
+  state.edges = [];
+  state.projectReady = false;
+  state.cacheHit = false;
+  showSplash();
+  updateProjectChrome();
   renderInspector();
   render();
+  renderActsList(null);
+
+  if (codemapQueryInput) codemapQueryInput.value = DEFAULT_QUERY;
+
+  await loadSettingsIntoForm();
 
   const version = await window.electronAPI.getVersion().catch(() => 'dev');
-  setStatus(`Готово · v${version}`);
+  setStatus(`Выберите папку проекта · v${version}`);
 }
 
 init();

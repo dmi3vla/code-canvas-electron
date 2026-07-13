@@ -1,12 +1,7 @@
 // src/builder/codemap-adapter.js
 //
-// Компонент "builder / алгоритмика" — конвертирует формат codemap
-// (windsurf-style: traces[].locations[], mermaidDiagram) в формат .canvas,
-// который уже умеет рендерить существующий canvas-движок (nodes/edges).
-//
-// Чистая функция: вход JSON → выход JSON, без DOM, без fs, без Electron.
-// Это то, что подразумевал план: "алгоритмика построителя" отдельно от
-// "канваса" — данный файл не знает о рендере вообще.
+// Pure transform: windsurf-style codemap JSON → .canvas nodes/edges.
+// No DOM, no fs, no Electron.
 
 const ROW_HEIGHT = 260;
 const COL_WIDTH = 360;
@@ -14,32 +9,61 @@ const NODE_WIDTH = 320;
 const NODE_HEIGHT = 210;
 
 /**
- * Извлекает межтрейсовые связи из mermaid-текста, потому что в исходном
- * codemap-формате они существуют ТОЛЬКО как строка mermaid, не как JSON.
- * Мы переводим их в явный edges[] один раз здесь, а не парсим mermaid
- * заново при каждом рендере.
+ * Map mermaid node ids (i1, f2) → location ids (1a, 2b) from labels:
+ *   i1["1a: Process start"]
+ */
+function buildMermaidIdToLocationId(mermaidText) {
+  const map = new Map();
+  if (!mermaidText) return map;
+  const re = /(\w+)\s*\[\s*["'](\d+[a-zA-Z])\s*:/g;
+  let match;
+  while ((match = re.exec(mermaidText)) !== null) {
+    map.set(match[1], match[2].toLowerCase());
+  }
+  return map;
+}
+
+function resolveLocationRef(token, idMap) {
+  if (!token) return token;
+  if (idMap.has(token)) return idMap.get(token);
+  // Already a location id like 1a / 2b
+  if (/^\d+[a-z]$/i.test(token)) return token.toLowerCase();
+  return token;
+}
+
+/**
+ * Extract edges from mermaid flowchart text.
+ * Supports: -->, ---, -.->, ==>, with optional |label|.
+ * from/to are resolved to location ids when possible.
  */
 function extractMermaidEdges(mermaidText) {
   if (!mermaidText) return [];
-  const pattern = /(\w+)\s*-->\s*\|([^|]*)\|\s*(\w+)/g;
+
+  const idMap = buildMermaidIdToLocationId(mermaidText);
   const edges = [];
+  const seen = new Set();
+
+  // A -->|label| B  |  A --> B  |  A -.->|label| B  |  A -.-> B  |  A ==> B
+  const pattern = /(\w+)\s*(?:-->|---|-\.->|==>)\s*(?:\|([^|]*)\|\s*)?(\w+)/g;
   let match;
   while ((match = pattern.exec(mermaidText)) !== null) {
-    edges.push({ from: match[1], to: match[3], label: match[2].trim() });
+    const from = resolveLocationRef(match[1], idMap);
+    const to = resolveLocationRef(match[3], idMap);
+    let label = (match[2] || '').trim();
+    // strip wrapping quotes from mermaid edge labels: |"loads"| or |\"loads\"|
+    label = label.replace(/^["']|["']$/g, '').replace(/\\"/g, '"');
+    if (!from || !to || from === to) continue;
+    const key = `${from}->${to}:${label}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    edges.push({ from, to, label });
   }
+
   return edges;
 }
 
 /**
- * Основная конвертация. Каждая location становится нодой типа 'code'
- * (реальный path+line — открывается в редакторе из прошлого шага),
- * локации внутри trace соединяются цепочкой (той же, что была в
- * исходном traceTextDiagram: a→b→c...), плюс поверх — межтрейсовые
- * рёбра, извлечённые из mermaidDiagram.
- *
- * Намеренно НЕ создаём отдельную "нода-контейнер" на trace — принцип
- * "не усложнять": группировка видна и так, через subtitle с trace.title
- * и через саму цепочку связей.
+ * Each location → code node; chain edges within trace; cross edges from mermaid.
  */
 function codemapToCanvas(codemap, options = {}) {
   if (!codemap || !Array.isArray(codemap.traces)) {
@@ -54,16 +78,23 @@ function codemapToCanvas(codemap, options = {}) {
     const locations = trace.locations || [];
 
     locations.forEach((location, locIndex) => {
-      const nodeId = `node-${location.id}`;
-      locationIdToNodeId.set(location.id, nodeId);
+      const locationId = String(location.id || `${trace.id}${String.fromCharCode(97 + locIndex)}`).toLowerCase();
+      const nodeId = `node-${locationId}`;
+      locationIdToNodeId.set(locationId, nodeId);
+      // also allow original id casing
+      if (location.id) locationIdToNodeId.set(String(location.id), nodeId);
 
+      const fileName = location.path ? location.path.split(/[\\/]/).pop() : '';
       nodes.push({
         id: nodeId,
         type: 'code',
-        title: location.title || location.id,
-        subtitle: `${trace.title} · ${location.path.split('/').pop()}:${location.lineNumber}`,
+        title: location.title || locationId,
+        subtitle: `${trace.title || `Trace ${trace.id}`} · ${fileName}:${location.lineNumber ?? ''}`,
         path: options.rewritePath ? options.rewritePath(location.path) : location.path,
-        anchorLine: location.lineNumber,
+        anchorLine: location.lineNumber ?? null,
+        locationId,
+        traceId: String(trace.id ?? traceIndex + 1),
+        language: guessLanguage(location.path),
         content: [location.lineContent, location.description].filter(Boolean).join('\n'),
         x: locIndex * COL_WIDTH,
         y: traceIndex * ROW_HEIGHT,
@@ -72,9 +103,11 @@ function codemapToCanvas(codemap, options = {}) {
       });
 
       if (locIndex > 0) {
-        const prevId = locationIdToNodeId.get(locations[locIndex - 1].id);
+        const prevLoc = locations[locIndex - 1];
+        const prevId = locationIdToNodeId.get(String(prevLoc.id).toLowerCase())
+          || locationIdToNodeId.get(String(prevLoc.id));
         edges.push({
-          id: `edge-chain-${locations[locIndex - 1].id}-${location.id}`,
+          id: `edge-chain-${prevLoc.id}-${location.id}`,
           fromNode: prevId,
           fromSide: 'right',
           toNode: nodeId,
@@ -87,16 +120,18 @@ function codemapToCanvas(codemap, options = {}) {
 
   const crossTraceEdges = extractMermaidEdges(codemap.mermaidDiagram);
   for (const edge of crossTraceEdges) {
-    const fromNode = locationIdToNodeId.get(edge.from);
-    const toNode = locationIdToNodeId.get(edge.to);
-    if (!fromNode || !toNode) continue; // ссылка на id вне traces — пропускаем, не падаем
+    const fromKey = String(edge.from).toLowerCase();
+    const toKey = String(edge.to).toLowerCase();
+    const fromNode = locationIdToNodeId.get(fromKey) || locationIdToNodeId.get(edge.from);
+    const toNode = locationIdToNodeId.get(toKey) || locationIdToNodeId.get(edge.to);
+    if (!fromNode || !toNode) continue;
     edges.push({
       id: `edge-cross-${edge.from}-${edge.to}`,
       fromNode,
       fromSide: 'bottom',
       toNode,
       toSide: 'top',
-      label: edge.label
+      label: edge.label || ''
     });
   }
 
@@ -105,7 +140,10 @@ function codemapToCanvas(codemap, options = {}) {
     metadata: {
       name: codemap.title || codemap.metadata?.name || 'codemap',
       sourceFolder: options.sourceFolder || null,
-      generatedFromCodemapId: codemap.id || codemap.stableId || null
+      query: codemap.query || options.query || null,
+      generatedAt: options.generatedAt || new Date().toISOString(),
+      generatedFromCodemapId: codemap.id || codemap.stableId || null,
+      cacheVersion: 1
     },
     viewport: { x: 0, y: 0, scale: 1 },
     nodes,
@@ -113,4 +151,28 @@ function codemapToCanvas(codemap, options = {}) {
   };
 }
 
-module.exports = { codemapToCanvas, extractMermaidEdges };
+function guessLanguage(filePath) {
+  if (!filePath) return '';
+  const ext = filePath.split('.').pop()?.toLowerCase() || '';
+  const map = {
+    js: 'javascript',
+    jsx: 'javascript',
+    mjs: 'javascript',
+    cjs: 'javascript',
+    ts: 'typescript',
+    tsx: 'typescript',
+    py: 'python',
+    go: 'go',
+    rs: 'rust',
+    java: 'java',
+    md: 'markdown',
+    json: 'json'
+  };
+  return map[ext] || ext;
+}
+
+module.exports = {
+  codemapToCanvas,
+  extractMermaidEdges,
+  buildMermaidIdToLocationId
+};
