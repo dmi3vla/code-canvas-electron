@@ -94,7 +94,8 @@ const state = {
   /** @type {object|null} full codemap for acts sidebar */
   codemap: null,
   projectReady: false,
-  cacheHit: false
+  cacheHit: false,
+  isGenerating: false
 };
 
 function createId(prefix) {
@@ -725,15 +726,15 @@ function updateProjectChrome() {
     } else if (state.cacheHit) {
       cacheStatusLabel.textContent = 'Кэш: .code-canvas.canvas (без GPT)';
     } else {
-      cacheStatusLabel.textContent = 'Кэш отсутствует — нужна генерация (Фаза 2)';
+      cacheStatusLabel.textContent = 'Кэш отсутствует — нажмите Generate';
     }
   }
+  const busy = Boolean(state.isGenerating);
   if (buttons.regenerateCodemap) {
-    buttons.regenerateCodemap.disabled = !state.projectReady;
+    buttons.regenerateCodemap.disabled = !state.projectReady || busy;
   }
-  // Generate stays disabled until Phase 2 agent is wired
   if (buttons.generateCodemap) {
-    buttons.generateCodemap.disabled = true;
+    buttons.generateCodemap.disabled = !state.projectReady || busy;
   }
 }
 
@@ -861,7 +862,7 @@ async function openProject() {
       codemapQueryInput.value = DEFAULT_QUERY;
     }
     updateProjectChrome();
-    setStatus(`Проект открыт · кэш не найден · query + Generate (Фаза 2)`);
+    setStatus('Проект открыт · кэш не найден · задайте query и Generate');
   } catch (error) {
     setStatus(`Ошибка открытия проекта: ${error.message}`);
   }
@@ -968,12 +969,77 @@ buttons.settings?.addEventListener('click', () => {
   loadSettingsIntoForm();
 });
 buttons.settingsSave?.addEventListener('click', saveSettingsFromForm);
-buttons.generateCodemap?.addEventListener('click', () => {
-  setStatus('Generate: агент GPT подключается в Фазе 2');
-});
-buttons.regenerateCodemap?.addEventListener('click', () => {
-  setStatus('Перегенерация: агент GPT подключается в Фазе 2');
-});
+async function runCodemapGenerate({ overwrite = false } = {}) {
+  if (!state.projectReady || !state.meta.sourceFolder) {
+    setStatus('Сначала откройте папку проекта');
+    return;
+  }
+  if (state.isGenerating) {
+    setStatus('Генерация уже идёт…');
+    return;
+  }
+
+  if (overwrite && state.cacheHit) {
+    const ok = window.confirm(
+      'Перегенерировать codemap? Файлы .code-canvas.canvas и .code-canvas.codemap.json в корне проекта будут перезаписаны.'
+    );
+    if (!ok) return;
+  }
+
+  const query = (codemapQueryInput?.value || '').trim() || DEFAULT_QUERY;
+  state.isGenerating = true;
+  updateProjectChrome();
+  setStatus(`Генерация codemap… · ${query.slice(0, 60)}`);
+
+  try {
+    const result = await window.electronAPI.generateCodemap({ query, mode: 'smart' });
+    if (!result.ok) {
+      setStatus(`Ошибка генерации: ${result.error}`);
+      if (String(result.error || '').toLowerCase().includes('api key')) {
+        focusSettingsPanel();
+      }
+      return;
+    }
+
+    state.cacheHit = true;
+    state.codemap = result.codemap;
+    state.meta.query = query;
+    state.meta.generatedAt = new Date().toISOString();
+    loadCanvas(result.canvas);
+    state.meta.sourceFolder = result.projectRoot || state.meta.sourceFolder;
+    renderActsList(state.codemap);
+    fitView();
+    updateProjectChrome();
+    setStatus(
+      `Сгенерировано и сохранено в корень · traces: ${result.codemap?.traces?.length || 0} · .code-canvas.canvas`
+    );
+  } catch (error) {
+    setStatus(`Ошибка генерации: ${error.message}`);
+  } finally {
+    state.isGenerating = false;
+    updateProjectChrome();
+  }
+}
+
+buttons.generateCodemap?.addEventListener('click', () => runCodemapGenerate({ overwrite: false }));
+buttons.regenerateCodemap?.addEventListener('click', () => runCodemapGenerate({ overwrite: true }));
+
+if (window.electronAPI.onCodemapProgress) {
+  window.electronAPI.onCodemapProgress((payload) => {
+    if (!payload || !payload.type) return;
+    if (payload.type === 'phase') {
+      setStatus(`Фаза: ${payload.phase} (stage ${payload.stageNumber})`);
+    } else if (payload.type === 'trace') {
+      setStatus(`Trace ${payload.traceId} · stage ${payload.stage} · ${payload.status}`);
+    } else if (payload.type === 'tool') {
+      setStatus(`Tool: ${payload.tool}`);
+    } else if (payload.type === 'codemap-partial') {
+      setStatus(`Структура: ${payload.title || '…'} · traces ${payload.traces}`);
+    } else if (payload.type === 'error') {
+      setStatus(`Ошибка: ${payload.error}`);
+    }
+  });
+}
 buttons.addNote.addEventListener('click', () => {
   addNode({
     type: 'text',

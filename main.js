@@ -16,6 +16,11 @@ const {
   CODEMAP_CACHE_NAME
 } = require('./src/cache/project-cache');
 const { codemapToCanvas } = require('./src/builder/codemap-adapter');
+const { generateCodemap } = require('./src/agent/codemapAgent');
+const { isConfigured, refreshConfig } = require('./src/agent/baseClient');
+
+/** @type {boolean} */
+let isGenerating = false;
 
 const TEXT_EXTENSIONS = new Set([
   '.js',
@@ -349,7 +354,7 @@ ipcMain.handle('project:deleteCache', async () => {
   return { ok: true };
 });
 
-// Apply offline codemap fixture → canvas + write cache (Phase 1 smoke / Phase 2 will call agent)
+// Apply offline codemap fixture → canvas + write cache
 ipcMain.handle('codemap:applyAndCache', async (_, { codemap, query }) => {
   if (!currentProjectPath) {
     throw new Error('No project open');
@@ -363,7 +368,6 @@ ipcMain.handle('codemap:applyAndCache', async (_, { codemap, query }) => {
     query: query || codemap.query || null
   });
 
-  // stamp query on codemap for sidebar restore
   const codemapToSave = {
     ...codemap,
     query: query || codemap.query || null,
@@ -378,6 +382,105 @@ ipcMain.handle('codemap:applyAndCache', async (_, { codemap, query }) => {
     ...written,
     projectRoot: currentProjectPath
   };
+});
+
+/**
+ * Full GPT generate → codemapToCanvas → write project root cache.
+ * Progress events: codemap:progress on the requesting webContents.
+ */
+ipcMain.handle('codemap:generate', async (event, { query, mode = 'smart' }) => {
+  if (!currentProjectPath) {
+    return { ok: false, error: 'No project open' };
+  }
+  if (isGenerating) {
+    return { ok: false, error: 'Generation already in progress' };
+  }
+
+  refreshConfig();
+  if (!isConfigured()) {
+    return {
+      ok: false,
+      error: 'API key not configured. Set key in Settings (~/.cometix/codemap/settings.json)'
+    };
+  }
+
+  const q = (query || '').trim() || 'Обзор архитектуры и основных потоков выполнения';
+  isGenerating = true;
+
+  const sendProgress = (payload) => {
+    try {
+      event.sender.send('codemap:progress', payload);
+    } catch {
+      /* window closed */
+    }
+  };
+
+  try {
+    sendProgress({ type: 'start', query: q, mode });
+
+    const codemap = await generateCodemap(q, currentProjectPath, mode === 'fast' ? 'fast' : 'smart', {
+      onPhaseChange: (phase, stageNumber) => {
+        sendProgress({ type: 'phase', phase, stageNumber });
+      },
+      onTraceProcessing: (traceId, stage, status) => {
+        sendProgress({ type: 'trace', traceId, stage, status });
+      },
+      onMessage: (role, content) => {
+        sendProgress({
+          type: 'message',
+          role,
+          content: String(content || '').slice(0, 1500)
+        });
+      },
+      onToolCall: (tool, args, result) => {
+        sendProgress({
+          type: 'tool',
+          tool,
+          args: String(args || '').slice(0, 400),
+          result: String(result || '').slice(0, 400)
+        });
+      },
+      onCodemapUpdate: (partial) => {
+        sendProgress({
+          type: 'codemap-partial',
+          title: partial?.title,
+          traces: partial?.traces?.length || 0
+        });
+      }
+    });
+
+    if (!codemap || !Array.isArray(codemap.traces) || codemap.traces.length === 0) {
+      return { ok: false, error: 'Codemap generation returned empty result' };
+    }
+
+    const canvas = codemapToCanvas(codemap, {
+      sourceFolder: currentProjectPath,
+      query: q
+    });
+
+    const codemapToSave = {
+      ...codemap,
+      query: q,
+      workspacePath: currentProjectPath
+    };
+
+    const written = await writeProjectCanvasCache(currentProjectPath, canvas, codemapToSave);
+    sendProgress({ type: 'complete', traces: codemap.traces.length });
+
+    return {
+      ok: true,
+      canvas,
+      codemap: codemapToSave,
+      ...written,
+      projectRoot: currentProjectPath
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    sendProgress({ type: 'error', error: message });
+    return { ok: false, error: message };
+  } finally {
+    isGenerating = false;
+  }
 });
 
 // Legacy structural import (file graph) — kept as menu fallback

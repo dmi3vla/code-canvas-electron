@@ -7,8 +7,16 @@ contextBridge.exposeInMainWorld('electronAPI', {
   writeProjectCache: (payload) => ipcRenderer.invoke('project:writeCache', payload),
   deleteProjectCache: () => ipcRenderer.invoke('project:deleteCache'),
 
-  // Apply codemap → canvas + write root cache (Phase 1; agent in Phase 2)
+  // Apply codemap → canvas + write root cache
   applyCodemapAndCache: (payload) => ipcRenderer.invoke('codemap:applyAndCache', payload),
+
+  // Full GPT generation (stages 1–6) + auto-save to project root
+  generateCodemap: (payload) => ipcRenderer.invoke('codemap:generate', payload),
+  onCodemapProgress: (callback) => {
+    const listener = (_, payload) => callback(payload);
+    ipcRenderer.on('codemap:progress', listener);
+    return () => ipcRenderer.removeListener('codemap:progress', listener);
+  },
 
   // Legacy structural import
   pickProject: () => ipcRenderer.invoke('dialog:pickProject'),

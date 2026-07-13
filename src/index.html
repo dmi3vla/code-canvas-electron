@@ -59,15 +59,15 @@
               placeholder="Обзор архитектуры и основных потоков выполнения"
             ></textarea>
             <div class="btn-row">
-              <button id="generate-codemap-btn" class="primary" disabled title="Генерация GPT — Фаза 2">
+              <button id="generate-codemap-btn" class="primary" disabled title="Multi-stage GPT codemap">
                 Generate
               </button>
-              <button id="regenerate-codemap-btn" disabled title="Перезаписать кэш">
+              <button id="regenerate-codemap-btn" disabled title="Перезаписать кэш в корне проекта">
                 Перегенерировать
               </button>
             </div>
             <div class="panel-copy muted-line" id="generate-hint">
-              GPT-агент подключается в Фазе 2. Сейчас: открытие кэша `.code-canvas.canvas` из корня проекта.
+              После Generate холст пишется в `.code-canvas.canvas` + `.code-canvas.codemap.json` в корне проекта. При повторном открытии кэш грузится без GPT.
             </div>
           </section>
 
