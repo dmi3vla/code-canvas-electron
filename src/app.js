@@ -270,10 +270,25 @@ function edgePath(from, to) {
   return `M ${from.x} ${from.y} C ${from.x + dx} ${from.y}, ${to.x - dx} ${to.y}, ${to.x} ${to.y}`;
 }
 
+function highlightActForNode(node) {
+  if (!actsList || !node?.traceId) return;
+  for (const item of actsList.querySelectorAll('.act-item')) {
+    const match = item.dataset.traceId === String(node.traceId);
+    item.classList.toggle('act-item-active', match);
+    if (match) {
+      item.open = true;
+      item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+}
+
 function select(selectionType, id) {
   state.selection = { type: selectionType, id };
   renderInspector();
   render();
+  if (selectionType === 'node') {
+    highlightActForNode(getNodeById(id));
+  }
 }
 
 function clearSelection() {
