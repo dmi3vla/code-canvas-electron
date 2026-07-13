@@ -1,0 +1,863 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "name": "Структурный инвариант плагина ast-grep: Архитектура парсинга и поиска по AST",
+    "sourceFolder": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8",
+    "generatedFromCodemapId": "______________________________ast-grep___________________________________AST_20260706_232607"
+  },
+  "viewport": {
+    "x": 0,
+    "y": 0,
+    "scale": 1
+  },
+  "nodes": [
+    {
+      "id": "node-1a",
+      "type": "code",
+      "title": "Точка входа: экспорт конфигурации языка",
+      "subtitle": "Регистрация динамического языка Python · index.js:22",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/lang-python/index.js",
+      "anchorLine": 22,
+      "content": "  get libraryPath() {\nЛенивая загрузка пути к парсеру при первом обращении",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-1b",
+      "type": "code",
+      "title": "Разрешение пути к библиотеке",
+      "subtitle": "Регистрация динамического языка Python · index.js:24",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/lang-python/index.js",
+      "anchorLine": 24,
+      "content": "      libPath = getLibPath()\nВызов функции поиска скомпилированного парсера",
+      "x": 360,
+      "y": 0,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-1c",
+      "type": "code",
+      "title": "Поиск prebuild версии",
+      "subtitle": "Регистрация динамического языка Python · index.js:22",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/setup-lang/index.js",
+      "anchorLine": 22,
+      "content": "    const prebuild = resolvePrebuild(dir)\nПроверка наличия предскомпилированного парсера для платформы",
+      "x": 720,
+      "y": 0,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-1d",
+      "type": "code",
+      "title": "Формирование пути к prebuild",
+      "subtitle": "Регистрация динамического языка Python · index.js:60",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/setup-lang/index.js",
+      "anchorLine": 60,
+      "content": "    const prebuild = node_path_1.default.join(dir, 'prebuilds', `prebuild-${os}-${arch}`, 'parser.so')\nКонструирование пути на основе OS и архитектуры процессора",
+      "x": 1080,
+      "y": 0,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-1e",
+      "type": "code",
+      "title": "Конфигурация расширений файлов",
+      "subtitle": "Регистрация динамического языка Python · index.js:28",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/lang-python/index.js",
+      "anchorLine": 28,
+      "content": "  extensions: ['py'],\nОпределение какие файлы обрабатывает этот парсер",
+      "x": 1440,
+      "y": 0,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-1f",
+      "type": "code",
+      "title": "Символ Tree-sitter парсера",
+      "subtitle": "Регистрация динамического языка Python · index.js:29",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/lang-python/index.js",
+      "anchorLine": 29,
+      "content": "  languageSymbol: 'tree_sitter_python',\nИмя функции в динамической библиотеке для загрузки грамматики",
+      "x": 1800,
+      "y": 0,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-1g",
+      "type": "code",
+      "title": "API регистрации в ast-grep",
+      "subtitle": "Регистрация динамического языка Python · registerDynamicLang.d.ts:27",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/registerDynamicLang.d.ts",
+      "anchorLine": 27,
+      "content": "export declare function registerDynamicLanguage(langs: DynamicLangRegistrations): void\nФункция для регистрации всех языковых модулей в NAPI",
+      "x": 2160,
+      "y": 0,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-2a",
+      "type": "code",
+      "title": "Синхронный парсинг кода",
+      "subtitle": "Парсинг исходного кода в AST · api.d.ts:11",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/api.d.ts",
+      "anchorLine": 11,
+      "content": "export declare function parse<M extends TypesMap>(\nОсновная функция парсинга строки в AST дерево",
+      "x": 0,
+      "y": 260,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-2b",
+      "type": "code",
+      "title": "Возврат корневого объекта",
+      "subtitle": "Парсинг исходного кода в AST · api.d.ts:14",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/api.d.ts",
+      "anchorLine": 14,
+      "content": "): SgRoot<M>\nSgRoot представляет распарсенное дерево с типизацией",
+      "x": 360,
+      "y": 260,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-2c",
+      "type": "code",
+      "title": "Асинхронный парсинг в потоках",
+      "subtitle": "Парсинг исходного кода в AST · api.d.ts:22",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/api.d.ts",
+      "anchorLine": 22,
+      "content": "export declare function parseAsync<M extends TypesMap>(\nМногопоточный парсинг для обработки множества файлов",
+      "x": 720,
+      "y": 260,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-2d",
+      "type": "code",
+      "title": "Получение корневого узла AST",
+      "subtitle": "Парсинг исходного кода в AST · sgnode.d.ts:92",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 92,
+      "content": "  root(): SgNode<M, RootKind<M>>\nМетод для доступа к корню синтаксического дерева",
+      "x": 1080,
+      "y": 260,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-2e",
+      "type": "code",
+      "title": "Получение имени файла",
+      "subtitle": "Парсинг исходного кода в AST · sgnode.d.ts:97",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 97,
+      "content": "  filename(): string\nВозвращает путь к файлу или 'anonymous' для строк",
+      "x": 1440,
+      "y": 260,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-3a",
+      "type": "code",
+      "title": "Компиляция паттерна поиска",
+      "subtitle": "Поиск узлов по паттерну в AST · api.d.ts:32",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/api.d.ts",
+      "anchorLine": 32,
+      "content": "export declare function pattern<M extends TypesMap>(\nПреобразование строки паттерна в объект NapiConfig",
+      "x": 0,
+      "y": 520,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-3b",
+      "type": "code",
+      "title": "Поиск первого совпадения",
+      "subtitle": "Поиск узлов по паттерну в AST · sgnode.d.ts:68",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 68,
+      "content": "  find: NodeMethod<M, [matcher: string | number | NapiConfig<M>]>\nМетод узла для нахождения первого подходящего дочернего узла",
+      "x": 360,
+      "y": 520,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-3c",
+      "type": "code",
+      "title": "Поиск всех совпадений",
+      "subtitle": "Поиск узлов по паттерну в AST · sgnode.d.ts:69",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 69,
+      "content": "  findAll<K extends Kinds<M>>(\nВозвращает массив всех узлов, соответствующих паттерну",
+      "x": 720,
+      "y": 520,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-3d",
+      "type": "code",
+      "title": "Правило в конфигурации",
+      "subtitle": "Поиск узлов по паттерну в AST · config.d.ts:11",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/config.d.ts",
+      "anchorLine": 11,
+      "content": "  rule: Rule<M>\nNapiConfig содержит Rule объект для определения критериев поиска",
+      "x": 1080,
+      "y": 520,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-3e",
+      "type": "code",
+      "title": "Паттерн в правиле",
+      "subtitle": "Поиск узлов по паттерну в AST · rule.d.ts:56",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/rule.d.ts",
+      "anchorLine": 56,
+      "content": "  pattern?: PatternStyle<M>\nСтрока или объект паттерна для сопоставления кода",
+      "x": 1440,
+      "y": 520,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-3f",
+      "type": "code",
+      "title": "Тип узла для поиска",
+      "subtitle": "Поиск узлов по паттерну в AST · rule.d.ts:58",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/rule.d.ts",
+      "anchorLine": 58,
+      "content": "  kind?: NamedKinds<M>\nИмя типа AST узла (например, 'function_declaration')",
+      "x": 1800,
+      "y": 520,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-3g",
+      "type": "code",
+      "title": "Композиция правил через AND",
+      "subtitle": "Поиск узлов по паттерну в AST · rule.d.ts:89",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/rule.d.ts",
+      "anchorLine": 89,
+      "content": "  all?: Array<Rule<M>>\nКомбинирование нескольких правил логическим И",
+      "x": 2160,
+      "y": 520,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-4a",
+      "type": "code",
+      "title": "Получение дочерних узлов",
+      "subtitle": "Навигация и обход AST дерева · sgnode.d.ts:67",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 67,
+      "content": "  children(): Array<SgNode<M>>\nВозвращает все прямые потомки текущего узла",
+      "x": 0,
+      "y": 780,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-4b",
+      "type": "code",
+      "title": "Доступ к именованному полю",
+      "subtitle": "Навигация и обход AST дерева · sgnode.d.ts:73",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 73,
+      "content": "  field<F extends FieldNames<M[T]>>(name: F): FieldNode<M, T, F>\nПолучение дочернего узла по имени поля (например, 'name', 'body')",
+      "x": 360,
+      "y": 780,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-4c",
+      "type": "code",
+      "title": "Навигация к родителю",
+      "subtitle": "Навигация и обход AST дерева · sgnode.d.ts:78",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 78,
+      "content": "  parent: NodeMethod<M>\nПереход к родительскому узлу в дереве",
+      "x": 720,
+      "y": 780,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-4d",
+      "type": "code",
+      "title": "Получение всех предков",
+      "subtitle": "Навигация и обход AST дерева · sgnode.d.ts:81",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 81,
+      "content": "  ancestors(): Array<SgNode<M>>\nМассив всех родительских узлов до корня",
+      "x": 1080,
+      "y": 780,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-4e",
+      "type": "code",
+      "title": "Получение типа узла",
+      "subtitle": "Навигация и обход AST дерева · sgnode.d.ts:55",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 55,
+      "content": "  kind(): T\nВозвращает строковое имя типа узла (kind)",
+      "x": 1440,
+      "y": 780,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-4f",
+      "type": "code",
+      "title": "Извлечение текста узла",
+      "subtitle": "Навигация и обход AST дерева · sgnode.d.ts:48",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/sgnode.d.ts",
+      "anchorLine": 48,
+      "content": "  text(): string\nПолучение исходного кода, соответствующего узлу",
+      "x": 1800,
+      "y": 780,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-5a",
+      "type": "code",
+      "title": "Карта типов JavaScript AST",
+      "subtitle": "Типизация языковых конструкций JavaScript · JavaScript.d.ts:2",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/lang/JavaScript.d.ts",
+      "anchorLine": 2,
+      "content": "type JavaScriptTypes = {\nTypesMap определяет все возможные типы узлов для языка",
+      "x": 0,
+      "y": 1040,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-5b",
+      "type": "code",
+      "title": "Определение export_statement",
+      "subtitle": "Типизация языковых конструкций JavaScript · JavaScript.d.ts:963",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/lang/JavaScript.d.ts",
+      "anchorLine": 963,
+      "content": "    \"type\": \"export_statement\",\nТип узла для экспорта модулей ES6",
+      "x": 360,
+      "y": 1040,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-5c",
+      "type": "code",
+      "title": "Поле declaration в export",
+      "subtitle": "Типизация языковых конструкций JavaScript · JavaScript.d.ts:966",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/lang/JavaScript.d.ts",
+      "anchorLine": 966,
+      "content": "      \"declaration\": {\nИменованное поле содержит декларацию экспортируемого элемента",
+      "x": 720,
+      "y": 1040,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-5d",
+      "type": "code",
+      "title": "Определение import_statement",
+      "subtitle": "Типизация языковых конструкций JavaScript · JavaScript.d.ts:1540",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/lang/JavaScript.d.ts",
+      "anchorLine": 1540,
+      "content": "    \"type\": \"import_statement\",\nТип узла для импорта модулей ES6",
+      "x": 1080,
+      "y": 1040,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-5e",
+      "type": "code",
+      "title": "Корневой узел program",
+      "subtitle": "Типизация языковых конструкций JavaScript · JavaScript.d.ts:2227",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/lang/JavaScript.d.ts",
+      "anchorLine": 2227,
+      "content": "    \"type\": \"program\",\nВерхний уровень AST дерева для JavaScript файла",
+      "x": 1440,
+      "y": 1040,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-5f",
+      "type": "code",
+      "title": "Маркер корневого узла",
+      "subtitle": "Типизация языковых конструкций JavaScript · JavaScript.d.ts:2229",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/lang/JavaScript.d.ts",
+      "anchorLine": 2229,
+      "content": "    \"root\": true,\nФлаг указывает что это корень синтаксического дерева",
+      "x": 1800,
+      "y": 1040,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-5g",
+      "type": "code",
+      "title": "Интерфейс TypesMap",
+      "subtitle": "Типизация языковых конструкций JavaScript · staticTypes.d.ts:35",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/staticTypes.d.ts",
+      "anchorLine": 35,
+      "content": "export interface TypesMap {\nБазовый интерфейс для карты типов любого языка",
+      "x": 2160,
+      "y": 1040,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-6a",
+      "type": "code",
+      "title": "Поиск по множеству файлов",
+      "subtitle": "Массовый поиск в файлах проекта · api.d.ts:42",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/api.d.ts",
+      "anchorLine": 42,
+      "content": "export declare function findInFiles<M extends TypesMap>(\nРекурсивный поиск узлов в файловой системе",
+      "x": 0,
+      "y": 1300,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-6b",
+      "type": "code",
+      "title": "Пути для рекурсивного поиска",
+      "subtitle": "Массовый поиск в файлах проекта · config.d.ts:30",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/config.d.ts",
+      "anchorLine": 30,
+      "content": "  paths: Array<string>\nFindConfig определяет директории для сканирования",
+      "x": 360,
+      "y": 1300,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-6c",
+      "type": "code",
+      "title": "Конфигурация поиска",
+      "subtitle": "Массовый поиск в файлах проекта · config.d.ts:32",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/config.d.ts",
+      "anchorLine": 32,
+      "content": "  matcher: NapiConfig<M>\nПравила для определения какие узлы искать",
+      "x": 720,
+      "y": 1300,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-6d",
+      "type": "code",
+      "title": "Фильтрация по расширениям",
+      "subtitle": "Массовый поиск в файлах проекта · config.d.ts:38",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/config.d.ts",
+      "anchorLine": 38,
+      "content": "  languageGlobs?: Array<string>\nGlob паттерны для выбора файлов (например, '*.vue', '*.ts')",
+      "x": 1080,
+      "y": 1300,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-6e",
+      "type": "code",
+      "title": "Callback обработки результатов",
+      "subtitle": "Массовый поиск в файлах проекта · api.d.ts:45",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/api.d.ts",
+      "anchorLine": 45,
+      "content": "  callback: (err: null | Error, result: SgNode<M>[]) => void,\nФункция вызывается для каждого файла с найденными узлами",
+      "x": 1440,
+      "y": 1300,
+      "width": 320,
+      "height": 210
+    },
+    {
+      "id": "node-6f",
+      "type": "code",
+      "title": "Возврат количества файлов",
+      "subtitle": "Массовый поиск в файлах проекта · api.d.ts:46",
+      "path": "/home/resu/Documents/dev/alex-c.code-canvas-app-0.14.8/node_modules/@ast-grep/napi/types/api.d.ts",
+      "anchorLine": 46,
+      "content": "): Promise<number>\nPromise разрешается в число обработанных файлов",
+      "x": 1800,
+      "y": 1300,
+      "width": 320,
+      "height": 210
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-chain-1a-1b",
+      "fromNode": "node-1a",
+      "fromSide": "right",
+      "toNode": "node-1b",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-1b-1c",
+      "fromNode": "node-1b",
+      "fromSide": "right",
+      "toNode": "node-1c",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-1c-1d",
+      "fromNode": "node-1c",
+      "fromSide": "right",
+      "toNode": "node-1d",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-1d-1e",
+      "fromNode": "node-1d",
+      "fromSide": "right",
+      "toNode": "node-1e",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-1e-1f",
+      "fromNode": "node-1e",
+      "fromSide": "right",
+      "toNode": "node-1f",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-1f-1g",
+      "fromNode": "node-1f",
+      "fromSide": "right",
+      "toNode": "node-1g",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-2a-2b",
+      "fromNode": "node-2a",
+      "fromSide": "right",
+      "toNode": "node-2b",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-2b-2c",
+      "fromNode": "node-2b",
+      "fromSide": "right",
+      "toNode": "node-2c",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-2c-2d",
+      "fromNode": "node-2c",
+      "fromSide": "right",
+      "toNode": "node-2d",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-2d-2e",
+      "fromNode": "node-2d",
+      "fromSide": "right",
+      "toNode": "node-2e",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-3a-3b",
+      "fromNode": "node-3a",
+      "fromSide": "right",
+      "toNode": "node-3b",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-3b-3c",
+      "fromNode": "node-3b",
+      "fromSide": "right",
+      "toNode": "node-3c",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-3c-3d",
+      "fromNode": "node-3c",
+      "fromSide": "right",
+      "toNode": "node-3d",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-3d-3e",
+      "fromNode": "node-3d",
+      "fromSide": "right",
+      "toNode": "node-3e",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-3e-3f",
+      "fromNode": "node-3e",
+      "fromSide": "right",
+      "toNode": "node-3f",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-3f-3g",
+      "fromNode": "node-3f",
+      "fromSide": "right",
+      "toNode": "node-3g",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-4a-4b",
+      "fromNode": "node-4a",
+      "fromSide": "right",
+      "toNode": "node-4b",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-4b-4c",
+      "fromNode": "node-4b",
+      "fromSide": "right",
+      "toNode": "node-4c",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-4c-4d",
+      "fromNode": "node-4c",
+      "fromSide": "right",
+      "toNode": "node-4d",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-4d-4e",
+      "fromNode": "node-4d",
+      "fromSide": "right",
+      "toNode": "node-4e",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-4e-4f",
+      "fromNode": "node-4e",
+      "fromSide": "right",
+      "toNode": "node-4f",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-5a-5b",
+      "fromNode": "node-5a",
+      "fromSide": "right",
+      "toNode": "node-5b",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-5b-5c",
+      "fromNode": "node-5b",
+      "fromSide": "right",
+      "toNode": "node-5c",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-5c-5d",
+      "fromNode": "node-5c",
+      "fromSide": "right",
+      "toNode": "node-5d",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-5d-5e",
+      "fromNode": "node-5d",
+      "fromSide": "right",
+      "toNode": "node-5e",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-5e-5f",
+      "fromNode": "node-5e",
+      "fromSide": "right",
+      "toNode": "node-5f",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-5f-5g",
+      "fromNode": "node-5f",
+      "fromSide": "right",
+      "toNode": "node-5g",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-6a-6b",
+      "fromNode": "node-6a",
+      "fromSide": "right",
+      "toNode": "node-6b",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-6b-6c",
+      "fromNode": "node-6b",
+      "fromSide": "right",
+      "toNode": "node-6c",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-6c-6d",
+      "fromNode": "node-6c",
+      "fromSide": "right",
+      "toNode": "node-6d",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-6d-6e",
+      "fromNode": "node-6d",
+      "fromSide": "right",
+      "toNode": "node-6e",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-chain-6e-6f",
+      "fromNode": "node-6e",
+      "fromSide": "right",
+      "toNode": "node-6f",
+      "toSide": "left",
+      "label": "flow"
+    },
+    {
+      "id": "edge-cross-1g-2a",
+      "fromNode": "node-1g",
+      "fromSide": "bottom",
+      "toNode": "node-2a",
+      "toSide": "top",
+      "label": "enables"
+    },
+    {
+      "id": "edge-cross-2a-5a",
+      "fromNode": "node-2a",
+      "fromSide": "bottom",
+      "toNode": "node-5a",
+      "toSide": "top",
+      "label": "parses with"
+    },
+    {
+      "id": "edge-cross-2d-4a",
+      "fromNode": "node-2d",
+      "fromSide": "bottom",
+      "toNode": "node-4a",
+      "toSide": "top",
+      "label": "returns"
+    },
+    {
+      "id": "edge-cross-2d-4b",
+      "fromNode": "node-2d",
+      "fromSide": "bottom",
+      "toNode": "node-4b",
+      "toSide": "top",
+      "label": "returns"
+    },
+    {
+      "id": "edge-cross-2d-4c",
+      "fromNode": "node-2d",
+      "fromSide": "bottom",
+      "toNode": "node-4c",
+      "toSide": "top",
+      "label": "returns"
+    },
+    {
+      "id": "edge-cross-2d-4e",
+      "fromNode": "node-2d",
+      "fromSide": "bottom",
+      "toNode": "node-4e",
+      "toSide": "top",
+      "label": "returns"
+    },
+    {
+      "id": "edge-cross-3a-5a",
+      "fromNode": "node-3a",
+      "fromSide": "bottom",
+      "toNode": "node-5a",
+      "toSide": "top",
+      "label": "uses"
+    },
+    {
+      "id": "edge-cross-3b-3d",
+      "fromNode": "node-3b",
+      "fromSide": "bottom",
+      "toNode": "node-3d",
+      "toSide": "top",
+      "label": "searches with"
+    },
+    {
+      "id": "edge-cross-3c-3d",
+      "fromNode": "node-3c",
+      "fromSide": "bottom",
+      "toNode": "node-3d",
+      "toSide": "top",
+      "label": "searches with"
+    },
+    {
+      "id": "edge-cross-4b-5g",
+      "fromNode": "node-4b",
+      "fromSide": "bottom",
+      "toNode": "node-5g",
+      "toSide": "top",
+      "label": "accesses via"
+    },
+    {
+      "id": "edge-cross-6a-2a",
+      "fromNode": "node-6a",
+      "fromSide": "bottom",
+      "toNode": "node-2a",
+      "toSide": "top",
+      "label": "internally uses"
+    },
+    {
+      "id": "edge-cross-6c-3d",
+      "fromNode": "node-6c",
+      "fromSide": "bottom",
+      "toNode": "node-3d",
+      "toSide": "top",
+      "label": "contains"
+    }
+  ]
+}

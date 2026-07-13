@@ -1,0 +1,157 @@
+{
+  "name": "codemap",
+  "publisher": "cometix",
+  "displayName": "Codemap Explorer",
+  "description": "AI-powered code exploration and visualization with dual-view rendering",
+  "version": "0.0.2",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codemap.openPanel",
+        "title": "Codemap: Open Panel"
+      },
+      {
+        "command": "codemap.generateFromSelection",
+        "title": "Codemap: Generate from Selection"
+      },
+      {
+        "command": "codemap.setApiKey",
+        "title": "Codemap: Set OpenAI API Key"
+      },
+      {
+        "command": "codemap.showStoragePath",
+        "title": "Codemap: Show Storage Path"
+      },
+      {
+        "command": "codemap.showHome",
+        "title": "Codemap: Back to List",
+        "icon": "$(arrow-left)"
+      },
+      {
+        "command": "codemap.showAgentLog",
+        "title": "Codemap: Show Agent Log"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codemap-explorer",
+          "title": "Codemap",
+          "icon": "$(compass)"
+        }
+      ]
+    },
+    "views": {
+      "codemap-explorer": [
+        {
+          "id": "codemap.mainView",
+          "name": "Codemaps",
+          "type": "webview"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "codemap.showHome",
+          "when": "view == codemap.mainView",
+          "group": "navigation@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Codemap",
+      "properties": {
+        "codemap.openaiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OpenAI API Key for Codemap generation"
+        },
+        "codemap.openaiBaseUrl": {
+          "type": "string",
+          "default": "https://api.deepseek.com/v1",
+          "description": "API endpoint (OpenAI, DeepSeek, or compatible)"
+        },
+        "codemap.model": {
+          "type": "string",
+          "default": "deepseek-v4-pro",
+          "description": "Model: deepseek-v4-pro, deepseek-v4-flash, gpt-4o, etc."
+        },
+        "codemap.language": {
+          "type": "string",
+          "default": "Русский",
+          "enum": [
+            "English",
+            "简体中文",
+            "繁體中文",
+            "日本語",
+            "한국어",
+            "Français",
+            "Deutsch",
+            "Español",
+            "Português",
+            "Русский"
+          ],
+          "description": "Language for AI responses and generated content"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "standalone:build": "node esbuild.standalone.js --production",
+    "standalone:watch": "node esbuild.standalone.js --watch",
+    "standalone:start": "electron dist/standalone/main.js",
+    "standalone:dev": "pnpm run standalone:build && pnpm run standalone:start",
+    "standalone:package": "pnpm run standalone:build && electron-builder --config electron-builder.json"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^1.0.0",
+    "ai": "^4.0.0",
+    "lucide-react": "^0.511.0",
+    "mermaid": "^11.12.2",
+    "svg-pan-zoom": "^3.6.1",
+    "react": "^19.2.1",
+    "react-arborist": "^3.4.3",
+    "react-dom": "^19.2.1",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@types/vscode": "^1.98.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0",
+    "esbuild": "^0.27.0",
+    "eslint": "^9.39.1",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3"
+  },
+  "packageManager": "pnpm@10.18.3+sha512.bbd16e6d7286fd7e01f6b3c0b3c932cda2965c06a908328f74663f10a9aea51f1129eea615134bf992831b009eabe167ecb7008b597f40ff9bc75946aadfb08d"
+}
