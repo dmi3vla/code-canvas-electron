@@ -470,11 +470,32 @@ ipcMain.handle('codemap:generate', async (event, { query, mode = 'smart' }) => {
         });
       },
       onCodemapUpdate: (partial) => {
-        sendProgress({
-          type: 'codemap-partial',
-          title: partial?.title,
-          traces: partial?.traces?.length || 0
-        });
+        // Live canvas layout by areas while generation runs (traces → areas;
+        // mermaid subgraphs → Windsurf-style areas when present).
+        try {
+          const snapshot = JSON.parse(JSON.stringify(partial));
+          const previewCanvas = codemapToCanvas(snapshot, {
+            sourceFolder: currentProjectPath,
+            query: q
+          });
+          sendProgress({
+            type: 'canvas-preview',
+            title: snapshot?.title,
+            traces: snapshot?.traces?.length || 0,
+            layout: previewCanvas.metadata?.layout || null,
+            areaSource: previewCanvas.metadata?.areaSource || null,
+            hasMermaid: Boolean(snapshot?.mermaidDiagram),
+            canvas: previewCanvas,
+            codemap: snapshot
+          });
+        } catch (err) {
+          sendProgress({
+            type: 'codemap-partial',
+            title: partial?.title,
+            traces: partial?.traces?.length || 0,
+            error: err instanceof Error ? err.message : String(err)
+          });
+        }
       }
     });
 
@@ -482,6 +503,7 @@ ipcMain.handle('codemap:generate', async (event, { query, mode = 'smart' }) => {
       return { ok: false, error: 'Codemap generation returned empty result' };
     }
 
+    // Final layout always via areas (mermaid subgraphs preferred, else traces)
     const canvas = codemapToCanvas(codemap, {
       sourceFolder: currentProjectPath,
       query: q
@@ -494,7 +516,24 @@ ipcMain.handle('codemap:generate', async (event, { query, mode = 'smart' }) => {
     };
 
     const written = await writeProjectCanvasCache(currentProjectPath, canvas, codemapToSave);
-    sendProgress({ type: 'complete', traces: codemap.traces.length });
+
+    // Ensure UI ends on the same area layout as disk cache
+    sendProgress({
+      type: 'canvas-preview',
+      title: codemapToSave.title,
+      traces: codemapToSave.traces.length,
+      layout: canvas.metadata?.layout || null,
+      areaSource: canvas.metadata?.areaSource || null,
+      hasMermaid: Boolean(codemapToSave.mermaidDiagram),
+      canvas,
+      codemap: codemapToSave,
+      final: true
+    });
+    sendProgress({
+      type: 'complete',
+      traces: codemap.traces.length,
+      layout: canvas.metadata?.layout || null
+    });
 
     return {
       ok: true,

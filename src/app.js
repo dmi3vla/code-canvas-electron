@@ -1228,7 +1228,10 @@ async function runCodemapGenerate({ overwrite = false } = {}) {
 
   const query = (codemapQueryInput?.value || '').trim() || DEFAULT_QUERY;
   state.isGenerating = true;
+  state.meta.query = query;
   updateProjectChrome();
+  // Clear previous graph so area layout builds from the new run
+  emptyReadyCanvas();
   setStatus(`Генерация codemap… · ${query.slice(0, 60)}`);
 
   try {
@@ -1245,13 +1248,15 @@ async function runCodemapGenerate({ overwrite = false } = {}) {
     state.codemap = result.codemap;
     state.meta.query = query;
     state.meta.generatedAt = new Date().toISOString();
+    // Final canvas already has mermaid/trace areas from codemapToCanvas
     loadCanvas(result.canvas);
     state.meta.sourceFolder = result.projectRoot || state.meta.sourceFolder;
     renderActsList(state.codemap);
     fitView();
     updateProjectChrome();
+    const layout = result.canvas?.metadata?.layout || result.canvas?.metadata?.areaSource || 'areas';
     setStatus(
-      `Сгенерировано и сохранено в корень · traces: ${result.codemap?.traces?.length || 0} · .code-canvas.canvas`
+      `Сгенерировано и сохранено · ${layout} · traces: ${result.codemap?.traces?.length || 0} · .code-canvas.canvas`
     );
   } catch (error) {
     setStatus(`Ошибка генерации: ${error.message}`);
@@ -1259,6 +1264,33 @@ async function runCodemapGenerate({ overwrite = false } = {}) {
     state.isGenerating = false;
     updateProjectChrome();
   }
+}
+
+/**
+ * Apply intermediate/final area layout while generate/regenerate runs.
+ */
+function applyCanvasPreview(payload) {
+  if (!payload?.canvas) return;
+  loadCanvas(payload.canvas);
+  state.meta.sourceFolder = state.meta.sourceFolder || payload.canvas?.metadata?.sourceFolder || null;
+  if (payload.codemap) {
+    state.codemap = payload.codemap;
+    renderActsList(state.codemap);
+  }
+  // Groups + accent colors are produced by codemapToCanvas; ensureTraceAreas
+  // runs inside render() to keep bounds tight.
+  fitView();
+  const layout = payload.layout || payload.areaSource || 'areas';
+  const phase = payload.final
+    ? 'финал'
+    : payload.hasMermaid
+      ? 'mermaid-области'
+      : 'области по traces';
+  setStatus(
+    `Холст: ${phase} · ${layout} · traces ${payload.traces || 0}${
+      payload.title ? ` · ${payload.title}` : ''
+    }`
+  );
 }
 
 buttons.generateCodemap?.addEventListener('click', () => runCodemapGenerate({ overwrite: false }));
@@ -1273,8 +1305,14 @@ if (window.electronAPI.onCodemapProgress) {
       setStatus(`Trace ${payload.traceId} · stage ${payload.stage} · ${payload.status}`);
     } else if (payload.type === 'tool') {
       setStatus(`Tool: ${payload.tool}`);
+    } else if (payload.type === 'canvas-preview') {
+      applyCanvasPreview(payload);
     } else if (payload.type === 'codemap-partial') {
       setStatus(`Структура: ${payload.title || '…'} · traces ${payload.traces}`);
+    } else if (payload.type === 'complete') {
+      setStatus(
+        `Генерация завершена · ${payload.layout || 'areas'} · traces ${payload.traces || 0}`
+      );
     } else if (payload.type === 'error') {
       setStatus(`Ошибка: ${payload.error}`);
     }

@@ -248,13 +248,23 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
           }))
         });
 
+        // Mermaid in parallel: as soon as it lands, push layout update (subgraph areas)
         mermaidPromise = processMermaidDiagram(
           systemPrompt,
           messages,
           currentDate,
           language,
           callbacks
-        );
+        ).then((result) => {
+          if (result?.diagram && resultCodemap) {
+            resultCodemap.mermaidDiagram = result.diagram;
+            callbacks.onCodemapUpdate?.(resultCodemap);
+            log('Mermaid ready — area layout update emitted');
+          } else if (result?.error) {
+            callbacks.onMessage?.('error', `Mermaid: ${result.error}`);
+          }
+          return result;
+        });
       } else {
         log('FAILED to extract codemap from stage 2');
         throw new Error('Failed to extract CODEMAP JSON from model response');
@@ -286,12 +296,12 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
         if (result.guide) trace.traceGuide = result.guide;
       }
 
-      if (mermaidResult?.diagram) {
+      // mermaid already applied in .then above when ready; ensure still attached
+      if (mermaidResult?.diagram && !resultCodemap.mermaidDiagram) {
         resultCodemap.mermaidDiagram = mermaidResult.diagram;
-      } else if (mermaidResult?.error) {
-        callbacks.onMessage?.('error', `Mermaid: ${mermaidResult.error}`);
       }
 
+      // Final structural update (guides/diagrams on traces + mermaid areas)
       callbacks.onCodemapUpdate?.(resultCodemap);
     }
 
