@@ -157,54 +157,69 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
   callbacks.onMessage?.('system', `Starting ${mode} codemap generation...`);
 
   try {
-    // Stage 1
+    // Stage 1 — ONE multi-step generateText with maxSteps.
+    // Bug before: outer while() never appended tool results → model re-researched
+    // from the same user prompt every iteration (20× API "DDoS").
     callbacks.onPhaseChange?.('Research', 1);
     messages.push({
       role: 'user',
       content: loadStagePrompt(1, { query, current_date: currentDate, language })
     });
 
-    let researchComplete = false;
-    let researchIteration = 0;
+    const RESEARCH_MAX_STEPS = 12;
+    let researchStep = 0;
+    let researchStoppedEarly = false;
 
-    while (!researchComplete) {
-      researchIteration += 1;
-      log(`Research iteration ${researchIteration}`);
+    log(`Research start (maxSteps=${RESEARCH_MAX_STEPS})`);
+    const researchResult = await generateText({
+      model: client(getModelName()),
+      system: systemPrompt,
+      messages,
+      tools: allTools,
+      // Multi-step agentic loop: tool calls + results stay in one trajectory.
+      maxSteps: RESEARCH_MAX_STEPS,
+      onStepFinish: (step) => {
+        researchStep += 1;
+        const nTools = step.toolCalls?.length || 0;
+        log(
+          `Research step ${researchStep}/${RESEARCH_MAX_STEPS}` +
+            ` tools=${nTools}` +
+            (step.text ? ` text=${String(step.text).slice(0, 80).replace(/\s+/g, ' ')}` : '')
+        );
 
-      const result = await generateText({
-        model: client(getModelName()),
-        system: systemPrompt,
-        messages,
-        tools: allTools,
-        onStepFinish: (step) => {
-          if (step.text) {
-            callbacks.onMessage?.('assistant', step.text);
-            if (isResearchComplete(step.text)) researchComplete = true;
-          }
-          if (step.toolCalls) {
-            for (const tc of step.toolCalls) {
-              const toolResult = step.toolResults?.find((r) => r.toolCallId === tc.toolCallId);
-              callbacks.onToolCall?.(
-                tc.toolName,
-                JSON.stringify(tc.args, null, 2),
-                toolResult ? String(toolResult.result).slice(0, 500) : ''
-              );
-            }
+        if (step.text) {
+          callbacks.onMessage?.('assistant', step.text);
+          if (isResearchComplete(step.text)) {
+            researchStoppedEarly = true;
+            log('Research complete phrase detected');
           }
         }
-      });
-
-      if (result.text) {
-        messages.push({ role: 'assistant', content: result.text });
-        if (isResearchComplete(result.text)) researchComplete = true;
+        if (step.toolCalls) {
+          for (const tc of step.toolCalls) {
+            const toolResult = step.toolResults?.find((r) => r.toolCallId === tc.toolCallId);
+            callbacks.onToolCall?.(
+              tc.toolName,
+              JSON.stringify(tc.args ?? tc.input ?? {}, null, 2),
+              toolResult ? String(toolResult.result ?? toolResult.output ?? '').slice(0, 500) : ''
+            );
+          }
+        }
       }
+    });
 
-      if (result.steps.length === 1 && !result.steps[0].toolCalls?.length) break;
-      if (researchIteration > 20) {
-        log('Max research iterations reached');
-        break;
-      }
+    // Keep full tool transcript for Stage 2+ (assistant + tool messages)
+    if (researchResult.response?.messages?.length) {
+      messages.push(...researchResult.response.messages);
+    } else if (researchResult.text) {
+      messages.push({ role: 'assistant', content: researchResult.text });
     }
+
+    log(
+      `Research done steps=${researchStep}` +
+        ` earlyStop=${researchStoppedEarly}` +
+        ` finalText=${Boolean(researchResult.text)}` +
+        ` histMsgs=${messages.length}`
+    );
 
     // Stage 2
     callbacks.onPhaseChange?.('Codemap Generation', 2);
@@ -216,7 +231,9 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
     const stage2Result = await generateText({
       model: client(getModelName()),
       system: systemPrompt,
-      messages
+      messages,
+      // no tools — structure only
+      maxSteps: 1
     });
 
     if (stage2Result.text) {
