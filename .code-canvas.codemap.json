@@ -1,0 +1,231 @@
+{
+  "title": "Архитектура Code Canvas Electron: основные потоки выполнения",
+  "traces": [
+    {
+      "id": "1",
+      "title": "Запуск Electron-приложения",
+      "description": "Точка входа десктопного приложения. Инициализирует окно, загружает preload-скрипт и основное приложение.",
+      "locations": [
+        {
+          "id": "1a",
+          "lineContent": "const { app, BrowserWindow } = require('electron');",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/main.js",
+          "lineNumber": 1,
+          "title": "Импорт Electron API",
+          "description": "Подключение основных модулей Electron для управления окнами"
+        },
+        {
+          "id": "1b",
+          "lineContent": "mainWindow = new BrowserWindow({ width: 1200, height: 800, webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false } });",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/main.js",
+          "lineNumber": 15,
+          "title": "Создание главного окна",
+          "description": "Инициализация BrowserWindow с изолированным контекстом и preload-скриптом"
+        },
+        {
+          "id": "1c",
+          "lineContent": "mainWindow.loadFile('src/index.html');",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/main.js",
+          "lineNumber": 22,
+          "title": "Загрузка HTML-интерфейса",
+          "description": "Загрузка главной страницы приложения из src/index.html"
+        },
+        {
+          "id": "1d",
+          "lineContent": "const { contextBridge, ipcRenderer } = require('electron');",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/preload.js",
+          "lineNumber": 1,
+          "title": "Preload-скрипт: мост API",
+          "description": "Создание безопасного моста между рендер-процессом и main-процессом через contextBridge"
+        },
+        {
+          "id": "1e",
+          "lineContent": "const app = require('./app');",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/src/app.js",
+          "lineNumber": 1,
+          "title": "Загрузка основного модуля приложения",
+          "description": "Инициализация бизнес-логики приложения после загрузки HTML"
+        }
+      ],
+      "traceTextDiagram": "Electron App Startup\n├── app.whenReady() <-- /home/resu/Documents/dev/code-canvas-electron/main.js:10\n│   └── createWindow() <-- /home/resu/Documents/dev/code-canvas-electron/main.js:12\n│       ├── new BrowserWindow(...) <-- 1b\n│       │   └── preload: 'preload.js' <-- 1d\n│       └── mainWindow.loadFile('src/index.html') <-- 1c\n│           └── HTML loads <script src='./app.js'> <-- /home/resu/Documents/dev/code-canvas-electron/src/index.html:15\n│               └── const app = require('./app') <-- 1e\n└── Module imports\n    └── const { app, BrowserWindow } = require('electron') <-- 1a",
+      "traceGuide": "## Мотивация\n\nCode Canvas Electron — это десктопное приложение для **генерации и визуализации карт кода (codemap)**. Проблема, которую оно решает: разработчикам сложно быстро понять структуру и потоки выполнения в незнакомой кодовой базе. Вместо ручного изучения файлов, приложение использует LLM-агента, который анализирует код и строит интерактивные диаграммы зависимостей.\n\nПриложение построено на **Electron** — это позволяет использовать веб-технологии (HTML/CSS/React) для интерфейса, сохраняя доступ к файловой системе через Node.js.\n\n## Details\n\n### Запуск приложения\n\nТочка входа — `main.js` [1a]. Electron вызывает `app.whenReady()`, после чего создаётся главное окно через `new BrowserWindow()` [1b]. Окно настраивается с **изолированным контекстом** (`contextIsolation: true`) и preload-скриптом [1d], который обеспечивает безопасный мост между рендер-процессом и main-процессом через `contextBridge`.\n\nПосле создания окна загружается `src/index.html` [1c], который подключает основной скрипт `src/app.js` [1e]. Этот скрипт инициализирует бизнес-логику: агентную систему, инструменты для анализа кода и пользовательский интерфейс.\n\n### Архитектура процессов\n\nElectron-модель разделяет приложение на два процесса:\n- **Main process** (`main.js`) — управляет окнами, файловой системой и системными вызовами.\n- **Renderer process** (`src/index.html` + `src/app.js`) — отвечает за UI и взаимодействие с пользователем.\n\nPreload-скрипт [1d] — единственный канал связи между ними, что обеспечивает **безопасность** (renderer не имеет прямого доступа к Node.js API)."
+    },
+    {
+      "id": "2",
+      "title": "Агентная система: генерация codemap",
+      "description": "Ядро системы — агент, который анализирует код и генерирует структурированные карты кода (codemap). Использует LLM-клиент и набор инструментов.",
+      "locations": [
+        {
+          "id": "2a",
+          "lineContent": "class CodemapAgent { constructor(client, tools) { this.client = client; this.tools = tools; } }",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/src/agent/codemapAgent.js",
+          "lineNumber": 5,
+          "title": "Определение класса CodemapAgent",
+          "description": "Агент принимает LLM-клиент и набор инструментов для анализа кода"
+        },
+        {
+          "id": "2b",
+          "lineContent": "async generateCodemap(query) { const prompt = this.buildPrompt(query); const response = await this.client.send(prompt); return this.parseResponse(response); }",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/src/agent/codemapAgent.js",
+          "lineNumber": 12,
+          "title": "Генерация codemap по запросу",
+          "description": "Сборка промпта, отправка LLM-запроса и парсинг ответа в структуру codemap"
+        },
+        {
+          "id": "2c",
+          "lineContent": "const tools = { codeSearch: new CodeSearchTool(), fileReader: new FileReaderTool(), ... };",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/src/agent/tools.js",
+          "lineNumber": 1,
+          "title": "Инициализация инструментов агента",
+          "description": "Набор инструментов для поиска по коду, чтения файлов и навигации по проекту"
+        },
+        {
+          "id": "2d",
+          "lineContent": "const client = new BaseClient({ apiKey, model: 'gpt-4' });",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/src/agent/baseClient.js",
+          "lineNumber": 10,
+          "title": "Создание LLM-клиента",
+          "description": "Базовый клиент для взаимодействия с языковой моделью (OpenAI API)"
+        },
+        {
+          "id": "2e",
+          "lineContent": "const prompts = { system: fs.readFileSync('./prompts/smart/system.md', 'utf-8'), stage1: fs.readFileSync('./prompts/smart/stage1.md', 'utf-8') };",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/src/agent/prompts.js",
+          "lineNumber": 3,
+          "title": "Загрузка системных промптов",
+          "description": "Загрузка многоэтапных промптов для управления поведением агента"
+        }
+      ],
+      "traceTextDiagram": "CodemapAgent (генерация codemap)\n├── constructor(client, tools) <-- 2a\n│   ├── client: BaseClient (LLM) <-- /home/resu/Documents/dev/code-canvas-electron/src/agent/baseClient.js:10\n│   └── tools: CodeSearchTool, FileReaderTool <-- /home/resu/Documents/dev/code-canvas-electron/src/agent/tools.js:1\n├── generateCodemap(query) <-- 2b\n│   ├── buildPrompt(query) <-- /home/resu/Documents/dev/code-canvas-electron/src/agent/codemapAgent.js:13\n│   │   └── загрузка промптов из prompts.js <-- 2e\n│   ├── client.send(prompt) <-- /home/resu/Documents/dev/code-canvas-electron/src/agent/codemapAgent.js:14\n│   │   └── BaseClient (API key, model) <-- 2d\n│   └── parseResponse(response) <-- /home/resu/Documents/dev/code-canvas-electron/src/agent/codemapAgent.js:15\n│       └── tools.codeSearch() / tools.fileReader() <-- 2c\n└── результат: структура codemap <-- /home/resu/Documents/dev/code-canvas-electron/src/agent/codemapAgent.js:16",
+      "traceGuide": "## Motivation\n\nРазработчикам часто нужно быстро понять, как устроен незнакомый код: какие функции вызывают другие, какие файлы связаны, как данные проходят через систему. Вручную отслеживать эти связи — долго и ненадежно. **CodemapAgent** решает эту задачу: по текстовому запросу (например, «как работает аутентификация?») он анализирует код, строит структурированную карту вызовов и возвращает её в формате, готовом для визуализации.\n\n## Details\n\nАгент — это класс `CodemapAgent` [2a], который объединяет два компонента: **LLM-клиент** (`BaseClient` [2d]) и **набор инструментов** для работы с кодом (`CodeSearchTool`, `FileReaderTool` и др. [2c]).\n\nПри вызове `generateCodemap(query)` [2b] происходит следующее:\n\n1. **Сборка промпта** — агент загружает многоэтапные системные промпты из файлов (`prompts/smart/stage1.md`, `stage2.md` и т.д. [2e]) и объединяет их с запросом пользователя.\n2. **Отправка LLM** — собранный промпт отправляется через `BaseClient` [2d] к языковой модели (например, GPT-4). Модель получает инструкции, как анализировать код и в каком формате возвращать результат.\n3. **Парсинг ответа** — сырой ответ модели преобразуется в структуру codemap: заголовок, список трейсов, каждый трейс — последовательность локаций с путями к файлам и номерами строк [2c].\n4. **Возврат результата** — готовая структура возвращается вызывающему коду для отображения в интерфейсе.\n\nКлючевая особенность: агент **не хранит состояние** между вызовами — каждый запрос обрабатывается независимо, что упрощает отладку и масштабирование."
+    },
+    {
+      "id": "3",
+      "title": "VSCode-расширение: активация и регистрация",
+      "description": "Точка входа VSCode-расширения. Регистрирует команды, провайдеры вьюх и подписывается на события редактора.",
+      "locations": [
+        {
+          "id": "3a",
+          "lineContent": "export function activate(context: vscode.ExtensionContext) {",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/src/extension.ts",
+          "lineNumber": 10,
+          "title": "Активация расширения",
+          "description": "Точка входа VSCode-расширения, вызывается при активации"
+        },
+        {
+          "id": "3b",
+          "lineContent": "const codemapProvider = new CodemapViewProvider(context);",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/src/extension.ts",
+          "lineNumber": 15,
+          "title": "Создание провайдера вьюхи",
+          "description": "Инициализация WebviewViewProvider для отображения codemap в боковой панели"
+        },
+        {
+          "id": "3c",
+          "lineContent": "context.subscriptions.push(vscode.window.registerWebviewViewProvider('codemapView', codemapProvider));",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/src/extension.ts",
+          "lineNumber": 20,
+          "title": "Регистрация WebviewViewProvider",
+          "description": "Регистрация провайдера под идентификатором 'codemapView' для отображения в панели Explorer"
+        },
+        {
+          "id": "3d",
+          "lineContent": "vscode.commands.registerCommand('codemap.generate', () => { codemapProvider.generateCodemap(); });",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/src/extension.ts",
+          "lineNumber": 25,
+          "title": "Регистрация команды генерации",
+          "description": "Регистрация команды 'codemap.generate' для запуска генерации codemap из палитры команд"
+        }
+      ],
+      "traceTextDiagram": "VSCode Extension Activation\n└── activate() entry point <-- 3a\n    ├── create CodemapViewProvider <-- 3b\n    │   └── register 'codemapView' provider <-- 3c\n    └── register 'codemap.generate' cmd <-- 3d\n        └── codemapProvider.generateCodemap() <-- /home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/src/extension.ts:25",
+      "traceGuide": "## Мотивация\n\nVSCode-расширение Code Canvas решает проблему **навигации по незнакомой кодовой базе**. Когда разработчик открывает новый проект, ему нужно понять архитектуру, потоки данных и зависимости — без ручного просмотра каждого файла. Расширение автоматически генерирует структурированные карты кода (codemap), которые визуализируют связи между модулями и ключевые пути выполнения.\n\n## Details\n\nРасширение активируется через точку входа `activate()` [3a] в `windsurf-codemap/src/extension.ts`. Это стандартный контракт VSCode: функция вызывается средой при загрузке расширения.\n\nВнутри `activate()` создается экземпляр `CodemapViewProvider` [3b] — это **WebviewViewProvider**, который управляет отображением React-интерфейса в боковой панели VSCode. Провайдер регистрируется под идентификатором `'codemapView'` [3c], что связывает его с панелью Explorer.\n\nПараллельно регистрируется команда `'codemap.generate'` [3d], доступная из палитры команд (Ctrl+Shift+P). При вызове команда запускает `codemapProvider.generateCodemap()`, который отправляет запрос к LLM-агенту для анализа текущего проекта и возвращает структуру codemap.\n\nТаким образом, расширение предоставляет **два способа взаимодействия**: через боковую панель (автоматическое обновление) и через команду (ручной запуск)."
+    },
+    {
+      "id": "4",
+      "title": "Webview-компоненты: отображение codemap",
+      "description": "React-компоненты, рендерящие codemap в виде диаграммы Mermaid, дерева файлов и списка трейсов.",
+      "locations": [
+        {
+          "id": "4a",
+          "lineContent": "const App: React.FC = () => { const [codemap, setCodemap] = useState<CodemapData | null>(null); }",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/webview/components/App.tsx",
+          "lineNumber": 5,
+          "title": "Главный компонент приложения",
+          "description": "Корневой React-компонент, управляющий состоянием codemap"
+        },
+        {
+          "id": "4b",
+          "lineContent": "<MermaidDiagram definition={codemap.mermaid} />",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/webview/components/App.tsx",
+          "lineNumber": 30,
+          "title": "Рендеринг Mermaid-диаграммы",
+          "description": "Отображение графа зависимостей в виде Mermaid-диаграммы"
+        },
+        {
+          "id": "4c",
+          "lineContent": "const MermaidDiagram: React.FC<{ definition: string }> = ({ definition }) => { useEffect(() => { mermaid.run({ nodes: [diagramRef.current] }); }, [definition]); }",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/webview/components/MermaidDiagram.tsx",
+          "lineNumber": 8,
+          "title": "Компонент MermaidDiagram",
+          "description": "Рендерит Mermaid-диаграмму с использованием библиотеки mermaid.js"
+        },
+        {
+          "id": "4d",
+          "lineContent": "<CodemapTreeView traces={codemap.traces} />",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/webview/components/App.tsx",
+          "lineNumber": 35,
+          "title": "Древовидное представление трейсов",
+          "description": "Отображение структуры codemap в виде дерева с возможностью навигации"
+        },
+        {
+          "id": "4e",
+          "lineContent": "<QueryBar onSubmit={handleQuery} />",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/webview/components/App.tsx",
+          "lineNumber": 25,
+          "title": "Строка поиска/запроса",
+          "description": "Поле ввода для отправки запросов на генерацию codemap"
+        }
+      ],
+      "traceTextDiagram": "Webview-приложение (React)\n└── App.tsx — корневой компонент <-- /home/resu/Documents/dev/code-canvas-electron/windsurf-codemap/webview/components/App.tsx:5\n    ├── QueryBar — строка ввода запроса <-- 4e\n    ├── состояние codemap (useState) <-- 4a\n    ├── MermaidDiagram — граф зависимостей <-- 4b\n    │   └── mermaid.run() — рендер диаграммы <-- 4c\n    └── CodemapTreeView — дерево трейсов <-- 4d",
+      "traceGuide": "## Мотивация\n\nПользователю VSCode нужно визуально исследовать архитектуру кодовой базы — понимать, какие файлы связаны, как данные текут между модулями, какие функции вызывают другие. Вручную это делать мучительно. **Trace 4** — это React-интерфейс, который рендерит результат работы LLM-агента (см. Trace 2) прямо в боковой панели редактора.\n\n## Детали\n\nВходная точка — компонент **`App.tsx`** [4a]. Он держит состояние codemap (данные, полученные от агента через `extensionBridge`) и рендерит три дочерних компонента:\n\n- **`QueryBar`** [4e] — строка ввода, куда пользователь пишет запрос вроде \"покажи поток авторизации\". Отправляет запрос агенту через мост расширения.\n- **`MermaidDiagram`** [4b] — визуализирует codemap в виде **графа зависимостей** (Mermaid flowchart). Внутри вызывает `mermaid.run()` [4c] для рендеринга SVG-диаграммы на основе строки определения, полученной от агента.\n- **`CodemapTreeView`** [4d] — альтернативное **древовидное представление** тех же данных: трейсы (последовательности локаций) разложены в дерево для навигации по файлам.\n\nВсе три компонента живут в одном webview, который регистрируется VSCode-расширением через `WebviewViewProvider` [3c]. Данные передаются через `postMessage` между extension host и webview."
+    },
+    {
+      "id": "5",
+      "title": "Адаптер codemap: мост между системами",
+      "description": "Адаптер обеспечивает совместимость между Electron-приложением и VSCode-расширением, преобразуя форматы данных.",
+      "locations": [
+        {
+          "id": "5a",
+          "lineContent": "function adaptCodemap(vscodeCodemap) { return { title: vscodeCodemap.title, traces: vscodeCodemap.traces.map(adaptTrace) }; }",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/codemap-adapter.js",
+          "lineNumber": 5,
+          "title": "Адаптация данных codemap",
+          "description": "Преобразование формата codemap из VSCode-расширения в формат Electron-приложения"
+        },
+        {
+          "id": "5b",
+          "lineContent": "function adaptTrace(trace) { return { id: trace.id, title: trace.title, description: trace.description, locations: trace.locations.map(adaptLocation) }; }",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/codemap-adapter.js",
+          "lineNumber": 10,
+          "title": "Адаптация трейса",
+          "description": "Преобразование каждого трейса с сохранением структуры locations"
+        },
+        {
+          "id": "5c",
+          "lineContent": "module.exports = { adaptCodemap, adaptTrace, adaptLocation };",
+          "path": "/home/resu/Documents/dev/code-canvas-electron/codemap-adapter.js",
+          "lineNumber": 20,
+          "title": "Экспорт адаптера",
+          "description": "Экспорт функций адаптации для использования в обоих приложениях"
+        }
+      ],
+      "traceTextDiagram": "Адаптер codemap (мост между системами)\n├── VSCode-расширение (TypeScript)\n│   └── codemapAgent.ts генерирует codemap <-- windsurf-codemap/src/agent/codemapAgent.ts:12\n│       └── результат в формате VSCode <-- 5a\n├── codemap-adapter.js (преобразование)\n│   ├── adaptCodemap() — входная точка <-- 5a\n│   │   └── adaptTrace() — каждый трейс <-- 5b\n│   │       └── adaptLocation() — каждая локация <-- codemap-adapter.js:15\n│   └── module.exports — экспорт функций <-- 5c\n└── Electron-приложение (JavaScript)\n    └── codemapAgent.js потребляет адаптированные данные <-- src/agent/codemapAgent.js:20\n        └── отображение в React-компонентах <-- windsurf-codemap/webview/components/App.tsx:30",
+      "traceGuide": "## Мотивация\n\nCode Canvas Electron состоит из **двух независимых приложений**: десктопного Electron-приложения и VSCode-расширения. Они используют **разные языки** (JavaScript vs TypeScript), разные рантаймы и разные форматы данных. Адаптер codemap решает проблему совместимости: VSCode-расширение генерирует codemap в своём формате, а Electron-приложение должно его отображать. Без адаптера пришлось бы дублировать логику преобразования в обоих приложениях.\n\n## Details\n\n### Что делает адаптер\n\nФайл `codemap-adapter.js` экспортирует три функции [5c], каждая из которых преобразует один уровень структуры codemap:\n\n- **`adaptCodemap()`** [5a] — входная точка. Принимает codemap из VSCode-расширения, вызывает `adaptTrace()` для каждого трейса.\n- **`adaptTrace()`** [5b] — преобразует отдельный трейс (id, title, description, locations), вызывая `adaptLocation()` для каждой локации.\n- **`adaptLocation()`** — преобразует отдельную локацию (lineContent, path, lineNumber, title, description).\n\n### Поток данных\n\n1. VSCode-расширение (`codemapAgent.ts`) генерирует codemap в своём внутреннем формате.\n2. Electron-приложение (`codemapAgent.js`) вызывает `adaptCodemap()` перед отображением.\n3. Адаптированные данные передаются в React-компоненты (`App.tsx`), которые рендерят Mermaid-диаграммы и дерево трейсов.\n\n### Ключевое свойство\n\nАдаптер — **чистая функция без состояния**. Он не хранит данные, не имеет побочных эффектов и не зависит от внешних сервисов. Это делает его простым для тестирования и безопасным для использования в обоих приложениях."
+    }
+  ],
+  "description": "Обзор архитектуры Code Canvas Electron — десктопного приложения и VSCode-расширения для генерации и визуализации карт кода (codemap). Основные компоненты: Electron-приложение [1a-1e], агентная система на базе LLM [2a-2e], VSCode-расширение [3a-3d], React-интерфейс с Mermaid-диаграммами [4a-4e] и адаптер для совместимости форматов [5a-5c].",
+  "query": "Обзор архитектуры и основных потоков выполнения",
+  "workspacePath": "/home/resu/Documents/dev/code-canvas-electron",
+  "mode": "smart",
+  "mermaidDiagram": "graph TB\n    subgraph electron [Electron App]\n        e1[\"1a: Import Electron API\"]\n        e2[\"1b: Create BrowserWindow\"]\n        e3[\"1c: Load index.html\"]\n        e4[\"1d: Setup contextBridge\"]\n        e5[\"1e: Load app.js\"]\n        e1 -->|\"creates\"| e2\n        e2 -->|\"loads preload script\"| e4\n        e2 -->|\"loads page\"| e3\n        e3 -->|\"initializes\"| e5\n    end\n\n    subgraph agent [Agent System]\n        a1[\"2a: Define CodemapAgent\"]\n        a2[\"2b: Generate codemap\"]\n        a3[\"2c: Initialize tools\"]\n        a4[\"2d: Create LLM client\"]\n        a5[\"2e: Load system prompts\"]\n        a1 -->|\"instantiates\"| a2\n        a2 -->|\"uses\"| a3\n        a2 -->|\"sends request via\"| a4\n        a2 -->|\"loads\"| a5\n    end\n\n    subgraph vscode [VSCode Extension]\n        v1[\"3a: Activate extension\"]\n        v2[\"3b: Create CodemapViewProvider\"]\n        v3[\"3c: Register webview provider\"]\n        v4[\"3d: Register generate command\"]\n        v1 -->|\"creates\"| v2\n        v2 -->|\"registers as\"| v3\n        v1 -->|\"registers\"| v4\n    end\n\n    subgraph webview [Webview UI]\n        w1[\"4a: App component\"]\n        w2[\"4b: Render MermaidDiagram\"]\n        w3[\"4c: MermaidDiagram component\"]\n        w4[\"4d: Render CodemapTreeView\"]\n        w5[\"4e: QueryBar input\"]\n        w1 -->|\"renders\"| w2\n        w2 -->|\"uses\"| w3\n        w1 -->|\"renders\"| w4\n        w1 -->|\"renders\"| w5\n    end\n\n    subgraph adapter [Adapter Layer]\n        d1[\"5a: Adapt codemap data\"]\n        d2[\"5b: Adapt trace\"]\n        d3[\"5c: Export adapter\"]\n        d1 -->|\"transforms\"| d2\n        d2 -->|\"exposes\"| d3\n    end\n\n    e5 -.->|\"initializes agent system\"| a1\n    v3 -.->|\"renders webview UI\"| w1\n    w5 -.->|\"triggers generation\"| a2\n    a2 -.->|\"produces structured data\"| d1\n    d3 -.->|\"feeds adapted data\"| w1\n    v4 -.->|\"invokes generation\"| a2"
+}
