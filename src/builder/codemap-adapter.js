@@ -1,7 +1,10 @@
 // src/builder/codemap-adapter.js
 //
 // Pure transform: windsurf-style codemap JSON → .canvas nodes/edges.
-// Groups nodes into colored area regions (one per trace), like Mermaid subgraphs.
+//
+// Areas (colored regions) come from mermaid subgraphs (Stage 6), matching
+// Windsurf: subgraph id [Label] { nodes labeled "1a: …" }.
+// Fallback: one area per trace when mermaid is missing.
 
 const COL_WIDTH = 360;
 const NODE_WIDTH = 320;
@@ -10,11 +13,10 @@ const AREA_PAD_X = 40;
 const AREA_PAD_Y = 28;
 const AREA_TITLE_H = 44;
 const AREA_GAP_Y = 72;
-const AREA_GAP_X = 48;
 
 /**
- * Windsurf-like rainbow cycle for area fills (dark UI, translucent).
- * Matches mermaidColorize / mermaidPlaceholders order.
+ * Windsurf rainbow cycle for area fills (dark UI, translucent).
+ * Order matches mermaidColorize / mermaidPlaceholders.
  */
 const TRACE_AREA_PALETTE = [
   { accent: '#a5d8ff', fill: 'rgba(165, 216, 255, 0.14)', border: 'rgba(165, 216, 255, 0.42)' },
@@ -32,8 +34,8 @@ function paletteForIndex(index) {
 }
 
 /**
- * Map mermaid node ids (i1, f2) → location ids (1a, 2b) from labels:
- *   i1["1a: Process start"]
+ * Map mermaid node ids (e1, a2) → location ids (1a, 2b) from labels:
+ *   e1["1a: Process start"]
  */
 function buildMermaidIdToLocationId(mermaidText) {
   const map = new Map();
@@ -55,6 +57,7 @@ function resolveLocationRef(token, idMap) {
 
 /**
  * Extract edges from mermaid flowchart text.
+ * from/to resolved to location ids when possible.
  */
 function extractMermaidEdges(mermaidText) {
   if (!mermaidText) return [];
@@ -71,28 +74,36 @@ function extractMermaidEdges(mermaidText) {
     let label = (match[2] || '').trim();
     label = label.replace(/^["']|["']$/g, '').replace(/\\"/g, '"');
     if (!from || !to || from === to) continue;
+    // skip non-location technical ids that didn't resolve
+    if (!/^\d+[a-z]$/i.test(from) || !/^\d+[a-z]$/i.test(to)) continue;
     const key = `${from}->${to}:${label}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    edges.push({ from, to, label });
+    edges.push({ from: from.toLowerCase(), to: to.toLowerCase(), label });
   }
 
   return edges;
 }
 
 /**
- * Parse mermaid subgraphs: { id, label, locationIds[] }
- * Used only for nicer area titles when available.
+ * Parse mermaid subgraphs into areas:
+ *   { id, label, locationIds: ['1a','1b',...] }
+ *
+ * Membership = location ids found in node labels inside the subgraph block.
+ * This is how Windsurf "generalizes" locations into colored regions.
  */
 function extractMermaidSubgraphs(mermaidText) {
   if (!mermaidText) return [];
+
   const idMap = buildMermaidIdToLocationId(mermaidText);
   const subgraphs = [];
   const lines = mermaidText.replace(/\r\n/g, '\n').split('\n');
   let current = null;
 
   for (const line of lines) {
-    const start = line.match(/^\s*subgraph\s+([^\s\[]+)\s*(?:\[\s*"?([^\]"]+)"?\s*\]|\["([^"]+)"\])?\s*$/i);
+    const start = line.match(
+      /^\s*subgraph\s+([^\s\[]+)\s*(?:\[\s*"?([^\]"]+)"?\s*\]|\["([^"]+)"\])?\s*$/i
+    );
     if (start) {
       const rawId = start[1].replace(/^["']|["']$/g, '');
       const label = (start[2] || start[3] || rawId).trim();
@@ -105,65 +116,174 @@ function extractMermaidSubgraphs(mermaidText) {
       continue;
     }
     if (!current) continue;
-    // node defs inside subgraph: i1["1a: ..."] or bare location ids
-    const nodeDef = line.match(/(\w+)\s*\[\s*["']/);
+
+    // Direct location in label: anything["1a: ..."]
+    const labelLoc = line.match(/\[\s*["'](\d+[a-zA-Z])\s*:/);
+    if (labelLoc) {
+      const loc = labelLoc[1].toLowerCase();
+      if (!current.locationIds.includes(loc)) current.locationIds.push(loc);
+      continue;
+    }
+
+    // Bare mermaid id that was mapped globally
+    const nodeDef = line.match(/^\s*(\w+)\s*\[/);
     if (nodeDef) {
-      const loc = idMap.get(nodeDef[1]) || null;
+      const loc = idMap.get(nodeDef[1]);
       if (loc && !current.locationIds.includes(loc)) current.locationIds.push(loc);
     }
   }
-  return subgraphs;
+
+  return subgraphs.filter((sg) => sg.locationIds.length > 0);
 }
 
 /**
- * Each trace → colored area group + location code nodes inside it.
- * Layout: vertical stack of areas (Windsurf hub regions), locations left→right inside area.
+ * Flatten all locations from traces with parent metadata.
+ */
+function collectLocations(codemap) {
+  const byId = new Map();
+  const order = [];
+
+  (codemap.traces || []).forEach((trace, traceIndex) => {
+    const traceId = String(trace.id ?? traceIndex + 1);
+    (trace.locations || []).forEach((location, locIndex) => {
+      const locationId = String(
+        location.id || `${traceId}${String.fromCharCode(97 + locIndex)}`
+      ).toLowerCase();
+      const entry = {
+        locationId,
+        location,
+        traceId,
+        traceTitle: trace.title || `Trace ${traceId}`,
+        traceDescription: trace.description || '',
+        orderIndex: order.length
+      };
+      byId.set(locationId, entry);
+      order.push(entry);
+    });
+  });
+
+  return { byId, order };
+}
+
+/**
+ * Build area list from mermaid subgraphs, fallback to traces.
+ * Unassigned locations (not in any subgraph) form extra areas by their trace.
+ */
+function buildAreas(codemap) {
+  const { byId, order } = collectLocations(codemap);
+  const subgraphs = extractMermaidSubgraphs(codemap.mermaidDiagram);
+  const assigned = new Set();
+  const areas = [];
+
+  if (subgraphs.length > 0) {
+    subgraphs.forEach((sg, index) => {
+      const locationIds = sg.locationIds.filter((id) => byId.has(id));
+      locationIds.forEach((id) => assigned.add(id));
+      if (locationIds.length === 0) return;
+      areas.push({
+        areaId: `area-sg-${sg.id}`,
+        mermaidSubgraphId: sg.id,
+        title: sg.label || sg.id,
+        subtitle: '',
+        locationIds,
+        index
+      });
+    });
+
+    // leftovers: group by original trace so nothing is dropped
+    const leftoversByTrace = new Map();
+    for (const entry of order) {
+      if (assigned.has(entry.locationId)) continue;
+      if (!leftoversByTrace.has(entry.traceId)) leftoversByTrace.set(entry.traceId, []);
+      leftoversByTrace.get(entry.traceId).push(entry.locationId);
+    }
+    for (const [traceId, locationIds] of leftoversByTrace) {
+      const sample = byId.get(locationIds[0]);
+      areas.push({
+        areaId: `area-trace-${traceId}`,
+        mermaidSubgraphId: null,
+        title: sample?.traceTitle || `Trace ${traceId}`,
+        subtitle: sample?.traceDescription || '',
+        locationIds,
+        index: areas.length
+      });
+    }
+
+    return { areas, byId, source: 'mermaid-subgraphs' };
+  }
+
+  // Fallback: one area per trace (no mermaid)
+  (codemap.traces || []).forEach((trace, index) => {
+    const traceId = String(trace.id ?? index + 1);
+    const locationIds = (trace.locations || []).map((loc, locIndex) =>
+      String(loc.id || `${traceId}${String.fromCharCode(97 + locIndex)}`).toLowerCase()
+    );
+    if (!locationIds.length) return;
+    areas.push({
+      areaId: `area-trace-${traceId}`,
+      mermaidSubgraphId: null,
+      title: `${traceId}. ${trace.title || `Trace ${traceId}`}`,
+      subtitle: trace.description || '',
+      locationIds,
+      index
+    });
+  });
+
+  return { areas, byId, source: 'traces' };
+}
+
+/**
+ * Codemap → canvas with Windsurf-style colored areas.
+ * Primary grouping = mermaid subgraphs; edges from mermaid + in-area chains.
  */
 function codemapToCanvas(codemap, options = {}) {
   if (!codemap || !Array.isArray(codemap.traces)) {
     throw new Error('codemapToCanvas: ожидается объект с полем traces[]');
   }
 
+  const { areas, byId, source } = buildAreas(codemap);
   const nodes = [];
   const edges = [];
   const locationIdToNodeId = new Map();
   let cursorY = 0;
 
-  codemap.traces.forEach((trace, traceIndex) => {
-    const locations = trace.locations || [];
-    if (locations.length === 0) return;
+  areas.forEach((area) => {
+    const palette = paletteForIndex(area.index);
+    const locations = area.locationIds
+      .map((id) => byId.get(id))
+      .filter(Boolean);
 
-    const palette = paletteForIndex(traceIndex);
-    const traceId = String(trace.id ?? traceIndex + 1);
-    const areaId = `area-trace-${traceId}`;
+    if (!locations.length) return;
 
-    const contentWidth = Math.max(1, locations.length) * COL_WIDTH - (COL_WIDTH - NODE_WIDTH);
+    const contentWidth =
+      Math.max(1, locations.length) * COL_WIDTH - (COL_WIDTH - NODE_WIDTH);
     const areaWidth = contentWidth + AREA_PAD_X * 2;
     const areaHeight = AREA_TITLE_H + AREA_PAD_Y * 2 + NODE_HEIGHT;
     const areaX = 0;
     const areaY = cursorY;
 
     nodes.push({
-      id: areaId,
+      id: area.areaId,
       type: 'group',
-      title: `${traceId}. ${trace.title || `Trace ${traceId}`}`,
-      subtitle: trace.description || '',
-      content: trace.description || '',
+      title: area.title,
+      subtitle: area.subtitle || '',
+      content: area.subtitle || '',
       x: areaX,
       y: areaY,
       width: areaWidth,
       height: areaHeight,
-      traceId,
+      areaId: area.areaId,
+      mermaidSubgraphId: area.mermaidSubgraphId,
+      // keep first location's trace for act-sidebar linking
+      traceId: locations[0].traceId,
       color: palette.accent,
       fill: palette.fill,
       border: palette.border,
       zIndex: 0
     });
 
-    locations.forEach((location, locIndex) => {
-      const locationId = String(
-        location.id || `${trace.id}${String.fromCharCode(97 + locIndex)}`
-      ).toLowerCase();
+    locations.forEach((entry, locIndex) => {
+      const { location, locationId, traceId } = entry;
       const nodeId = `node-${locationId}`;
       locationIdToNodeId.set(locationId, nodeId);
       if (location.id) locationIdToNodeId.set(String(location.id), nodeId);
@@ -178,6 +298,8 @@ function codemapToCanvas(codemap, options = {}) {
         anchorLine: location.lineNumber ?? null,
         locationId,
         traceId,
+        areaId: area.areaId,
+        mermaidSubgraphId: area.mermaidSubgraphId,
         color: palette.accent,
         language: guessLanguage(location.path),
         content: [location.lineContent, location.description].filter(Boolean).join('\n'),
@@ -188,13 +310,12 @@ function codemapToCanvas(codemap, options = {}) {
         zIndex: 1
       });
 
+      // chain within area (order as listed in subgraph / locations)
       if (locIndex > 0) {
-        const prevLoc = locations[locIndex - 1];
-        const prevId =
-          locationIdToNodeId.get(String(prevLoc.id).toLowerCase()) ||
-          locationIdToNodeId.get(String(prevLoc.id));
+        const prev = locations[locIndex - 1];
+        const prevId = locationIdToNodeId.get(prev.locationId);
         edges.push({
-          id: `edge-chain-${prevLoc.id}-${location.id}`,
+          id: `edge-chain-${prev.locationId}-${locationId}`,
           fromNode: prevId,
           fromSide: 'right',
           toNode: nodeId,
@@ -207,19 +328,39 @@ function codemapToCanvas(codemap, options = {}) {
     cursorY += areaHeight + AREA_GAP_Y;
   });
 
-  const crossTraceEdges = extractMermaidEdges(codemap.mermaidDiagram);
-  for (const edge of crossTraceEdges) {
-    const fromKey = String(edge.from).toLowerCase();
-    const toKey = String(edge.to).toLowerCase();
-    const fromNode = locationIdToNodeId.get(fromKey) || locationIdToNodeId.get(edge.from);
-    const toNode = locationIdToNodeId.get(toKey) || locationIdToNodeId.get(edge.to);
+  // Cross-area (and any labeled) edges from mermaid — prefer these over pure linear glue
+  const mermaidEdges = extractMermaidEdges(codemap.mermaidDiagram);
+  const seenEdge = new Set(edges.map((e) => `${e.fromNode}->${e.toNode}`));
+
+  for (const edge of mermaidEdges) {
+    const fromNode = locationIdToNodeId.get(edge.from);
+    const toNode = locationIdToNodeId.get(edge.to);
     if (!fromNode || !toNode) continue;
+    const key = `${fromNode}->${toNode}`;
+    if (seenEdge.has(key)) {
+      // upgrade label if mermaid has a better one
+      const existing = edges.find((e) => e.fromNode === fromNode && e.toNode === toNode);
+      if (existing && edge.label && existing.label === 'flow') {
+        existing.label = edge.label;
+      }
+      continue;
+    }
+    seenEdge.add(key);
+
+    const fromEntry = byId.get(edge.from);
+    const toEntry = byId.get(edge.to);
+    const sameArea =
+      fromEntry &&
+      toEntry &&
+      nodes.find((n) => n.locationId === edge.from)?.areaId ===
+        nodes.find((n) => n.locationId === edge.to)?.areaId;
+
     edges.push({
-      id: `edge-cross-${edge.from}-${edge.to}`,
+      id: `edge-mermaid-${edge.from}-${edge.to}`,
       fromNode,
-      fromSide: 'bottom',
+      fromSide: sameArea ? 'right' : 'bottom',
       toNode,
-      toSide: 'top',
+      toSide: sameArea ? 'left' : 'top',
       label: edge.label || ''
     });
   }
@@ -232,8 +373,9 @@ function codemapToCanvas(codemap, options = {}) {
       query: codemap.query || options.query || null,
       generatedAt: options.generatedAt || new Date().toISOString(),
       generatedFromCodemapId: codemap.id || codemap.stableId || null,
-      cacheVersion: 2,
-      layout: 'trace-areas'
+      cacheVersion: 3,
+      layout: source === 'mermaid-subgraphs' ? 'mermaid-areas' : 'trace-areas',
+      areaSource: source
     },
     viewport: { x: 0, y: 0, scale: 1 },
     nodes,
@@ -262,28 +404,34 @@ function guessLanguage(filePath) {
 }
 
 /**
- * Recompute group bounds from child nodes that share traceId.
- * Useful after drag or when loading old caches without group nodes.
+ * Recompute group bounds from child nodes that share areaId (or legacy traceId).
  */
 function recomputeAreaBounds(nodes, options = {}) {
   const padX = options.padX ?? AREA_PAD_X;
   const padY = options.padY ?? AREA_PAD_Y;
   const titleH = options.titleH ?? AREA_TITLE_H;
-  const byTrace = new Map();
 
+  const areaKey = (node) => {
+    if (node.areaId) return String(node.areaId);
+    if (node.traceId) return `legacy-trace-${node.traceId}`;
+    return null;
+  };
+
+  const byArea = new Map();
   for (const node of nodes) {
-    if (node.type === 'group' || !node.traceId) continue;
-    const list = byTrace.get(String(node.traceId)) || [];
-    list.push(node);
-    byTrace.set(String(node.traceId), list);
+    if (node.type === 'group') continue;
+    const key = areaKey(node);
+    if (!key) continue;
+    if (!byArea.has(key)) byArea.set(key, []);
+    byArea.get(key).push(node);
   }
 
   const groups = nodes.filter((n) => n.type === 'group');
   const result = [...nodes];
 
-  // Update existing groups
   for (const group of groups) {
-    const children = byTrace.get(String(group.traceId)) || [];
+    const key = areaKey(group) || (group.traceId ? `legacy-trace-${group.traceId}` : null);
+    const children = (key && byArea.get(key)) || [];
     if (!children.length) continue;
     const minX = Math.min(...children.map((n) => n.x));
     const minY = Math.min(...children.map((n) => n.y));
@@ -293,37 +441,7 @@ function recomputeAreaBounds(nodes, options = {}) {
     group.y = minY - titleH - padY;
     group.width = maxX - minX + padX * 2;
     group.height = maxY - minY + titleH + padY * 2;
-  }
-
-  // Synthesize missing groups for traces that have nodes but no group
-  let synthIndex = groups.length;
-  for (const [traceId, children] of byTrace) {
-    if (groups.some((g) => String(g.traceId) === traceId)) continue;
-    const palette = paletteForIndex(synthIndex++);
-    const minX = Math.min(...children.map((n) => n.x));
-    const minY = Math.min(...children.map((n) => n.y));
-    const maxX = Math.max(...children.map((n) => n.x + (n.width || NODE_WIDTH)));
-    const maxY = Math.max(...children.map((n) => n.y + (n.height || NODE_HEIGHT)));
-    const title = children[0]?.subtitle?.split('·')[0]?.trim() || `Trace ${traceId}`;
-    result.push({
-      id: `area-trace-${traceId}`,
-      type: 'group',
-      title: `${traceId}. ${title}`,
-      subtitle: '',
-      content: '',
-      x: minX - padX,
-      y: minY - titleH - padY,
-      width: maxX - minX + padX * 2,
-      height: maxY - minY + titleH + padY * 2,
-      traceId,
-      color: palette.accent,
-      fill: palette.fill,
-      border: palette.border,
-      zIndex: 0
-    });
-    for (const child of children) {
-      if (!child.color) child.color = palette.accent;
-    }
+    if (!group.areaId && key) group.areaId = key;
   }
 
   return result;
@@ -336,5 +454,6 @@ module.exports = {
   extractMermaidEdges,
   extractMermaidSubgraphs,
   buildMermaidIdToLocationId,
+  buildAreas,
   recomputeAreaBounds
 };

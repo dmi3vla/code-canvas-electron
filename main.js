@@ -314,6 +314,34 @@ ipcMain.handle('project:open', async () => {
 
   const cache = await readProjectCache(folderPath);
 
+  let canvas = cache.canvas;
+  let codemap = cache.codemap;
+  let relayout = false;
+
+  // Rebuild canvas from codemap so mermaid subgraphs → colored areas (Windsurf layout).
+  // Prefer codemap when present; rewrite project cache if layout version is outdated.
+  if (cache.cacheHit && codemap && Array.isArray(codemap.traces)) {
+    try {
+      // One-time upgrade to mermaid-subgraph areas (cacheVersion >= 3).
+      // Do not force relayout when mermaid exists — preserves user drag positions.
+      const needsRelayout =
+        !canvas ||
+        (canvas.metadata?.cacheVersion || 0) < 3 ||
+        (codemap.mermaidDiagram && canvas.metadata?.layout !== 'mermaid-areas');
+
+      if (needsRelayout) {
+        canvas = codemapToCanvas(codemap, {
+          sourceFolder: folderPath,
+          query: codemap.query || null
+        });
+        await writeProjectCanvasCache(folderPath, canvas, codemap);
+        relayout = true;
+      }
+    } catch (err) {
+      console.warn('[project:open] relayout failed, using cached canvas:', err.message);
+    }
+  }
+
   return {
     canceled: false,
     folderPath,
@@ -321,8 +349,9 @@ ipcMain.handle('project:open', async () => {
     cacheHit: cache.cacheHit,
     corrupt: Boolean(cache.corrupt),
     cacheError: cache.error || null,
-    canvas: cache.canvas,
-    codemap: cache.codemap,
+    canvas,
+    codemap,
+    relayout,
     cacheFiles: {
       canvas: CANVAS_CACHE_NAME,
       codemap: CODEMAP_CACHE_NAME

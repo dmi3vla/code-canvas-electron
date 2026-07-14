@@ -395,30 +395,40 @@ function renderEdges() {
   }
 }
 
+/** Membership key for Windsurf-style areas (prefer mermaid areaId). */
+function nodeAreaKey(node) {
+  if (!node) return null;
+  if (node.areaId) return String(node.areaId);
+  if (node.traceId) return `legacy-trace-${node.traceId}`;
+  return null;
+}
+
 /**
- * Ensure every traceId has a colored group area (for old caches without groups).
- * Also refresh group bounds around current child positions.
+ * Ensure every area has a colored group region.
+ * Groups by areaId (from mermaid subgraphs) with legacy traceId fallback.
+ * Also refreshes group bounds around current child positions.
  */
 function ensureTraceAreas() {
   const PAD_X = 40;
   const PAD_Y = 28;
   const TITLE_H = 44;
-  const byTrace = new Map();
+  const byArea = new Map();
 
   for (const node of state.nodes) {
-    if (node.type === 'group' || !node.traceId) continue;
-    const key = String(node.traceId);
-    if (!byTrace.has(key)) byTrace.set(key, []);
-    byTrace.get(key).push(node);
+    if (node.type === 'group') continue;
+    const key = nodeAreaKey(node);
+    if (!key) continue;
+    if (!byArea.has(key)) byArea.set(key, []);
+    byArea.get(key).push(node);
   }
 
-  if (byTrace.size === 0) return;
+  if (byArea.size === 0) return;
 
   const existingGroups = state.nodes.filter((n) => n.type === 'group');
   let colorIndex = 0;
 
-  for (const [traceId, children] of byTrace) {
-    let group = existingGroups.find((g) => String(g.traceId) === traceId);
+  for (const [areaKey, children] of byArea) {
+    let group = existingGroups.find((g) => nodeAreaKey(g) === areaKey || g.id === areaKey);
     const palette = paletteForIndex(colorIndex++);
     const minX = Math.min(...children.map((n) => n.x));
     const minY = Math.min(...children.map((n) => n.y));
@@ -432,33 +442,38 @@ function ensureTraceAreas() {
       height: maxY - minY + TITLE_H + PAD_Y * 2
     };
 
-    // title from codemap act if available
     let title = group?.title;
-    if (!title && state.codemap?.traces) {
-      const tr = state.codemap.traces.find((t) => String(t.id) === traceId);
-      if (tr) title = `${traceId}. ${tr.title || 'Trace'}`;
+    if (!title) {
+      const sample = children[0];
+      if (sample?.traceId && state.codemap?.traces) {
+        const tr = state.codemap.traces.find((t) => String(t.id) === String(sample.traceId));
+        if (tr) title = tr.title || `Trace ${sample.traceId}`;
+      }
+      title = title || group?.id || areaKey;
     }
-    if (!title) title = `Trace ${traceId}`;
 
     for (const child of children) {
+      if (!child.areaId) child.areaId = areaKey;
       if (!child.color) child.color = group?.color || palette.accent;
     }
 
     if (group) {
       Object.assign(group, bounds);
+      if (!group.areaId) group.areaId = areaKey;
       if (!group.color) group.color = palette.accent;
       if (!group.fill) group.fill = palette.fill;
       if (!group.border) group.border = palette.border;
       if (!group.title) group.title = title;
     } else {
       state.nodes.push({
-        id: `area-trace-${traceId}`,
+        id: areaKey,
         type: 'group',
         title,
         subtitle: '',
         content: '',
         ...bounds,
-        traceId,
+        areaId: areaKey,
+        traceId: children[0]?.traceId || null,
         color: palette.accent,
         fill: palette.fill,
         border: palette.border,
@@ -495,18 +510,20 @@ function renderGroup(node) {
     el.appendChild(sub);
   }
 
-  // group is selectable / draggable as a unit (moves children with same traceId)
+  // group is selectable / draggable as a unit (moves children in same area)
   el.addEventListener('mousedown', (event) => {
     event.stopPropagation();
     const world = worldFromClient(event.clientX, event.clientY);
+    const groupKey = nodeAreaKey(node);
     select('node', node.id);
     state.interaction.drag = {
       nodeId: node.id,
       offsetX: world.x - node.x,
       offsetY: world.y - node.y,
       isGroup: true,
+      areaKey: groupKey,
       childOrigins: state.nodes
-        .filter((n) => n.type !== 'group' && String(n.traceId) === String(node.traceId))
+        .filter((n) => n.type !== 'group' && nodeAreaKey(n) === groupKey)
         .map((n) => ({ id: n.id, x: n.x, y: n.y }))
     };
   });
@@ -724,14 +741,14 @@ function toggleSidebar(side, collapsed) {
 }
 
 function autoLayout() {
-  // Semantic layout: stack trace areas vertically, locations left→right inside each
-  const contentNodes = state.nodes.filter((n) => n.type !== 'group' && n.traceId);
+  // Semantic layout: stack areas vertically, locations left→right inside each area
+  const contentNodes = state.nodes.filter((n) => n.type !== 'group' && nodeAreaKey(n));
   if (contentNodes.length) {
-    const byTrace = new Map();
+    const byArea = new Map();
     for (const node of contentNodes) {
-      const key = String(node.traceId);
-      if (!byTrace.has(key)) byTrace.set(key, []);
-      byTrace.get(key).push(node);
+      const key = nodeAreaKey(node);
+      if (!byArea.has(key)) byArea.set(key, []);
+      byArea.get(key).push(node);
     }
     const COL = 360;
     const NODE_H = 210;
@@ -741,18 +758,19 @@ function autoLayout() {
     const GAP_Y = 72;
     let cursorY = 0;
     let idx = 0;
-    for (const [traceId, children] of byTrace) {
+    for (const [, children] of byArea) {
       children.sort((a, b) => String(a.locationId || a.id).localeCompare(String(b.locationId || b.id)));
+      const palette = paletteForIndex(idx);
       children.forEach((node, i) => {
         node.x = PAD_X + i * COL;
         node.y = cursorY + TITLE_H + PAD_Y;
-        if (!node.color) node.color = paletteForIndex(idx).accent;
+        node.color = palette.accent;
       });
       const areaH = TITLE_H + PAD_Y * 2 + NODE_H;
       cursorY += areaH + GAP_Y;
       idx += 1;
     }
-    // drop old groups — ensureTraceAreas rebuilds them
+    // drop old groups — ensureTraceAreas rebuilds them from areaId
     state.nodes = state.nodes.filter((n) => n.type !== 'group');
   } else {
     const columns = Math.max(1, Math.floor(root.clientWidth / 360));
@@ -766,7 +784,7 @@ function autoLayout() {
       });
   }
   render();
-  setStatus('Авто-раскладка по областям (traces)');
+  setStatus('Авто-раскладка по областям (mermaid subgraphs)');
 }
 
 function fitView() {
@@ -835,6 +853,8 @@ function serializeCanvas() {
       language: node.language || '',
       locationId: node.locationId || null,
       traceId: node.traceId || null,
+      areaId: node.areaId || null,
+      mermaidSubgraphId: node.mermaidSubgraphId || null,
       color: node.color || null,
       fill: node.fill || null,
       border: node.border || null,
@@ -863,6 +883,8 @@ function loadCanvas(payload) {
     language: node.language || '',
     locationId: node.locationId || null,
     traceId: node.traceId || null,
+    areaId: node.areaId || null,
+    mermaidSubgraphId: node.mermaidSubgraphId || null,
     color: node.color || null,
     fill: node.fill || null,
     border: node.border || null,
@@ -1063,7 +1085,13 @@ async function openProject() {
       renderActsList(state.codemap);
       fitView();
       updateProjectChrome();
-      setStatus(`Открыт сохранённый codemap · ${result.cacheFiles?.canvas || '.code-canvas.canvas'}`);
+      const layoutHint = result.canvas?.metadata?.layout || result.canvas?.metadata?.areaSource || '';
+      const relayoutHint = result.relayout ? ' · layout: mermaid areas' : '';
+      setStatus(
+        `Открыт сохранённый codemap · ${result.cacheFiles?.canvas || '.code-canvas.canvas'}${relayoutHint}${
+          layoutHint ? ` (${layoutHint})` : ''
+        }`
+      );
       return;
     }
 
@@ -1377,16 +1405,15 @@ window.addEventListener('mousemove', (event) => {
     const dy = nextY - node.y;
     node.x = nextX;
     node.y = nextY;
-    // Moving a group area moves all nodes of that trace together
+    // Moving a group area moves all nodes of that mermaid/trace area together
     if (state.interaction.drag.isGroup && node.type === 'group') {
+      const key = state.interaction.drag.areaKey || nodeAreaKey(node);
       for (const child of state.nodes) {
         if (child.type === 'group') continue;
-        if (String(child.traceId) !== String(node.traceId)) continue;
+        if (nodeAreaKey(child) !== key) continue;
         child.x += dx;
         child.y += dy;
       }
-    } else if (node.traceId) {
-      // keep parent area snug while dragging a child — bounds refresh on render
     }
     render();
     return;
