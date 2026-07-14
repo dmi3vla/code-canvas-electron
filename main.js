@@ -1,4 +1,19 @@
-const { app, BrowserWindow, dialog, ipcMain, Menu } = require('electron');
+const electron = require('electron');
+
+// ELECTRON_RUN_AS_NODE=1 makes require('electron') return a path string (Node mode).
+// The app must run under the real Electron runtime.
+if (!electron || typeof electron !== 'object' || !electron.app) {
+  console.error(
+    '[code-canvas] Electron APIs unavailable (app is undefined).\n' +
+      'Usually caused by ELECTRON_RUN_AS_NODE=1 in the environment.\n' +
+      'Fix: ELECTRON_RUN_AS_NODE= npm start\n' +
+      `Got: typeof electron = ${typeof electron}` +
+      (typeof electron === 'string' ? ` (${electron})` : '')
+  );
+  process.exit(1);
+}
+
+const { app, BrowserWindow, dialog, ipcMain, Menu } = electron;
 const fs = require('fs/promises');
 const path = require('path');
 const {
@@ -57,11 +72,28 @@ function createWindow() {
     height: 1000,
     backgroundColor: '#0b1020',
     autoHideMenuBar: false,
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false
     }
+  });
+
+  win.once('ready-to-show', () => {
+    win.show();
+  });
+
+  win.webContents.on('did-fail-load', (_e, code, desc, url) => {
+    console.error('[code-canvas] did-fail-load', { code, desc, url });
+  });
+
+  win.webContents.on('render-process-gone', (_e, details) => {
+    console.error('[code-canvas] render-process-gone', details);
+  });
+
+  win.on('unresponsive', () => {
+    console.error('[code-canvas] window unresponsive');
   });
 
   const menu = Menu.buildFromTemplate([
@@ -110,6 +142,14 @@ function createWindow() {
 
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
 }
+
+process.on('uncaughtException', (err) => {
+  console.error('[code-canvas] uncaughtException', err);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.error('[code-canvas] unhandledRejection', err);
+});
 
 app.whenReady().then(() => {
   initSettings();
