@@ -4,10 +4,6 @@ const edgesLayer = document.getElementById('edges-layer');
 const nodeTemplate = document.getElementById('node-template');
 const statusText = document.getElementById('status-text');
 const viewText = document.getElementById('view-text');
-const leftSidebar = document.getElementById('left-sidebar');
-const rightSidebar = document.getElementById('right-sidebar');
-const leftSidebarRailBtn = document.getElementById('left-sidebar-rail-btn');
-const rightSidebarRailBtn = document.getElementById('right-sidebar-rail-btn');
 const projectSplash = document.getElementById('project-splash');
 const brandSubtitle = document.getElementById('brand-subtitle');
 const projectPathLabel = document.getElementById('project-path-label');
@@ -19,6 +15,7 @@ const mermaidPanel = document.getElementById('mermaid-panel');
 const mermaidMount = document.getElementById('mermaid-mount');
 const canvasRootEl = document.getElementById('canvas-root');
 
+const inspectorPopover = document.getElementById('inspector-popover');
 const inspectorEmpty = document.getElementById('inspector-empty');
 const inspectorNode = document.getElementById('inspector-node');
 const inspectorEdge = document.getElementById('inspector-edge');
@@ -28,12 +25,25 @@ const nodeSubtitleInput = document.getElementById('node-subtitle-input');
 const nodeContentInput = document.getElementById('node-content-input');
 const edgeLabelInput = document.getElementById('edge-label-input');
 const openInEditorBtn = document.getElementById('open-in-editor-btn');
+const inspectorPopoverCloseBtn = document.getElementById('inspector-popover-close-btn');
+
+const settingsPopover = document.getElementById('settings-popover');
+const settingsPopoverCloseBtn = document.getElementById('settings-popover-close-btn');
+
+const breadcrumb = document.getElementById('breadcrumb');
+const breadcrumbRootBtn = document.getElementById('breadcrumb-root-btn');
+const breadcrumbArea = document.getElementById('breadcrumb-area');
 
 const editorPanel = document.getElementById('editor-panel');
 const editorPanelMount = document.getElementById('editor-panel-mount');
 const editorPanelTitle = document.getElementById('editor-panel-title');
 const editorPanelCloseBtn = document.getElementById('editor-panel-close-btn');
+const chatPanelMount = document.getElementById('chat-panel-mount');
+const editorChatResize = document.getElementById('editor-chat-resize');
 let editorMounted = false;
+let chatMounted = false;
+/** @type {{destroy: ()=>void}|null} */
+let chatInstance = null;
 
 const settingsApiKey = document.getElementById('settings-api-key');
 const settingsBaseUrl = document.getElementById('settings-base-url');
@@ -65,9 +75,7 @@ const buttons = {
   regenerateMermaid: document.getElementById('regenerate-mermaid-btn'),
   panMode: document.getElementById('pan-mode-btn'),
   linkMode: document.getElementById('link-mode-btn'),
-  selectMode: document.getElementById('select-mode-btn'),
-  toggleLeftSidebar: document.getElementById('toggle-left-sidebar-btn'),
-  toggleRightSidebar: document.getElementById('toggle-right-sidebar-btn')
+  selectMode: document.getElementById('select-mode-btn')
 };
 
 const DEFAULT_QUERY = 'Обзор архитектуры и основных потоков выполнения';
@@ -108,9 +116,10 @@ const state = {
   },
   mode: 'pan',
   ui: {
-    leftSidebarCollapsed: false,
-    rightSidebarCollapsed: false
+    querySectionVisible: false
   },
+  /** @type {{areaId:string,areaTitle:string,fromViewport:{x:number,y:number,scale:number}}|null} */
+  zoomState: null,
   meta: {
     sourceFolder: null,
     name: 'Untitled.canvas',
@@ -225,12 +234,7 @@ function setStatus(message) {
 }
 
 function updateSidebarUI() {
-  leftSidebar.classList.toggle('collapsed', state.ui.leftSidebarCollapsed);
-  rightSidebar.classList.toggle('collapsed', state.ui.rightSidebarCollapsed);
-  leftSidebarRailBtn.classList.toggle('hidden', !state.ui.leftSidebarCollapsed);
-  rightSidebarRailBtn.classList.toggle('hidden', !state.ui.rightSidebarCollapsed);
-  buttons.toggleLeftSidebar.textContent = state.ui.leftSidebarCollapsed ? '▶' : '◀';
-  buttons.toggleRightSidebar.textContent = state.ui.rightSidebarCollapsed ? '◀' : '▶';
+  // No-op: sidebars removed in Phase A
 }
 
 function escapeHtml(value = '') {
@@ -697,6 +701,7 @@ function renderGroup(node) {
   }
 
   // group is selectable / draggable as a unit (moves children in same area)
+  // click (no drag) → zoom to area
   el.addEventListener('mousedown', (event) => {
     event.stopPropagation();
     const world = worldFromClient(event.clientX, event.clientY);
@@ -708,6 +713,8 @@ function renderGroup(node) {
       offsetY: world.y - node.y,
       isGroup: true,
       areaKey: groupKey,
+      clickStartX: event.clientX,
+      clickStartY: event.clientY,
       childOrigins: state.nodes
         .filter((n) => n.type !== 'group' && nodeAreaKey(n) === groupKey)
         .map((n) => ({ id: n.id, x: n.x, y: n.y }))
@@ -814,15 +821,15 @@ async function openNodeInEditor(node) {
     return;
   }
   if (!node.path) {
-    // Нет реального файла на диске (заметка/чистый code-сниппет без path) —
-    // открываем то, что есть в самой ноде, без обращения к fs.
     editorPanelTitle.textContent = node.title || 'Без имени';
     editorPanel.classList.remove('hidden');
+    resetEditorChatLayout();
     if (!editorMounted) {
       window.CodeCanvasEditor.mount(editorPanelMount);
       editorMounted = true;
     }
     window.CodeCanvasEditor.openFile(node.title || '', node.content || '');
+    mountChat();
     return;
   }
 
@@ -834,19 +841,99 @@ async function openNodeInEditor(node) {
       ? `${resolvedPath}:${node.anchorLine}`
       : resolvedPath;
     editorPanel.classList.remove('hidden');
+    resetEditorChatLayout();
     if (!editorMounted) {
       window.CodeCanvasEditor.mount(editorPanelMount);
       editorMounted = true;
     }
     window.CodeCanvasEditor.openFile(resolvedPath, content, node.anchorLine);
     trackRecentFile(resolvedPath);
+    mountChat();
   } catch (err) {
     statusText.textContent = `Не удалось открыть файл: ${err.message || err}`;
   }
 }
 
+function mountChat() {
+  if (!chatPanelMount || !window.CodeCanvasChat) return;
+  if (chatMounted) return;
+  chatInstance = window.CodeCanvasChat.mount(chatPanelMount, {
+    getNodeContext: () => {
+      if (state.selection.type === 'node') {
+        const node = getNodeById(state.selection.id);
+        if (node) {
+          return {
+            nodeId: node.id,
+            nodeTitle: node.title,
+            nodeType: node.type,
+            nodePath: node.path || node.subtitle,
+            traceId: node.traceId,
+            nodeContent: node.content
+          };
+        }
+      }
+      return null;
+    }
+  });
+  chatMounted = true;
+  initChatResize();
+}
+
+function resetEditorChatLayout() {
+  if (editorPanelMount) {
+    editorPanelMount.style.height = '';
+    editorPanelMount.style.flex = '';
+  }
+  if (chatPanelMount) {
+    chatPanelMount.style.flex = '';
+  }
+}
+
+function initChatResize() {
+  if (!editorChatResize || editorChatResize._initialized) return;
+  editorChatResize._initialized = true;
+
+  let dragging = false;
+  let startY = 0;
+  let startEditorH = 0;
+  let startChatH = 0;
+
+  editorChatResize.addEventListener('mousedown', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    dragging = true;
+    startY = e.clientY;
+    startEditorH = editorPanelMount.offsetHeight;
+    editorChatResize.style.background = 'rgba(89, 164, 255, 0.4)';
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    const dy = e.clientY - startY;
+    const newEditorH = Math.max(120, startEditorH + dy);
+    const panelH = editorPanel.clientHeight;
+    const maxEditorH = panelH - 120;
+    const clampedEditorH = Math.min(newEditorH, maxEditorH);
+    editorPanelMount.style.height = `${clampedEditorH}px`;
+    editorPanelMount.style.flex = 'none';
+    chatPanelMount.style.flex = '1';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (dragging) {
+      dragging = false;
+      editorChatResize.style.background = '';
+    }
+  });
+}
+
 function closeEditorPanel() {
   editorPanel.classList.add('hidden');
+  if (chatInstance) {
+    try { chatInstance.destroy(); } catch { /* ignore */ }
+    chatInstance = null;
+    chatMounted = false;
+  }
 }
 
 function renderInspector() {
@@ -870,6 +957,7 @@ function renderInspector() {
       openInEditorBtn.classList.add('hidden');
       openInEditorBtn.onclick = null;
     }
+    positionInspectorPopover(node);
     return;
   }
 
@@ -878,14 +966,52 @@ function renderInspector() {
     if (!edge) return;
     inspectorEdge.classList.remove('hidden');
     edgeLabelInput.value = edge.label || '';
+    hideInspectorPopover();
     return;
   }
 
+  hideInspectorPopover();
   inspectorEmpty.classList.remove('hidden');
 }
 
+function positionInspectorPopover(node) {
+  if (!inspectorPopover || !node) return;
+  const nodeEl = contentLayer.querySelector(`[data-node-id="${node.id}"]`);
+  if (!nodeEl) {
+    hideInspectorPopover();
+    return;
+  }
+
+  const nodeRect = nodeEl.getBoundingClientRect();
+  const canvasRect = canvasRootEl.getBoundingClientRect();
+
+  let left = nodeRect.right + 12;
+  let top = nodeRect.top;
+
+  // Keep popover within canvas bounds
+  const popoverWidth = 280;
+  if (left + popoverWidth > canvasRect.right - 12) {
+    left = nodeRect.left - popoverWidth - 12;
+  }
+  if (top + 420 > canvasRect.bottom) {
+    top = Math.max(8, canvasRect.bottom - 420);
+  }
+  if (top < canvasRect.top) {
+    top = canvasRect.top + 8;
+  }
+
+  inspectorPopover.style.left = `${left - canvasRect.left}px`;
+  inspectorPopover.style.top = `${top - canvasRect.top}px`;
+  inspectorPopover.classList.remove('hidden');
+}
+
+function hideInspectorPopover() {
+  if (inspectorPopover) {
+    inspectorPopover.classList.add('hidden');
+  }
+}
+
 function render() {
-  updateSidebarUI();
   ensureTraceAreas();
   applyViewTransform();
   contentLayer.innerHTML = '';
@@ -909,22 +1035,8 @@ function setMode(mode) {
   setStatus(`Режим: ${mode}`);
 }
 
-function toggleSidebar(side, collapsed) {
-  const nextValue =
-    typeof collapsed === 'boolean'
-      ? collapsed
-      : side === 'left'
-        ? !state.ui.leftSidebarCollapsed
-        : !state.ui.rightSidebarCollapsed;
-
-  if (side === 'left') state.ui.leftSidebarCollapsed = nextValue;
-  if (side === 'right') state.ui.rightSidebarCollapsed = nextValue;
-  updateSidebarUI();
-  setStatus(
-    side === 'left'
-      ? nextValue ? 'Левая панель скрыта' : 'Левая панель раскрыта'
-      : nextValue ? 'Инспектор скрыт' : 'Инспектор раскрыт'
-  );
+function toggleSidebar() {
+  // No-op: sidebars removed in Phase A
 }
 
 function autoLayout() {
@@ -993,6 +1105,75 @@ function fitView() {
   state.view.y = root.clientHeight / 2 - (minY + boundsHeight / 2) * state.view.scale;
   render();
   setStatus('Вид подогнан под содержимое');
+}
+
+/** Zoom to a specific area with animation */
+function zoomToArea(areaId, areaTitle) {
+  if (!window.ZoomToArea) return;
+  const bounds = window.ZoomToArea.computeAreaBounds(areaId, state.nodes);
+  if (!bounds) {
+    setStatus(`Область ${areaTitle || areaId} не содержит нод`);
+    return;
+  }
+
+  const viewportSize = { width: root.clientWidth, height: root.clientHeight };
+  const toViewport = window.ZoomToArea.fitViewportToBounds(bounds, viewportSize, 60);
+
+  // Save current viewport for breadcrumb "back"
+  const fromViewport = { x: state.view.x, y: state.view.y, scale: state.view.scale };
+  state.zoomState = { areaId, areaTitle: areaTitle || areaId, fromViewport };
+
+  // Show breadcrumb
+  if (breadcrumb) {
+    breadcrumbArea.textContent = areaTitle || areaId;
+    breadcrumb.classList.remove('hidden');
+  }
+
+  window.ZoomToArea.animateViewport(
+    { x: state.view.x, y: state.view.y, scale: state.view.scale },
+    toViewport,
+    350,
+    (v) => {
+      state.view.x = v.x;
+      state.view.y = v.y;
+      state.view.scale = v.scale;
+      applyViewTransform();
+      renderEdges();
+    },
+    () => {
+      render();
+      setStatus(`Zoom: ${areaTitle || areaId}`);
+    }
+  );
+}
+
+/** Zoom out back to full canvas */
+function zoomOutToFull() {
+  if (!state.zoomState || !window.ZoomToArea) return;
+
+  const toViewport = state.zoomState.fromViewport;
+  state.zoomState = null;
+
+  if (breadcrumb) {
+    breadcrumb.classList.add('hidden');
+  }
+
+  window.ZoomToArea.animateViewport(
+    { x: state.view.x, y: state.view.y, scale: state.view.scale },
+    toViewport,
+    350,
+    (v) => {
+      state.view.x = v.x;
+      state.view.y = v.y;
+      state.view.scale = v.scale;
+      applyViewTransform();
+      renderEdges();
+    },
+    () => {
+      render();
+      setStatus('Общий вид');
+    }
+  );
 }
 
 function addEdge(fromNodeId, toNodeId, fromSide = 'right', toSide = 'left', label = '') {
@@ -1475,13 +1656,16 @@ async function saveSettingsFromForm() {
 }
 
 function focusSettingsPanel() {
-  const panel = document.getElementById('settings-panel');
-  if (panel) {
-    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    panel.classList.add('panel-highlight');
-    setTimeout(() => panel.classList.remove('panel-highlight'), 1200);
+  if (settingsPopover) {
+    const isHidden = settingsPopover.classList.contains('hidden');
+    settingsPopover.classList.toggle('hidden');
+    if (!isHidden) {
+      // Position settings popover top-right
+      settingsPopover.style.left = 'auto';
+      settingsPopover.style.right = '16px';
+      settingsPopover.style.top = '8px';
+    }
   }
-  if (state.ui.rightSidebarCollapsed) toggleSidebar('right', false);
 }
 
 editorPanelCloseBtn.addEventListener('click', closeEditorPanel);
@@ -1651,10 +1835,48 @@ buttons.addCode.addEventListener('click', () => {
 buttons.panMode.addEventListener('click', () => setMode('pan'));
 buttons.linkMode.addEventListener('click', () => setMode('link'));
 buttons.selectMode.addEventListener('click', () => setMode('select'));
-buttons.toggleLeftSidebar.addEventListener('click', () => toggleSidebar('left'));
-buttons.toggleRightSidebar.addEventListener('click', () => toggleSidebar('right'));
-leftSidebarRailBtn.addEventListener('click', () => toggleSidebar('left', false));
-rightSidebarRailBtn.addEventListener('click', () => toggleSidebar('right', false));
+
+// Inspector popover close button
+if (inspectorPopoverCloseBtn) {
+  inspectorPopoverCloseBtn.addEventListener('click', hideInspectorPopover);
+}
+
+// Settings popover close button
+if (settingsPopoverCloseBtn) {
+  settingsPopoverCloseBtn.addEventListener('click', () => {
+    if (settingsPopover) settingsPopover.classList.add('hidden');
+  });
+}
+
+// Close popovers on Escape
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    hideInspectorPopover();
+    if (settingsPopover) settingsPopover.classList.add('hidden');
+  }
+});
+
+// Close popovers on click outside
+document.addEventListener('mousedown', (event) => {
+  if (inspectorPopover && !inspectorPopover.classList.contains('hidden')) {
+    if (!inspectorPopover.contains(event.target) && !event.target.closest('.node')) {
+      hideInspectorPopover();
+    }
+  }
+  if (settingsPopover && !settingsPopover.classList.contains('hidden')) {
+    if (!settingsPopover.contains(event.target) && event.target !== buttons.settings) {
+      settingsPopover.classList.add('hidden');
+    }
+  }
+});
+
+// Breadcrumb: click "Проект" → zoom out
+if (breadcrumbRootBtn) {
+  breadcrumbRootBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    zoomOutToFull();
+  });
+}
 
 nodeTitleInput.addEventListener('input', () => {
   const node = getNodeById(state.selection.id);
@@ -1777,6 +1999,22 @@ window.addEventListener('mousemove', (event) => {
 });
 
 window.addEventListener('mouseup', (event) => {
+  // Check for group click (not drag) → zoom to area
+  if (state.interaction.drag && state.interaction.drag.isGroup) {
+    const dx = event.clientX - (state.interaction.drag.clickStartX || 0);
+    const dy = event.clientY - (state.interaction.drag.clickStartY || 0);
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 5) {
+      // It was a click, not a drag → zoom to area
+      const group = getNodeById(state.interaction.drag.nodeId);
+      if (group) {
+        const areaKey = state.interaction.drag.areaKey || nodeAreaKey(group);
+        zoomToArea(areaKey, group.title);
+      }
+      // Don't clear drag yet — zoomToArea calls render() which needs clean state
+    }
+  }
+
   if (state.interaction.link) {
     const target = event.target instanceof Element ? event.target : null;
     const connector = target?.closest('.connector');

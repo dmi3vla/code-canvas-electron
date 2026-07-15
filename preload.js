@@ -40,5 +40,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
     const listener = (_, payload) => callback(payload);
     ipcRenderer.on('menu-action', listener);
     return () => ipcRenderer.removeListener('menu-action', listener);
+  },
+
+  // Chat
+  sendChatMessage: (message, context) => ipcRenderer.invoke('agent:chatMessage', { message, context }),
+  onChatChunk: (callback) => {
+    const listener = (_, chunk) => callback(chunk);
+    ipcRenderer.on('agent:chatChunk', listener);
+    return () => ipcRenderer.removeListener('agent:chatChunk', listener);
   }
 });

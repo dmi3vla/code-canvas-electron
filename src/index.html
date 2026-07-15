@@ -8,8 +8,8 @@
   </head>
   <body>
     <div class="app-shell">
-      <header class="topbar">
-        <div class="brand">
+      <header id="top-menu" class="top-menu">
+        <div class="top-menu-section brand">
           <div class="brand-mark"></div>
           <div>
             <div class="brand-title">Code Canvas Desktop</div>
@@ -17,93 +17,57 @@
           </div>
         </div>
 
-        <div class="toolbar">
-          <button id="open-project-btn" class="primary">Открыть проект</button>
+        <div class="top-menu-section">
+          <span class="top-menu-label">Файл</span>
           <button id="new-canvas-btn">Новый</button>
-          <button id="open-canvas-btn">Открыть `.canvas`</button>
+          <button id="open-canvas-btn">Открыть</button>
           <button id="save-canvas-btn">Сохранить</button>
+        </div>
+
+        <div class="top-menu-section">
+          <button id="open-project-btn" class="primary">Открыть проект</button>
           <button id="import-project-btn" title="Структурный import/require граф">Import graph</button>
+        </div>
+
+        <div class="top-menu-section">
+          <span class="top-menu-label">Режим</span>
+          <div class="mode-stack">
+            <button id="pan-mode-btn" class="mode-btn active">Pan</button>
+            <button id="link-mode-btn" class="mode-btn">Link</button>
+            <button id="select-mode-btn" class="mode-btn">Select</button>
+          </div>
+        </div>
+
+        <div class="top-menu-section">
+          <div class="mode-stack mode-stack-inline" id="agent-mode-stack">
+            <button type="button" id="mode-smart-btn" class="mode-btn active" data-mode="smart">Smart</button>
+            <button type="button" id="mode-fast-btn" class="mode-btn" data-mode="fast">Fast</button>
+          </div>
+          <button id="generate-codemap-btn" class="primary" disabled title="Multi-stage GPT codemap">Generate</button>
+          <button id="regenerate-codemap-btn" disabled title="Перезаписать кэш в корне проекта">↻</button>
+        </div>
+
+        <div class="top-menu-section top-menu-right">
           <button id="add-note-btn">Заметка</button>
           <button id="add-code-btn">Код</button>
           <button id="auto-layout-btn">Авто-раскладка</button>
           <button id="fit-view-btn">Fit</button>
           <button id="settings-btn">Settings</button>
         </div>
+
+        <div class="top-menu-section top-menu-query" id="top-menu-query-section">
+          <textarea
+            id="codemap-query-input"
+            rows="1"
+            placeholder="Обзор архитектуры и основных потоков выполнения"
+          ></textarea>
+          <div id="suggestions-list" class="suggestions-list"></div>
+          <button id="refresh-suggestions-btn" type="button" disabled title="Подсказки по недавним файлам">Suggestions</button>
+        </div>
       </header>
 
       <div class="main-layout">
-        <aside id="left-sidebar" class="sidebar left">
-          <button id="toggle-left-sidebar-btn" class="sidebar-toggle sidebar-toggle-left" title="Свернуть левую панель">
-            ◀
-          </button>
-          <section class="panel">
-            <div class="panel-title">Режим</div>
-            <div class="mode-stack">
-              <button id="pan-mode-btn" class="mode-btn active">Pan</button>
-              <button id="link-mode-btn" class="mode-btn">Link</button>
-              <button id="select-mode-btn" class="mode-btn">Select</button>
-            </div>
-          </section>
-
-          <section class="panel" id="project-panel">
-            <div class="panel-title">Проект</div>
-            <div id="project-path-label" class="panel-copy">Папка не выбрана</div>
-            <div id="cache-status-label" class="panel-copy muted-line"></div>
-          </section>
-
-          <section class="panel" id="query-panel">
-            <div class="panel-title">Codemap query</div>
-            <textarea
-              id="codemap-query-input"
-              rows="3"
-              placeholder="Обзор архитектуры и основных потоков выполнения"
-            ></textarea>
-            <div class="mode-stack mode-stack-inline" id="agent-mode-stack">
-              <button type="button" id="mode-smart-btn" class="mode-btn active" data-mode="smart">Smart</button>
-              <button type="button" id="mode-fast-btn" class="mode-btn" data-mode="fast">Fast</button>
-            </div>
-            <div class="btn-row">
-              <button id="generate-codemap-btn" class="primary" disabled title="Multi-stage GPT codemap">
-                Generate
-              </button>
-              <button id="regenerate-codemap-btn" disabled title="Перезаписать кэш в корне проекта">
-                Перегенерировать
-              </button>
-            </div>
-            <div id="suggestions-list" class="suggestions-list"></div>
-            <div class="btn-row">
-              <button id="refresh-suggestions-btn" type="button" disabled title="Подсказки по недавним файлам">
-                Suggestions
-              </button>
-            </div>
-            <div class="panel-copy muted-line" id="generate-hint">
-              После Generate: `.code-canvas.canvas` + `.code-canvas.codemap.json` в корне. Повторное открытие — из кэша.
-            </div>
-          </section>
-
-          <section class="panel" id="acts-panel">
-            <div class="panel-title">Acts (traces)</div>
-            <div id="acts-list" class="acts-list">
-              <div class="panel-copy">Нет codemap. Откройте проект с кэшем или сгенерируйте карту.</div>
-            </div>
-          </section>
-
-          <section class="panel">
-            <div class="panel-title">Подсказки</div>
-            <ul class="shortcut-list">
-              <li>Открыть проект: кэш из корня без GPT</li>
-              <li>Двойной клик по пустому месту: заметка</li>
-              <li>Колесо: zoom · drag фона: pan</li>
-              <li>Delete: удалить выделенное</li>
-            </ul>
-          </section>
-        </aside>
-
         <main class="canvas-stage">
-          <button id="left-sidebar-rail-btn" class="sidebar-rail sidebar-rail-left hidden" title="Показать левую панель">
-            Режим
-          </button>
-
           <div class="stage-tabs" id="stage-tabs">
             <button type="button" class="stage-tab active" data-stage="canvas" id="tab-canvas-btn">Canvas</button>
             <button type="button" class="stage-tab" data-stage="mermaid" id="tab-mermaid-btn">Mermaid</button>
@@ -115,6 +79,11 @@
           <div id="canvas-root" class="canvas-root">
             <svg id="edges-layer" class="edges-layer"></svg>
             <div id="canvas-content" class="canvas-content"></div>
+            <div id="breadcrumb" class="breadcrumb hidden">
+              <button id="breadcrumb-root-btn" class="breadcrumb-btn">Проект</button>
+              <span class="breadcrumb-sep">›</span>
+              <span id="breadcrumb-area" class="breadcrumb-area"></span>
+            </div>
           </div>
 
           <div id="mermaid-panel" class="mermaid-panel hidden">
@@ -127,24 +96,15 @@
               <button id="editor-panel-close-btn" title="Закрыть редактор">✕</button>
             </div>
             <div id="editor-panel-mount" class="editor-panel-mount"></div>
+            <div id="editor-chat-resize" class="editor-chat-resize"></div>
+            <div id="chat-panel-mount" class="chat-panel-mount"></div>
           </section>
 
-          <button id="right-sidebar-rail-btn" class="sidebar-rail sidebar-rail-right hidden" title="Показать инспектор">
-            Инспектор
-          </button>
-
-          <div id="statusbar" class="statusbar">
-            <span id="status-text">Выберите папку проекта</span>
-            <span id="view-text">100%</span>
-          </div>
-        </main>
-
-        <aside id="right-sidebar" class="sidebar right">
-          <button id="toggle-right-sidebar-btn" class="sidebar-toggle sidebar-toggle-right" title="Свернуть инспектор">
-            ▶
-          </button>
-          <section class="panel">
-            <div class="panel-title">Инспектор</div>
+          <div id="inspector-popover" class="inspector-popover hidden">
+            <div class="inspector-popover-header">
+              <span>Инспектор</span>
+              <button id="inspector-popover-close-btn" title="Закрыть">✕</button>
+            </div>
             <div id="inspector-empty" class="panel-copy">
               Выберите ноду или связь, чтобы редактировать свойства.
             </div>
@@ -154,7 +114,6 @@
                 <span>Заголовок</span>
                 <input id="node-title-input" type="text" />
               </label>
-
               <label class="field">
                 <span>Тип</span>
                 <select id="node-type-input">
@@ -164,17 +123,14 @@
                   <option value="group">Group / Area</option>
                 </select>
               </label>
-
               <label class="field">
                 <span>Подзаголовок / путь</span>
                 <input id="node-subtitle-input" type="text" />
               </label>
-
               <label class="field">
                 <span>Содержимое</span>
-                <textarea id="node-content-input" rows="16"></textarea>
+                <textarea id="node-content-input" rows="8"></textarea>
               </label>
-
               <button id="open-in-editor-btn" class="hidden" style="width: 100%; margin-top: 8px;">
                 Открыть в редакторе ↗
               </button>
@@ -186,10 +142,13 @@
                 <input id="edge-label-input" type="text" />
               </label>
             </div>
-          </section>
+          </div>
 
-          <section class="panel" id="settings-panel">
-            <div class="panel-title">AI / GPT Settings</div>
+          <div id="settings-popover" class="inspector-popover hidden">
+            <div class="inspector-popover-header">
+              <span>AI / GPT Settings</span>
+              <button id="settings-popover-close-btn" title="Закрыть">✕</button>
+            </div>
             <div class="panel-copy muted-line" id="settings-path-label">~/.cometix/codemap/settings.json</div>
             <label class="field">
               <span>API Key</span>
@@ -211,8 +170,15 @@
               <button id="settings-save-btn" class="primary">Сохранить</button>
             </div>
             <div id="settings-key-status" class="panel-copy muted-line">Ключ: не загружен</div>
-          </section>
-        </aside>
+          </div>
+
+          <div id="statusbar" class="statusbar">
+            <span id="status-text">Выберите папку проекта</span>
+            <span id="view-text">100%</span>
+            <span id="project-path-label" class="statusbar-path">Папка не выбрана</span>
+            <span id="cache-status-label" class="statusbar-path muted"></span>
+          </div>
+        </main>
       </div>
     </div>
 
@@ -246,6 +212,8 @@
     <script src="../dist/editor.bundle.js"></script>
     <script src="../dist/mermaid.bundle.js"></script>
     <script src="./ui/acts-tree.js"></script>
+    <script src="./canvas/zoom-to-area.js"></script>
+    <script src="./chat/chat-entry.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

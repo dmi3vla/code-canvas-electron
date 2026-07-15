@@ -745,6 +745,80 @@ ipcMain.handle('suggestions:generate', async (_, { recentFiles }) => {
   }
 });
 
+/**
+ * Chat: send a message to the codemap agent (conversational mode).
+ * Uses the existing agent configuration (same API key/model).
+ */
+ipcMain.handle('agent:chatMessage', async (event, { message, context }) => {
+  if (!isConfigured()) {
+    return { ok: false, error: 'API key not configured' };
+  }
+
+  const { generateText } = require('ai');
+  const { getOpenAIClient, getModelName, getLanguage } = require('./src/agent/baseClient');
+  const { loadPrompt } = require('./src/agent/prompts');
+  const { formatCurrentDate, getUserOs } = require('./src/agent/utils');
+
+  const client = getOpenAIClient();
+  const language = getLanguage();
+
+  let systemPrompt = loadPrompt('smart', 'system', {
+    current_date: formatCurrentDate(),
+    user_os: getUserOs(),
+    language,
+    workspace_path: currentProjectPath || 'не выбран'
+  });
+
+  // Add conversational instruction
+  systemPrompt += '\n\n' + [
+    'Ты — ассистент по архитектуре кода в Code Canvas. Отвечай на русском.',
+    'Отвечай кратко и по делу. Если пользователь спрашивает про конкретную ноду или файл,',
+    'используй контекст, переданный в сообщении.',
+    'Ты можешь предложить пользователю сгенерировать codemap (команда Generate) для анализа проекта.',
+    'Не используй инструменты (tools) в разговорном режиме — только текст.'
+  ].join(' ');
+
+  const messages = [{ role: 'system', content: systemPrompt }];
+
+  if (context) {
+    messages.push({
+      role: 'user',
+      content: `Контекст: ${context}`
+    });
+  }
+
+  messages.push({ role: 'user', content: message });
+
+  const sendChunk = (chunk) => {
+    try {
+      event.sender.send('agent:chatChunk', chunk);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  try {
+    const result = await generateText({
+      model: client(getModelName()),
+      messages,
+      onFinish: (params) => {
+        sendChunk({ type: 'finish', finishReason: params.finishReason });
+      }
+    });
+
+    // Stream chunks manually by character-level splitting (simple approach)
+    const fullText = result.text || '';
+    // Send complete text as one chunk for simplicity
+    sendChunk({ type: 'text', content: fullText });
+
+    return { ok: true, text: fullText };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    sendChunk({ type: 'error', error: message });
+    return { ok: false, error: message };
+  }
+});
+
 // Legacy structural import (file graph) — kept as menu fallback
 ipcMain.handle('dialog:pickProject', async () => {
   const result = await dialog.showOpenDialog({
