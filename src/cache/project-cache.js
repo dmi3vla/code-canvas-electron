@@ -83,13 +83,16 @@ async function writeProjectCanvasCache(projectRoot, canvasDoc, codemap) {
   }
 
   const canvasPath = canvasCachePath(projectRoot);
+  const existingVersion = Number(canvasDoc.metadata?.cacheVersion) || 0;
+  // Preserve mermaid-areas layout version (adapter uses >= 3); never downgrade.
+  const cacheVersion = Math.max(existingVersion, 3);
   const payload = {
     ...canvasDoc,
     metadata: {
       ...(canvasDoc.metadata || {}),
       sourceFolder: projectRoot,
       generatedAt: canvasDoc.metadata?.generatedAt || new Date().toISOString(),
-      cacheVersion: 1
+      cacheVersion
     }
   };
 

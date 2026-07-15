@@ -12,6 +12,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // Full GPT generation (stages 1–6) + auto-save to project root
   generateCodemap: (payload) => ipcRenderer.invoke('codemap:generate', payload),
+  retryTrace: (payload) => ipcRenderer.invoke('codemap:retryTrace', payload),
+  retryMermaid: (payload) => ipcRenderer.invoke('codemap:retryMermaid', payload),
+  generateSuggestions: (payload) => ipcRenderer.invoke('suggestions:generate', payload),
   onCodemapProgress: (callback) => {
     const listener = (_, payload) => callback(payload);
     ipcRenderer.on('codemap:progress', listener);

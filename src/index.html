@@ -58,6 +58,10 @@
               rows="3"
               placeholder="Обзор архитектуры и основных потоков выполнения"
             ></textarea>
+            <div class="mode-stack mode-stack-inline" id="agent-mode-stack">
+              <button type="button" id="mode-smart-btn" class="mode-btn active" data-mode="smart">Smart</button>
+              <button type="button" id="mode-fast-btn" class="mode-btn" data-mode="fast">Fast</button>
+            </div>
             <div class="btn-row">
               <button id="generate-codemap-btn" class="primary" disabled title="Multi-stage GPT codemap">
                 Generate
@@ -66,8 +70,14 @@
                 Перегенерировать
               </button>
             </div>
+            <div id="suggestions-list" class="suggestions-list"></div>
+            <div class="btn-row">
+              <button id="refresh-suggestions-btn" type="button" disabled title="Подсказки по недавним файлам">
+                Suggestions
+              </button>
+            </div>
             <div class="panel-copy muted-line" id="generate-hint">
-              После Generate холст пишется в `.code-canvas.canvas` + `.code-canvas.codemap.json` в корне проекта. При повторном открытии кэш грузится без GPT.
+              После Generate: `.code-canvas.canvas` + `.code-canvas.codemap.json` в корне. Повторное открытие — из кэша.
             </div>
           </section>
 
@@ -93,9 +103,22 @@
           <button id="left-sidebar-rail-btn" class="sidebar-rail sidebar-rail-left hidden" title="Показать левую панель">
             Режим
           </button>
+
+          <div class="stage-tabs" id="stage-tabs">
+            <button type="button" class="stage-tab active" data-stage="canvas" id="tab-canvas-btn">Canvas</button>
+            <button type="button" class="stage-tab" data-stage="mermaid" id="tab-mermaid-btn">Mermaid</button>
+            <button type="button" id="regenerate-mermaid-btn" class="stage-tab-action" title="Сгенерировать / перегенерировать mermaid">
+              ↻ Mermaid
+            </button>
+          </div>
+
           <div id="canvas-root" class="canvas-root">
             <svg id="edges-layer" class="edges-layer"></svg>
             <div id="canvas-content" class="canvas-content"></div>
+          </div>
+
+          <div id="mermaid-panel" class="mermaid-panel hidden">
+            <div id="mermaid-mount" class="mermaid-mount"></div>
           </div>
 
           <section id="editor-panel" class="editor-panel hidden">
@@ -221,6 +244,8 @@
     </template>
 
     <script src="../dist/editor.bundle.js"></script>
+    <script src="../dist/mermaid.bundle.js"></script>
+    <script src="./ui/acts-tree.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

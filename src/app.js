@@ -14,6 +14,10 @@ const projectPathLabel = document.getElementById('project-path-label');
 const cacheStatusLabel = document.getElementById('cache-status-label');
 const actsList = document.getElementById('acts-list');
 const codemapQueryInput = document.getElementById('codemap-query-input');
+const suggestionsList = document.getElementById('suggestions-list');
+const mermaidPanel = document.getElementById('mermaid-panel');
+const mermaidMount = document.getElementById('mermaid-mount');
+const canvasRootEl = document.getElementById('canvas-root');
 
 const inspectorEmpty = document.getElementById('inspector-empty');
 const inspectorNode = document.getElementById('inspector-node');
@@ -53,6 +57,12 @@ const buttons = {
   settingsSave: document.getElementById('settings-save-btn'),
   generateCodemap: document.getElementById('generate-codemap-btn'),
   regenerateCodemap: document.getElementById('regenerate-codemap-btn'),
+  refreshSuggestions: document.getElementById('refresh-suggestions-btn'),
+  modeSmart: document.getElementById('mode-smart-btn'),
+  modeFast: document.getElementById('mode-fast-btn'),
+  tabCanvas: document.getElementById('tab-canvas-btn'),
+  tabMermaid: document.getElementById('tab-mermaid-btn'),
+  regenerateMermaid: document.getElementById('regenerate-mermaid-btn'),
   panMode: document.getElementById('pan-mode-btn'),
   linkMode: document.getElementById('link-mode-btn'),
   selectMode: document.getElementById('select-mode-btn'),
@@ -111,8 +121,59 @@ const state = {
   codemap: null,
   projectReady: false,
   cacheHit: false,
-  isGenerating: false
+  isGenerating: false,
+  /** @type {'smart'|'fast'} */
+  agentMode: 'smart',
+  /** @type {'canvas'|'mermaid'} */
+  stageView: 'canvas',
+  /** @type {string[]} paths recently opened in editor / from codemap */
+  recentFiles: [],
+  /** @type {Array<{id:string,text:string,sub?:string}>} */
+  suggestions: []
 };
+
+const RECENT_FILES_KEY = 'code-canvas-recent-files';
+const MAX_RECENT_FILES = 20;
+
+function loadRecentFilesFromSession() {
+  try {
+    const raw = sessionStorage.getItem(RECENT_FILES_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) state.recentFiles = parsed.slice(0, MAX_RECENT_FILES);
+  } catch {
+    /* ignore */
+  }
+}
+
+function persistRecentFiles() {
+  try {
+    sessionStorage.setItem(RECENT_FILES_KEY, JSON.stringify(state.recentFiles.slice(0, MAX_RECENT_FILES)));
+  } catch {
+    /* ignore */
+  }
+}
+
+function trackRecentFile(filePath) {
+  if (!filePath) return;
+  const normalized = String(filePath);
+  state.recentFiles = [normalized, ...state.recentFiles.filter((f) => f !== normalized)].slice(
+    0,
+    MAX_RECENT_FILES
+  );
+  persistRecentFiles();
+}
+
+function trackCodemapPaths(codemap) {
+  if (!codemap?.traces) return;
+  for (const trace of codemap.traces) {
+    for (const loc of trace.locations || []) {
+      if (loc.path) trackRecentFile(loc.path);
+    }
+  }
+}
+
+loadRecentFilesFromSession();
 
 function createId(prefix) {
   return `${prefix}-${Math.random().toString(36).slice(2, 10)}`;
@@ -236,7 +297,132 @@ function renderMarkdown(input = '') {
     .join('')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`(.+?)`/g, '<code>$1</code>');
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(
+      /\[(\d+[a-z])\]/gi,
+      '<button type="button" class="loc-ref" data-loc="$1">$1</button>'
+    );
+}
+
+function focusLocationOnCanvas(locationId, { openEditor = true } = {}) {
+  const id = String(locationId || '').toLowerCase();
+  const node = state.nodes.find(
+    (n) =>
+      String(n.locationId || '').toLowerCase() === id ||
+      n.id === `node-${id}` ||
+      String(n.locationId || '') === locationId
+  );
+  if (!node) {
+    setStatus(`Нода ${locationId} не найдена на canvas`);
+    return false;
+  }
+  select('node', node.id);
+  // Center view roughly on node
+  const rect = root.getBoundingClientRect();
+  state.view.x = rect.width / 2 - (node.x + (node.width || 160) / 2) * state.view.scale;
+  state.view.y = rect.height / 2 - (node.y + (node.height || 100) / 2) * state.view.scale;
+  applyViewTransform();
+  if (openEditor) openNodeInEditor(node);
+  return true;
+}
+
+async function openFileAtLine(filePath, lineNumber) {
+  if (!filePath) return;
+  trackRecentFile(filePath);
+  const synthetic = {
+    type: 'code',
+    title: filePath.split(/[/\\]/).pop() || filePath,
+    path: filePath,
+    anchorLine: lineNumber || null,
+    content: ''
+  };
+  await openNodeInEditor(synthetic);
+}
+
+function setAgentMode(mode) {
+  state.agentMode = mode === 'fast' ? 'fast' : 'smart';
+  buttons.modeSmart?.classList.toggle('active', state.agentMode === 'smart');
+  buttons.modeFast?.classList.toggle('active', state.agentMode === 'fast');
+}
+
+function setStageView(view) {
+  state.stageView = view === 'mermaid' ? 'mermaid' : 'canvas';
+  buttons.tabCanvas?.classList.toggle('active', state.stageView === 'canvas');
+  buttons.tabMermaid?.classList.toggle('active', state.stageView === 'mermaid');
+
+  if (state.stageView === 'mermaid') {
+    mermaidPanel?.classList.remove('hidden');
+    canvasRootEl?.classList.add('stage-hidden');
+    renderMermaidPanel();
+  } else {
+    mermaidPanel?.classList.add('hidden');
+    canvasRootEl?.classList.remove('stage-hidden');
+    if (window.CodeCanvasMermaid?.destroy) {
+      try {
+        window.CodeCanvasMermaid.destroy();
+      } catch {
+        /* ignore */
+      }
+    }
+  }
+}
+
+async function renderMermaidPanel() {
+  if (!mermaidMount || !window.CodeCanvasMermaid) {
+    if (mermaidMount) {
+      mermaidMount.innerHTML =
+        '<div class="mermaid-empty">Mermaid bundle не загружен (dist/mermaid.bundle.js)</div>';
+    }
+    return;
+  }
+  const code = state.codemap?.mermaidDiagram || '';
+  await window.CodeCanvasMermaid.render(mermaidMount, code, {
+    onNodeClick: (stepLabel) => {
+      setStageView('canvas');
+      focusLocationOnCanvas(stepLabel, { openEditor: true });
+    }
+  });
+}
+
+function renderSuggestions() {
+  if (!suggestionsList) return;
+  suggestionsList.innerHTML = '';
+  if (!state.suggestions.length) return;
+  for (const s of state.suggestions) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'suggestion-chip';
+    btn.innerHTML = `<span>${escapeHtml(s.text)}</span>${
+      s.sub ? `<span class="suggestion-sub">${escapeHtml(s.sub)}</span>` : ''
+    }`;
+    btn.addEventListener('click', () => {
+      if (codemapQueryInput) codemapQueryInput.value = s.text;
+      setStatus(`Query: ${s.text}`);
+    });
+    suggestionsList.appendChild(btn);
+  }
+}
+
+async function refreshSuggestions() {
+  if (!window.electronAPI.generateSuggestions) return;
+  if (state.recentFiles.length < 2) {
+    setStatus('Suggestions: откройте ≥2 файлов или сгенерируйте codemap');
+    return;
+  }
+  try {
+    const result = await window.electronAPI.generateSuggestions({
+      recentFiles: state.recentFiles.slice(0, 10)
+    });
+    state.suggestions = result.suggestions || [];
+    renderSuggestions();
+    setStatus(
+      state.suggestions.length
+        ? `Suggestions: ${state.suggestions.length}`
+        : 'Suggestions: модель не предложила тем'
+    );
+  } catch (error) {
+    setStatus(`Suggestions error: ${error.message || error}`);
+  }
 }
 
 function applyViewTransform() {
@@ -653,6 +839,7 @@ async function openNodeInEditor(node) {
       editorMounted = true;
     }
     window.CodeCanvasEditor.openFile(resolvedPath, content, node.anchorLine);
+    trackRecentFile(resolvedPath);
   } catch (err) {
     statusText.textContent = `Не удалось открыть файл: ${err.message || err}`;
   }
@@ -970,6 +1157,15 @@ function updateProjectChrome() {
   if (buttons.generateCodemap) {
     buttons.generateCodemap.disabled = !state.projectReady || busy;
   }
+  if (buttons.regenerateCodemap) {
+    buttons.regenerateCodemap.disabled = !state.projectReady || busy;
+  }
+  if (buttons.refreshSuggestions) {
+    buttons.refreshSuggestions.disabled = !state.projectReady || busy;
+  }
+  if (buttons.regenerateMermaid) {
+    buttons.regenerateMermaid.disabled = !state.codemap || busy;
+  }
 }
 
 function renderActsList(codemap) {
@@ -981,6 +1177,8 @@ function renderActsList(codemap) {
   }
 
   actsList.innerHTML = '';
+  const canRetry = Boolean(codemap.stage12Context) && !state.isGenerating;
+
   for (const trace of codemap.traces) {
     const item = document.createElement('details');
     item.className = 'act-item';
@@ -996,16 +1194,40 @@ function renderActsList(codemap) {
     item.appendChild(desc);
 
     if (trace.traceTextDiagram) {
-      const pre = document.createElement('pre');
-      pre.className = 'act-diagram';
-      pre.textContent = trace.traceTextDiagram;
-      item.appendChild(pre);
+      if (window.ActsTree?.renderTreeElement) {
+        const treeEl = window.ActsTree.renderTreeElement(trace.traceTextDiagram, {
+          onLocation: (locId) => {
+            setStageView('canvas');
+            focusLocationOnCanvas(locId, { openEditor: true });
+          },
+          onFile: (filePath, lineNumber) => {
+            openFileAtLine(filePath, lineNumber);
+          }
+        });
+        item.appendChild(treeEl);
+      } else {
+        const pre = document.createElement('pre');
+        pre.className = 'act-diagram';
+        pre.textContent = trace.traceTextDiagram;
+        item.appendChild(pre);
+      }
     }
 
     if (trace.traceGuide) {
       const guide = document.createElement('div');
       guide.className = 'act-guide';
       guide.innerHTML = renderMarkdown(trace.traceGuide);
+      guide.querySelectorAll('.loc-ref').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const locId = btn.getAttribute('data-loc');
+          if (locId) {
+            setStageView('canvas');
+            focusLocationOnCanvas(locId, { openEditor: true });
+          }
+        });
+      });
       item.appendChild(guide);
     }
 
@@ -1017,31 +1239,97 @@ function renderActsList(codemap) {
       btn.className = 'act-loc-btn';
       btn.textContent = `${loc.id}: ${loc.title || loc.path}:${loc.lineNumber}`;
       btn.addEventListener('click', () => {
-        const node = state.nodes.find(
-          (n) => n.locationId === loc.id || n.id === `node-${loc.id}`
-        );
-        if (node) {
-          select('node', node.id);
-          openNodeInEditor(node);
-        } else {
-          setStatus(`Нода ${loc.id} не найдена на canvas`);
-        }
+        setStageView('canvas');
+        focusLocationOnCanvas(loc.id, { openEditor: true });
       });
       locs.appendChild(btn);
     }
     item.appendChild(locs);
 
+    const retryBtn = document.createElement('button');
+    retryBtn.type = 'button';
+    retryBtn.className = 'act-retry-btn';
+    retryBtn.textContent = canRetry ? 'Retry trace' : 'Retry (нужен stage12)';
+    retryBtn.disabled = !canRetry;
+    retryBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      retryTrace(trace.id);
+    });
+    item.appendChild(retryBtn);
+
     summary.addEventListener('click', () => {
-      // focus first location of this trace on canvas
       const first = (trace.locations || [])[0];
       if (!first) return;
-      const node = state.nodes.find(
-        (n) => n.locationId === first.id || n.traceId === String(trace.id)
-      );
-      if (node) select('node', node.id);
+      setStageView('canvas');
+      focusLocationOnCanvas(first.id, { openEditor: false });
     });
 
     actsList.appendChild(item);
+  }
+}
+
+async function retryTrace(traceId) {
+  if (!state.codemap?.stage12Context) {
+    setStatus('Retry недоступен: нет stage12Context');
+    return;
+  }
+  if (state.isGenerating) return;
+  state.isGenerating = true;
+  updateProjectChrome();
+  setStatus(`Retry trace ${traceId}…`);
+  try {
+    const result = await window.electronAPI.retryTrace({
+      traceId,
+      codemap: state.codemap
+    });
+    if (!result.ok) {
+      setStatus(`Retry error: ${result.error}`);
+      return;
+    }
+    state.codemap = result.codemap;
+    if (result.canvas) loadCanvas(result.canvas);
+    renderActsList(state.codemap);
+    setStatus(`Trace ${traceId} обновлён`);
+  } catch (error) {
+    setStatus(`Retry error: ${error.message || error}`);
+  } finally {
+    state.isGenerating = false;
+    updateProjectChrome();
+    renderActsList(state.codemap);
+  }
+}
+
+async function retryMermaidDiagram() {
+  if (!state.codemap) {
+    setStatus('Нет codemap для mermaid');
+    return;
+  }
+  if (state.isGenerating) return;
+  state.isGenerating = true;
+  updateProjectChrome();
+  setStatus('Генерация Mermaid…');
+  try {
+    const result = await window.electronAPI.retryMermaid({
+      codemap: state.codemap,
+      force: true
+    });
+    if (!result.ok) {
+      setStatus(`Mermaid error: ${result.error}`);
+      return;
+    }
+    state.codemap = result.codemap;
+    if (result.canvas) {
+      loadCanvas(result.canvas);
+      fitView();
+    }
+    renderActsList(state.codemap);
+    setStageView('mermaid');
+    setStatus('Mermaid обновлён');
+  } catch (error) {
+    setStatus(`Mermaid error: ${error.message || error}`);
+  } finally {
+    state.isGenerating = false;
+    updateProjectChrome();
   }
 }
 
@@ -1082,9 +1370,11 @@ async function openProject() {
       loadCanvas(result.canvas);
       // ensure sourceFolder is the opened path even if metadata differs
       state.meta.sourceFolder = result.folderPath;
+      trackCodemapPaths(state.codemap);
       renderActsList(state.codemap);
       fitView();
       updateProjectChrome();
+      if (state.stageView === 'mermaid') renderMermaidPanel();
       const layoutHint = result.canvas?.metadata?.layout || result.canvas?.metadata?.areaSource || '';
       const relayoutHint = result.relayout ? ' · layout: mermaid areas' : '';
       setStatus(
@@ -1235,7 +1525,10 @@ async function runCodemapGenerate({ overwrite = false } = {}) {
   setStatus(`Генерация codemap… · ${query.slice(0, 60)}`);
 
   try {
-    const result = await window.electronAPI.generateCodemap({ query, mode: 'smart' });
+    const result = await window.electronAPI.generateCodemap({
+      query,
+      mode: state.agentMode
+    });
     if (!result.ok) {
       setStatus(`Ошибка генерации: ${result.error}`);
       if (String(result.error || '').toLowerCase().includes('api key')) {
@@ -1251,13 +1544,15 @@ async function runCodemapGenerate({ overwrite = false } = {}) {
     // Final canvas already has mermaid/trace areas from codemapToCanvas
     loadCanvas(result.canvas);
     state.meta.sourceFolder = result.projectRoot || state.meta.sourceFolder;
+    trackCodemapPaths(state.codemap);
     renderActsList(state.codemap);
     fitView();
     updateProjectChrome();
     const layout = result.canvas?.metadata?.layout || result.canvas?.metadata?.areaSource || 'areas';
     setStatus(
-      `Сгенерировано и сохранено · ${layout} · traces: ${result.codemap?.traces?.length || 0} · .code-canvas.canvas`
+      `Сгенерировано (${state.agentMode}) · ${layout} · traces: ${result.codemap?.traces?.length || 0}`
     );
+    if (state.stageView === 'mermaid') renderMermaidPanel();
   } catch (error) {
     setStatus(`Ошибка генерации: ${error.message}`);
   } finally {
@@ -1295,6 +1590,14 @@ function applyCanvasPreview(payload) {
 
 buttons.generateCodemap?.addEventListener('click', () => runCodemapGenerate({ overwrite: false }));
 buttons.regenerateCodemap?.addEventListener('click', () => runCodemapGenerate({ overwrite: true }));
+buttons.refreshSuggestions?.addEventListener('click', () => refreshSuggestions());
+buttons.modeSmart?.addEventListener('click', () => setAgentMode('smart'));
+buttons.modeFast?.addEventListener('click', () => setAgentMode('fast'));
+buttons.tabCanvas?.addEventListener('click', () => setStageView('canvas'));
+buttons.tabMermaid?.addEventListener('click', () => setStageView('mermaid'));
+buttons.regenerateMermaid?.addEventListener('click', () => retryMermaidDiagram());
+setAgentMode(state.agentMode);
+setStageView('canvas');
 
 if (window.electronAPI.onCodemapProgress) {
   window.electronAPI.onCodemapProgress((payload) => {

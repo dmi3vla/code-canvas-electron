@@ -31,7 +31,13 @@ const {
   CODEMAP_CACHE_NAME
 } = require('./src/cache/project-cache');
 const { codemapToCanvas } = require('./src/builder/codemap-adapter');
-const { generateCodemap } = require('./src/agent/codemapAgent');
+const {
+  generateCodemap,
+  retryTraceFromStage12Context,
+  retryMermaidFromStage12Context,
+  generateMermaidFromCodemapSnapshot
+} = require('./src/agent/codemapAgent');
+const { generateSuggestions } = require('./src/agent/suggestionAgent');
 const { isConfigured, refreshConfig } = require('./src/agent/baseClient');
 
 /** @type {boolean} */
@@ -588,6 +594,140 @@ ipcMain.handle('codemap:generate', async (event, { query, mode = 'smart' }) => {
     return { ok: false, error: message };
   } finally {
     isGenerating = false;
+  }
+});
+
+/**
+ * Retry a single trace (stages 3–5) and update project cache.
+ */
+ipcMain.handle('codemap:retryTrace', async (event, { traceId, codemap }) => {
+  if (!currentProjectPath) return { ok: false, error: 'No project open' };
+  if (!codemap?.stage12Context) {
+    return { ok: false, error: 'stage12Context missing — regenerate the codemap first' };
+  }
+  if (isGenerating) return { ok: false, error: 'Generation already in progress' };
+
+  refreshConfig();
+  if (!isConfigured()) {
+    return { ok: false, error: 'API key not configured' };
+  }
+
+  isGenerating = true;
+  const sendProgress = (payload) => {
+    try {
+      event.sender.send('codemap:progress', payload);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  try {
+    sendProgress({ type: 'phase', phase: `Retry trace ${traceId}`, stageNumber: 3 });
+    const result = await retryTraceFromStage12Context(traceId, codemap.stage12Context, {
+      onTraceProcessing: (tid, stage, status) => {
+        sendProgress({ type: 'trace', traceId: tid, stage, status });
+      }
+    });
+
+    if (result.error) return { ok: false, error: result.error };
+
+    const next = JSON.parse(JSON.stringify(codemap));
+    const trace = (next.traces || []).find((t) => String(t.id) === String(traceId));
+    if (!trace) return { ok: false, error: `Trace not found: ${traceId}` };
+    if (result.diagram) trace.traceTextDiagram = result.diagram;
+    if (result.guide) trace.traceGuide = result.guide;
+    next.updatedAt = new Date().toISOString();
+
+    // Keep canvas layout; only codemap sidecar changes for trace text/guide
+    const cache = await readProjectCache(currentProjectPath);
+    const canvas = cache.canvas || codemapToCanvas(next, { sourceFolder: currentProjectPath });
+    await writeProjectCanvasCache(currentProjectPath, canvas, next);
+
+    return { ok: true, codemap: next, canvas };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : String(error) };
+  } finally {
+    isGenerating = false;
+  }
+});
+
+/**
+ * Generate or regenerate mermaid diagram for current codemap.
+ */
+ipcMain.handle('codemap:retryMermaid', async (event, { codemap, force = true }) => {
+  if (!currentProjectPath) return { ok: false, error: 'No project open' };
+  if (!codemap) return { ok: false, error: 'codemap is required' };
+  if (isGenerating) return { ok: false, error: 'Generation already in progress' };
+
+  if (!force && codemap.mermaidDiagram && String(codemap.mermaidDiagram).trim()) {
+    return { ok: true, codemap, skipped: true };
+  }
+
+  refreshConfig();
+  if (!isConfigured()) {
+    return { ok: false, error: 'API key not configured' };
+  }
+
+  isGenerating = true;
+  const sendProgress = (payload) => {
+    try {
+      event.sender.send('codemap:progress', payload);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  try {
+    sendProgress({ type: 'phase', phase: 'Mermaid Diagram', stageNumber: 6 });
+    const result = codemap.stage12Context
+      ? await retryMermaidFromStage12Context(codemap.stage12Context)
+      : await generateMermaidFromCodemapSnapshot(codemap);
+
+    if (result.error) return { ok: false, error: result.error };
+    if (!result.diagram) return { ok: false, error: 'No mermaid diagram returned' };
+
+    const next = {
+      ...codemap,
+      mermaidDiagram: result.diagram,
+      updatedAt: new Date().toISOString()
+    };
+
+    const canvas = codemapToCanvas(next, {
+      sourceFolder: currentProjectPath,
+      query: next.query || null
+    });
+    await writeProjectCanvasCache(currentProjectPath, canvas, next);
+
+    sendProgress({
+      type: 'canvas-preview',
+      title: next.title,
+      traces: next.traces?.length || 0,
+      layout: canvas.metadata?.layout || null,
+      hasMermaid: true,
+      canvas,
+      codemap: next,
+      final: true
+    });
+
+    return { ok: true, codemap: next, canvas };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : String(error) };
+  } finally {
+    isGenerating = false;
+  }
+});
+
+/**
+ * Suggest codemap topics from recent file paths.
+ */
+ipcMain.handle('suggestions:generate', async (_, { recentFiles }) => {
+  refreshConfig();
+  if (!isConfigured()) return { ok: true, suggestions: [] };
+  try {
+    const suggestions = await generateSuggestions(recentFiles || []);
+    return { ok: true, suggestions };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : String(error), suggestions: [] };
   }
 });
 

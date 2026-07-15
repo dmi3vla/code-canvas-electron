@@ -26,6 +26,7 @@ const {
   formatCurrentDate,
   getUserOs
 } = require('./utils');
+const { colorizeMermaidDiagram } = require('./mermaidColorize');
 
 function log(...args) {
   console.log('[codemapAgent]', ...args);
@@ -39,11 +40,36 @@ function buildSystemPrompt(mode, variables) {
   return base;
 }
 
-async function processTraceStages(traceId, systemPrompt, baseMessages, currentDate, language, callbacks = {}) {
+/**
+ * Serialize conversation turns for stage12Context (JSON-safe string content only).
+ */
+function serializeBaseMessages(messages) {
+  return messages
+    .filter((m) => m && (m.role === 'user' || m.role === 'assistant'))
+    .map((m) => ({
+      role: m.role,
+      content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content)
+    }));
+}
+
+/**
+ * @param {object} options
+ * @param {boolean} [options.includeGuide=true]
+ */
+async function processTraceStages(
+  traceId,
+  systemPrompt,
+  baseMessages,
+  currentDate,
+  language,
+  callbacks = {},
+  options = { includeGuide: true }
+) {
   const client = getOpenAIClient();
   const messages = [...baseMessages];
   let diagram;
   let guide;
+  const includeGuide = options.includeGuide !== false;
 
   try {
     callbacks.onTraceProcessing?.(traceId, 3, 'start');
@@ -75,20 +101,22 @@ async function processTraceStages(traceId, systemPrompt, baseMessages, currentDa
     }
     callbacks.onTraceProcessing?.(traceId, 4, 'complete');
 
-    callbacks.onTraceProcessing?.(traceId, 5, 'start');
-    messages.push({
-      role: 'user',
-      content: loadTraceStagePrompt(5, traceId, { current_date: currentDate, language })
-    });
-    const stage5 = await generateText({
-      model: client(getModelName()),
-      system: systemPrompt,
-      messages
-    });
-    if (stage5.text) {
-      guide = extractTraceGuide(stage5.text) || undefined;
+    if (includeGuide) {
+      callbacks.onTraceProcessing?.(traceId, 5, 'start');
+      messages.push({
+        role: 'user',
+        content: loadTraceStagePrompt(5, traceId, { current_date: currentDate, language })
+      });
+      const stage5 = await generateText({
+        model: client(getModelName()),
+        system: systemPrompt,
+        messages
+      });
+      if (stage5.text) {
+        guide = extractTraceGuide(stage5.text) || undefined;
+      }
+      callbacks.onTraceProcessing?.(traceId, 5, 'complete');
     }
-    callbacks.onTraceProcessing?.(traceId, 5, 'complete');
 
     return { traceId, diagram, guide };
   } catch (error) {
@@ -113,7 +141,8 @@ async function processMermaidDiagram(systemPrompt, baseMessages, currentDate, la
       messages
     });
     if (!result.text) return { error: 'No text in mermaid response' };
-    const diagram = extractMermaidDiagram(result.text) || undefined;
+    const extracted = extractMermaidDiagram(result.text) || undefined;
+    const diagram = extracted ? colorizeMermaidDiagram(extracted) : undefined;
     return { diagram };
   } catch (error) {
     return { error: error instanceof Error ? error.message : String(error) };
@@ -153,6 +182,8 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
   const messages = [];
   let resultCodemap = null;
   let mermaidPromise = null;
+  /** @type {object|null} */
+  let stage12Context = null;
 
   callbacks.onMessage?.('system', `Starting ${mode} codemap generation...`);
 
@@ -242,15 +273,7 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
 
       const extracted = extractCodemapFromResponse(stage2Result.text);
       if (extracted) {
-        resultCodemap = {
-          ...extracted,
-          query,
-          workspacePath: workspaceRoot,
-          mode
-        };
-        callbacks.onCodemapUpdate?.(resultCodemap);
-
-        callbacks.onStage12ContextReady?.({
+        stage12Context = {
           schemaVersion: 1,
           createdAt: new Date().toISOString(),
           query,
@@ -259,11 +282,18 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
           currentDate,
           language,
           systemPrompt,
-          baseMessages: messages.map((m) => ({
-            role: m.role,
-            content: String(m.content)
-          }))
-        });
+          baseMessages: serializeBaseMessages(messages)
+        };
+
+        resultCodemap = {
+          ...extracted,
+          query,
+          workspacePath: workspaceRoot,
+          mode,
+          stage12Context
+        };
+        callbacks.onCodemapUpdate?.(resultCodemap);
+        callbacks.onStage12ContextReady?.(stage12Context);
 
         // Mermaid in parallel: as soon as it lands, push layout update (subgraph areas)
         mermaidPromise = processMermaidDiagram(
@@ -319,12 +349,18 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
       }
 
       // Final structural update (guides/diagrams on traces + mermaid areas)
+      if (stage12Context) {
+        resultCodemap.stage12Context = stage12Context;
+      }
       callbacks.onCodemapUpdate?.(resultCodemap);
     }
 
     callbacks.onPhaseChange?.('Complete', 7);
     callbacks.onMessage?.('system', 'Codemap generation complete.');
     log('COMPLETE', resultCodemap.title, 'traces=', resultCodemap.traces?.length);
+    if (stage12Context) {
+      resultCodemap.stage12Context = stage12Context;
+    }
     return resultCodemap;
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
@@ -333,4 +369,91 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
   }
 }
 
-module.exports = { generateCodemap };
+/**
+ * Retry stages 3–5 for one trace using saved Stage 1–2 context.
+ */
+async function retryTraceFromStage12Context(traceId, context, callbacks = {}) {
+  if (!context?.systemPrompt || !Array.isArray(context.baseMessages)) {
+    return { error: 'Invalid stage12Context' };
+  }
+  const result = await processTraceStages(
+    traceId,
+    context.systemPrompt,
+    context.baseMessages,
+    context.currentDate || formatCurrentDate(),
+    context.language || getLanguage(),
+    callbacks,
+    { includeGuide: true }
+  );
+  return { diagram: result.diagram, guide: result.guide, error: result.error };
+}
+
+/**
+ * Retry global Mermaid (stage 6) from stage12 context.
+ */
+async function retryMermaidFromStage12Context(context, callbacks = {}) {
+  if (!context?.systemPrompt || !Array.isArray(context.baseMessages)) {
+    return { error: 'Invalid stage12Context' };
+  }
+  return processMermaidDiagram(
+    context.systemPrompt,
+    context.baseMessages,
+    context.currentDate || formatCurrentDate(),
+    context.language || getLanguage(),
+    callbacks
+  );
+}
+
+/**
+ * Generate Mermaid from codemap snapshot when stage12Context is missing.
+ */
+async function generateMermaidFromCodemapSnapshot(codemap, callbacks = {}) {
+  try {
+    const workspaceRoot = codemap.workspacePath || '';
+    const currentDate = formatCurrentDate();
+    const language = getLanguage();
+    const workspaceLayout = workspaceRoot ? generateWorkspaceLayout(workspaceRoot) : '';
+    const workspaceUri = workspaceRoot.replace(/\\/g, '\\\\');
+    const corpusName = workspaceRoot.replace(/\\/g, '/');
+    const mode = codemap.mode === 'fast' ? 'fast' : 'smart';
+
+    const systemPrompt = buildSystemPrompt(mode, {
+      workspace_root: workspaceRoot,
+      workspace_layout: workspaceLayout,
+      workspace_uri: workspaceUri,
+      corpus_name: corpusName,
+      user_os: getUserOs(),
+      language
+    });
+
+    const snapshot = JSON.stringify(
+      {
+        title: codemap.title,
+        description: codemap.description,
+        traces: codemap.traces
+      },
+      null,
+      2
+    );
+
+    const baseMessages = [
+      {
+        role: 'user',
+        content:
+          `Here is the codemap snapshot as JSON. Use it as the source of truth.\n\n` +
+          `\`\`\`json\n${snapshot}\n\`\`\``
+      }
+    ];
+
+    return processMermaidDiagram(systemPrompt, baseMessages, currentDate, language, callbacks);
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : String(error) };
+  }
+}
+
+module.exports = {
+  generateCodemap,
+  retryTraceFromStage12Context,
+  retryMermaidFromStage12Context,
+  generateMermaidFromCodemapSnapshot
+};

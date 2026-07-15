@@ -1,20 +1,23 @@
 {
   "name": "code-canvas-electron",
   "version": "0.1.0",
-  "description": "Standalone Electron app that combines infinite canvas editing with code canvas style project visualization.",
+  "description": "Electron desktop: infinite canvas + Windsurf-style semantic GPT codemap (acts, areas, mermaid).",
   "main": "main.js",
   "scripts": {
     "start": "env -u ELECTRON_RUN_AS_NODE electron .",
     "dev": "env -u ELECTRON_RUN_AS_NODE electron .",
     "start:safe-gpu": "env -u ELECTRON_RUN_AS_NODE electron . --disable-gpu-vsync",
     "build:editor": "esbuild src/editor/editor-entry.js --bundle --minify --format=iife --outfile=dist/editor.bundle.js",
-    "prestart": "npm run build:editor"
+    "build:mermaid": "esbuild src/ui/mermaid-entry.js --bundle --minify --format=iife --outfile=dist/mermaid.bundle.js",
+    "build": "npm run build:editor && npm run build:mermaid",
+    "prestart": "npm run build"
   },
   "keywords": [
     "electron",
     "canvas",
+    "codemap",
     "code-visualization",
-    "obsidian-canvas",
+    "mermaid",
     "infinite-canvas"
   ],
   "author": "Trae Design",
@@ -31,6 +34,8 @@
     "@codemirror/theme-one-dark": "^6.1.3",
     "ai": "^4.3.19",
     "codemirror": "^6.0.2",
+    "mermaid": "^11.16.0",
+    "svg-pan-zoom": "^3.6.2",
     "zod": "^3.25.76"
   }
 }
