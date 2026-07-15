@@ -2,3 +2,8 @@ node_modules
 dist
 build
 *.log
+
+# Project-local semantic cache (absolute paths, regenerable)
+.code-canvas.canvas
+.code-canvas.codemap.json
+.code-canvas.*

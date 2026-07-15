@@ -332,16 +332,30 @@ async function scanProject(folderPath) {
 }
 
 /**
- * Resolve a file path for reading: absolute as-is, relative via project root.
+ * Resolve a path for reading and enforce project sandbox.
+ * Absolute paths (as produced by codemap locations) are allowed only if they
+ * resolve inside the open project root — never trust .canvas path fields blindly.
  */
 function resolveReadPath(targetPath, projectRoot = currentProjectPath) {
   if (!targetPath) throw new Error('path is required');
-  if (path.isAbsolute(targetPath)) return targetPath;
+
   const root = projectRoot || currentProjectPath;
-  if (!root) throw new Error('relative path requires an open project');
-  // strip leading ./
-  const cleaned = targetPath.replace(/^\.\//, '');
-  return path.resolve(root, cleaned);
+  if (!root) {
+    throw new Error('Open a project before reading files');
+  }
+
+  const rootResolved = path.resolve(root);
+  const resolved = path.isAbsolute(targetPath)
+    ? path.resolve(targetPath)
+    : path.resolve(rootResolved, String(targetPath).replace(/^\.\//, ''));
+
+  // path.relative escapes as ".." or absolute (other drive on Windows)
+  const rel = path.relative(rootResolved, resolved);
+  if (rel.startsWith('..') || path.isAbsolute(rel)) {
+    throw new Error('Path is outside the open project');
+  }
+
+  return resolved;
 }
 
 // ─── Project open (cache-first) ─────────────────────────────────
