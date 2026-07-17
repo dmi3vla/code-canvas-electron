@@ -14,6 +14,14 @@ const AREA_PAD_Y = 28;
 const AREA_TITLE_H = 44;
 const AREA_GAP_Y = 72;
 
+// Layered layout tuning (Windsurf/mermaid-style flow inside each area)
+const NODE_H_MIN = 170;
+const NODE_H_MAX = 340;
+const NODE_H_STEP = 28;
+const LAYER_GAP_X = 44; // horizontal gap between sibling cards in a layer
+const LAYER_GAP_Y = 60; // vertical gap between layers
+const MAX_LAYER_WIDTH_TARGET = NODE_WIDTH * 3 + LAYER_GAP_X * 2; // wrap wide layers
+
 /**
  * Windsurf rainbow cycle for area fills (dark UI, translucent).
  * Order matches mermaidColorize / mermaidPlaceholders.
@@ -100,6 +108,188 @@ function packGrid(items, opts = {}) {
     rowH.reduce((s, h) => s + h, 0) + vSpacing * Math.max(0, rows - 1);
 
   return { positions, width, height, cols, rows };
+}
+
+/**
+ * Estimate a card's rendered height from its textual content so that long
+ * descriptions get taller nodes instead of overflowing a fixed grid cell.
+ */
+function estimateNodeHeight(location) {
+  const lineContent = String(location?.lineContent || '');
+  const description = String(location?.description || '');
+  // Header + subtitle + code line ~ base
+  let h = NODE_H_MIN;
+  // description contributes most of the variable height
+  if (description) {
+    const approxCharsPerLine = 42;
+    const lines = description.split(/\r?\n/).reduce((acc, ln) => {
+      return acc + Math.max(1, Math.ceil(ln.length / approxCharsPerLine));
+    }, 0);
+    h += Math.min(lines, 10) * 18;
+  }
+  if (lineContent && lineContent.length > 60) h += NODE_H_STEP;
+  return Math.max(NODE_H_MIN, Math.min(NODE_H_MAX, Math.round(h)));
+}
+
+/**
+ * Layered (Sugiyama-lite) layout inside an area.
+ *
+ * Builds a DAG from `internalEdges` (mermaid edges whose both endpoints are
+ * in this area), assigns each node to a layer using longest-path from
+ * sources, then places layers as vertical rows. Wide layers wrap when they
+ * exceed MAX_LAYER_WIDTH_TARGET.
+ *
+ * Cycles: the edge that closes a cycle is ignored for layering (its arrow
+ * still renders as a normal edge later).
+ *
+ * @param {Array<{locationId:string, width:number, height:number}>} items
+ *   Items in trace-defined order; used as fallback when no edges exist.
+ * @param {Array<{from:string, to:string}>} internalEdges
+ * @returns {{ positions: Map<string,{x:number,y:number}>, width:number, height:number }}
+ */
+function layeredLayout(items, internalEdges) {
+  if (!items.length) {
+    return { positions: new Map(), width: 0, height: 0 };
+  }
+
+  const byId = new Map(items.map((it) => [it.locationId, it]));
+  const outgoing = new Map(items.map((it) => [it.locationId, []]));
+  const incoming = new Map(items.map((it) => [it.locationId, []]));
+
+  // Filter edges to those with both endpoints inside this area
+  const edges = [];
+  for (const e of internalEdges || []) {
+    if (!byId.has(e.from) || !byId.has(e.to) || e.from === e.to) continue;
+    edges.push(e);
+    outgoing.get(e.from).push(e.to);
+    incoming.get(e.to).push(e.from);
+  }
+
+  // Longest-path layer assignment with cycle guard.
+  // We do a memoized DFS; if we revisit a node in the current stack, we
+  // treat the back-edge as absent for layering purposes.
+  const layer = new Map();
+  const inProgress = new Set();
+
+  function computeLayer(id) {
+    if (layer.has(id)) return layer.get(id);
+    if (inProgress.has(id)) return 0; // break cycle
+    inProgress.add(id);
+    let best = 0;
+    for (const pred of incoming.get(id) || []) {
+      best = Math.max(best, computeLayer(pred) + 1);
+    }
+    inProgress.delete(id);
+    layer.set(id, best);
+    return best;
+  }
+
+  for (const it of items) computeLayer(it.locationId);
+
+  // Group by layer, preserving the original (trace) order inside each layer
+  const layersMap = new Map();
+  items.forEach((it, idx) => {
+    const l = layer.get(it.locationId) ?? 0;
+    if (!layersMap.has(l)) layersMap.set(l, []);
+    layersMap.get(l).push({ ...it, orderIndex: idx });
+  });
+
+  // Within a layer, order by (avg predecessor x-slot, orderIndex). We compute
+  // slot after the first pass; for the top layer we use orderIndex.
+  const sortedLayerKeys = [...layersMap.keys()].sort((a, b) => a - b);
+  /** @type {Map<string,{row:number,col:number}>} */
+  const slot = new Map();
+
+  sortedLayerKeys.forEach((lk, layerIdx) => {
+    const bucket = layersMap.get(lk);
+    if (layerIdx === 0) {
+      bucket.sort((a, b) => a.orderIndex - b.orderIndex);
+    } else {
+      bucket.sort((a, b) => {
+        const preds = incoming.get(a.locationId) || [];
+        const predsB = incoming.get(b.locationId) || [];
+        const centerA =
+          preds.reduce((s, p) => s + (slot.get(p)?.col ?? 0), 0) /
+          Math.max(1, preds.length);
+        const centerB =
+          predsB.reduce((s, p) => s + (slot.get(p)?.col ?? 0), 0) /
+          Math.max(1, predsB.length);
+        if (centerA !== centerB) return centerA - centerB;
+        return a.orderIndex - b.orderIndex;
+      });
+    }
+    bucket.forEach((it, col) => {
+      slot.set(it.locationId, { row: layerIdx, col });
+    });
+  });
+
+  // Now assign real coordinates. Layers stack vertically. Cards in the same
+  // layer sit side by side; if a layer's total width exceeds
+  // MAX_LAYER_WIDTH_TARGET we wrap into sub-rows (still stays inside the area).
+  const positions = new Map();
+  let cursorY = 0;
+  let totalWidth = 0;
+
+  sortedLayerKeys.forEach((lk, layerIdx) => {
+    const bucket = layersMap.get(lk);
+    // wrap into sub-rows
+    const subRows = [[]];
+    let subRowWidth = 0;
+    for (const it of bucket) {
+      const w = it.width;
+      const projected =
+        subRowWidth + (subRows[subRows.length - 1].length ? LAYER_GAP_X : 0) + w;
+      if (
+        subRows[subRows.length - 1].length &&
+        projected > MAX_LAYER_WIDTH_TARGET
+      ) {
+        subRows.push([it]);
+        subRowWidth = w;
+      } else {
+        subRows[subRows.length - 1].push(it);
+        subRowWidth = projected;
+      }
+    }
+
+    for (const row of subRows) {
+      const rowW =
+        row.reduce((s, it) => s + it.width, 0) +
+        LAYER_GAP_X * Math.max(0, row.length - 1);
+      const rowH = row.reduce((h, it) => Math.max(h, it.height), 0);
+      // center each row within the widest row of this layer (visual balance)
+      let x = 0;
+      for (const it of row) {
+        positions.set(it.locationId, { x, y: cursorY });
+        x += it.width + LAYER_GAP_X;
+      }
+      totalWidth = Math.max(totalWidth, rowW);
+      cursorY += rowH + LAYER_GAP_Y;
+    }
+  });
+
+  // Trim trailing gap
+  cursorY = Math.max(0, cursorY - LAYER_GAP_Y);
+
+  // Second pass: horizontally center each row within totalWidth so the whole
+  // area reads like a balanced flow rather than left-aligned columns.
+  const rowsByY = new Map();
+  for (const [id, pos] of positions) {
+    if (!rowsByY.has(pos.y)) rowsByY.set(pos.y, []);
+    rowsByY.get(pos.y).push({ id, pos });
+  }
+  for (const [, list] of rowsByY) {
+    const ids = list.map((r) => r.id);
+    const rowW =
+      ids.reduce((s, id) => s + byId.get(id).width, 0) +
+      LAYER_GAP_X * Math.max(0, ids.length - 1);
+    const offset = Math.max(0, (totalWidth - rowW) / 2);
+    for (const { id } of list) {
+      const p = positions.get(id);
+      positions.set(id, { x: p.x + offset, y: p.y });
+    }
+  }
+
+  return { positions, width: totalWidth, height: cursorY };
 }
 
 /**
