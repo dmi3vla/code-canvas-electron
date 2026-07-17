@@ -105,50 +105,6 @@
             <div id="chat-panel-mount" class="chat-panel-mount"></div>
           </section>
 
-          <div id="inspector-popover" class="inspector-popover hidden">
-            <div class="inspector-popover-header">
-              <span>Инспектор</span>
-              <button id="inspector-popover-close-btn" title="Закрыть">✕</button>
-            </div>
-            <div id="inspector-empty" class="panel-copy">
-              Выберите ноду или связь, чтобы редактировать свойства.
-            </div>
-
-            <div id="inspector-node" class="inspector-block hidden">
-              <label class="field">
-                <span>Заголовок</span>
-                <input id="node-title-input" type="text" />
-              </label>
-              <label class="field">
-                <span>Тип</span>
-                <select id="node-type-input">
-                  <option value="text">Text</option>
-                  <option value="code">Code</option>
-                  <option value="file">File</option>
-                  <option value="group">Group / Area</option>
-                </select>
-              </label>
-              <label class="field">
-                <span>Подзаголовок / путь</span>
-                <input id="node-subtitle-input" type="text" />
-              </label>
-              <label class="field">
-                <span>Содержимое</span>
-                <textarea id="node-content-input" rows="8"></textarea>
-              </label>
-              <button id="open-in-editor-btn" class="hidden" style="width: 100%; margin-top: 8px;">
-                Открыть в редакторе ↗
-              </button>
-            </div>
-
-            <div id="inspector-edge" class="inspector-block hidden">
-              <label class="field">
-                <span>Подпись связи</span>
-                <input id="edge-label-input" type="text" />
-              </label>
-            </div>
-          </div>
-
           <div id="settings-popover" class="inspector-popover hidden">
             <div class="inspector-popover-header">
               <span>AI / GPT Settings</span>

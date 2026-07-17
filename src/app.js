@@ -17,18 +17,6 @@ const textPanel = document.getElementById('text-panel');
 const textMount = document.getElementById('text-mount');
 const canvasRootEl = document.getElementById('canvas-root');
 
-const inspectorPopover = document.getElementById('inspector-popover');
-const inspectorEmpty = document.getElementById('inspector-empty');
-const inspectorNode = document.getElementById('inspector-node');
-const inspectorEdge = document.getElementById('inspector-edge');
-const nodeTitleInput = document.getElementById('node-title-input');
-const nodeTypeInput = document.getElementById('node-type-input');
-const nodeSubtitleInput = document.getElementById('node-subtitle-input');
-const nodeContentInput = document.getElementById('node-content-input');
-const edgeLabelInput = document.getElementById('edge-label-input');
-const openInEditorBtn = document.getElementById('open-in-editor-btn');
-const inspectorPopoverCloseBtn = document.getElementById('inspector-popover-close-btn');
-
 const settingsPopover = document.getElementById('settings-popover');
 const settingsPopoverCloseBtn = document.getElementById('settings-popover-close-btn');
 
@@ -604,7 +592,6 @@ function highlightActForNode(node) {
 
 function select(selectionType, id) {
   state.selection = { type: selectionType, id };
-  renderInspector();
   render();
   if (selectionType === 'node') {
     highlightActForNode(getNodeById(id));
@@ -613,7 +600,6 @@ function select(selectionType, id) {
 
 function clearSelection() {
   state.selection = { type: null, id: null };
-  renderInspector();
   render();
 }
 
@@ -921,8 +907,7 @@ function renderNode(node) {
     event.stopPropagation();
     select('node', node.id);
     if (node.type === 'file' || node.type === 'code') {
-      nodeContentInput.focus();
-      nodeContentInput.setSelectionRange(nodeContentInput.value.length, nodeContentInput.value.length);
+      openNodeInEditor(node);
     }
   });
 
@@ -1163,81 +1148,6 @@ function closeEditorPanel() {
     try { chatInstance.destroy(); } catch { /* ignore */ }
     chatInstance = null;
     chatMounted = false;
-  }
-}
-
-function renderInspector() {
-  inspectorEmpty.classList.add('hidden');
-  inspectorNode.classList.add('hidden');
-  inspectorEdge.classList.add('hidden');
-
-  if (state.selection.type === 'node') {
-    const node = getNodeById(state.selection.id);
-    if (!node) return;
-    inspectorNode.classList.remove('hidden');
-    nodeTitleInput.value = node.title || '';
-    nodeTypeInput.value = node.type || 'text';
-    nodeSubtitleInput.value = node.subtitle || node.path || '';
-    nodeContentInput.value = node.content || '';
-
-    if ((node.type === 'file' || node.type === 'code') && node.path) {
-      openInEditorBtn.classList.remove('hidden');
-      openInEditorBtn.onclick = () => openNodeInEditor(node);
-    } else {
-      openInEditorBtn.classList.add('hidden');
-      openInEditorBtn.onclick = null;
-    }
-    positionInspectorPopover(node);
-    return;
-  }
-
-  if (state.selection.type === 'edge') {
-    const edge = getEdgeById(state.selection.id);
-    if (!edge) return;
-    inspectorEdge.classList.remove('hidden');
-    edgeLabelInput.value = edge.label || '';
-    hideInspectorPopover();
-    return;
-  }
-
-  hideInspectorPopover();
-  inspectorEmpty.classList.remove('hidden');
-}
-
-function positionInspectorPopover(node) {
-  if (!inspectorPopover || !node) return;
-  const nodeEl = contentLayer.querySelector(`[data-node-id="${node.id}"]`);
-  if (!nodeEl) {
-    hideInspectorPopover();
-    return;
-  }
-
-  const nodeRect = nodeEl.getBoundingClientRect();
-  const canvasRect = canvasRootEl.getBoundingClientRect();
-
-  let left = nodeRect.right + 12;
-  let top = nodeRect.top;
-
-  // Keep popover within canvas bounds
-  const popoverWidth = 280;
-  if (left + popoverWidth > canvasRect.right - 12) {
-    left = nodeRect.left - popoverWidth - 12;
-  }
-  if (top + 420 > canvasRect.bottom) {
-    top = Math.max(8, canvasRect.bottom - 420);
-  }
-  if (top < canvasRect.top) {
-    top = canvasRect.top + 8;
-  }
-
-  inspectorPopover.style.left = `${left - canvasRect.left}px`;
-  inspectorPopover.style.top = `${top - canvasRect.top}px`;
-  inspectorPopover.classList.remove('hidden');
-}
-
-function hideInspectorPopover() {
-  if (inspectorPopover) {
-    inspectorPopover.classList.add('hidden');
   }
 }
 
@@ -2106,11 +2016,6 @@ buttons.panMode.addEventListener('click', () => setMode('pan'));
 buttons.linkMode.addEventListener('click', () => setMode('link'));
 buttons.selectMode.addEventListener('click', () => setMode('select'));
 
-// Inspector popover close button
-if (inspectorPopoverCloseBtn) {
-  inspectorPopoverCloseBtn.addEventListener('click', hideInspectorPopover);
-}
-
 // Settings popover close button
 if (settingsPopoverCloseBtn) {
   settingsPopoverCloseBtn.addEventListener('click', () => {
@@ -2121,18 +2026,12 @@ if (settingsPopoverCloseBtn) {
 // Close popovers on Escape
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
-    hideInspectorPopover();
     if (settingsPopover) settingsPopover.classList.add('hidden');
   }
 });
 
 // Close popovers on click outside
 document.addEventListener('mousedown', (event) => {
-  if (inspectorPopover && !inspectorPopover.classList.contains('hidden')) {
-    if (!inspectorPopover.contains(event.target) && !event.target.closest('.node')) {
-      hideInspectorPopover();
-    }
-  }
   if (settingsPopover && !settingsPopover.classList.contains('hidden')) {
     if (!settingsPopover.contains(event.target) && event.target !== buttons.settings) {
       settingsPopover.classList.add('hidden');
@@ -2147,41 +2046,6 @@ if (breadcrumbRootBtn) {
     zoomOutToFull();
   });
 }
-
-nodeTitleInput.addEventListener('input', () => {
-  const node = getNodeById(state.selection.id);
-  if (!node) return;
-  node.title = nodeTitleInput.value;
-  render();
-});
-
-nodeTypeInput.addEventListener('change', () => {
-  const node = getNodeById(state.selection.id);
-  if (!node) return;
-  node.type = nodeTypeInput.value;
-  render();
-});
-
-nodeSubtitleInput.addEventListener('input', () => {
-  const node = getNodeById(state.selection.id);
-  if (!node) return;
-  node.subtitle = nodeSubtitleInput.value;
-  render();
-});
-
-nodeContentInput.addEventListener('input', () => {
-  const node = getNodeById(state.selection.id);
-  if (!node) return;
-  node.content = nodeContentInput.value;
-  render();
-});
-
-edgeLabelInput.addEventListener('input', () => {
-  const edge = getEdgeById(state.selection.id);
-  if (!edge) return;
-  edge.label = edgeLabelInput.value;
-  renderEdges();
-});
 
 root.addEventListener('mousedown', (event) => {
   const targetNode = event.target.closest('.node');
@@ -2370,7 +2234,6 @@ async function init() {
   state.cacheHit = false;
   showSplash();
   updateProjectChrome();
-  renderInspector();
   render();
   renderActsList(null);
 
