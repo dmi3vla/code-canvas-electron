@@ -13,6 +13,8 @@ const codemapQueryInput = document.getElementById('codemap-query-input');
 const suggestionsList = document.getElementById('suggestions-list');
 const mermaidPanel = document.getElementById('mermaid-panel');
 const mermaidMount = document.getElementById('mermaid-mount');
+const textPanel = document.getElementById('text-panel');
+const textMount = document.getElementById('text-mount');
 const canvasRootEl = document.getElementById('canvas-root');
 
 const inspectorPopover = document.getElementById('inspector-popover');
@@ -72,6 +74,7 @@ const buttons = {
   modeFast: document.getElementById('mode-fast-btn'),
   tabCanvas: document.getElementById('tab-canvas-btn'),
   tabMermaid: document.getElementById('tab-mermaid-btn'),
+  tabText: document.getElementById('tab-text-btn'),
   regenerateMermaid: document.getElementById('regenerate-mermaid-btn'),
   panMode: document.getElementById('pan-mode-btn'),
   linkMode: document.getElementById('link-mode-btn'),
@@ -350,24 +353,34 @@ function setAgentMode(mode) {
 }
 
 function setStageView(view) {
-  state.stageView = view === 'mermaid' ? 'mermaid' : 'canvas';
+  if (view === 'mermaid') state.stageView = 'mermaid';
+  else if (view === 'text') state.stageView = 'text';
+  else state.stageView = 'canvas';
+
   buttons.tabCanvas?.classList.toggle('active', state.stageView === 'canvas');
   buttons.tabMermaid?.classList.toggle('active', state.stageView === 'mermaid');
+  buttons.tabText?.classList.toggle('active', state.stageView === 'text');
 
-  if (state.stageView === 'mermaid') {
-    mermaidPanel?.classList.remove('hidden');
-    canvasRootEl?.classList.add('stage-hidden');
+  const showMermaid = state.stageView === 'mermaid';
+  const showText = state.stageView === 'text';
+  const showCanvas = state.stageView === 'canvas';
+
+  mermaidPanel?.classList.toggle('hidden', !showMermaid);
+  textPanel?.classList.toggle('hidden', !showText);
+  canvasRootEl?.classList.toggle('stage-hidden', !showCanvas);
+
+  if (showMermaid) {
     renderMermaidPanel();
-  } else {
-    mermaidPanel?.classList.add('hidden');
-    canvasRootEl?.classList.remove('stage-hidden');
-    if (window.CodeCanvasMermaid?.destroy) {
-      try {
-        window.CodeCanvasMermaid.destroy();
-      } catch {
-        /* ignore */
-      }
+  } else if (window.CodeCanvasMermaid?.destroy) {
+    try {
+      window.CodeCanvasMermaid.destroy();
+    } catch {
+      /* ignore */
     }
+  }
+
+  if (showText) {
+    renderTextPanel();
   }
 }
 
@@ -386,6 +399,107 @@ async function renderMermaidPanel() {
       focusLocationOnCanvas(stepLabel, { openEditor: true });
     }
   });
+}
+
+function renderTextPanel() {
+  if (!textMount) return;
+  const codemap = state.codemap;
+  textMount.innerHTML = '';
+
+  if (!codemap || !Array.isArray(codemap.traces) || codemap.traces.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'text-empty';
+    empty.textContent = 'Нет codemap. Откройте проект с кэшем или сгенерируйте карту.';
+    textMount.appendChild(empty);
+    return;
+  }
+
+  if (codemap.title) {
+    const h1 = document.createElement('h1');
+    h1.className = 'text-title';
+    h1.textContent = codemap.title;
+    textMount.appendChild(h1);
+  }
+  if (codemap.query) {
+    const q = document.createElement('div');
+    q.className = 'text-query';
+    q.textContent = codemap.query;
+    textMount.appendChild(q);
+  }
+
+  for (const trace of codemap.traces) {
+    const section = document.createElement('section');
+    section.className = 'text-trace';
+
+    const h2 = document.createElement('h2');
+    h2.className = 'text-trace-title';
+    h2.textContent = `${trace.id}. ${trace.title || 'Trace'}`;
+    section.appendChild(h2);
+
+    if (trace.description) {
+      const desc = document.createElement('div');
+      desc.className = 'text-trace-desc';
+      desc.textContent = trace.description;
+      section.appendChild(desc);
+    }
+
+    if (trace.traceTextDiagram) {
+      if (window.ActsTree?.renderTreeElement) {
+        const treeEl = window.ActsTree.renderTreeElement(trace.traceTextDiagram, {
+          onLocation: (locId) => {
+            setStageView('canvas');
+            focusLocationOnCanvas(locId, { openEditor: true });
+          },
+          onFile: (filePath, lineNumber) => {
+            openFileAtLine(filePath, lineNumber);
+          }
+        });
+        section.appendChild(treeEl);
+      } else {
+        const pre = document.createElement('pre');
+        pre.className = 'text-trace-diagram';
+        pre.textContent = trace.traceTextDiagram;
+        section.appendChild(pre);
+      }
+    }
+
+    if (trace.traceGuide) {
+      const guide = document.createElement('div');
+      guide.className = 'text-trace-guide';
+      guide.innerHTML = renderMarkdown(trace.traceGuide);
+      guide.querySelectorAll('.loc-ref').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const locId = btn.getAttribute('data-loc');
+          if (locId) {
+            setStageView('canvas');
+            focusLocationOnCanvas(locId, { openEditor: true });
+          }
+        });
+      });
+      section.appendChild(guide);
+    }
+
+    if (Array.isArray(trace.locations) && trace.locations.length) {
+      const locs = document.createElement('div');
+      locs.className = 'text-trace-locations';
+      for (const loc of trace.locations) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'text-loc-btn';
+        btn.textContent = `${loc.id}: ${loc.title || loc.path}:${loc.lineNumber}`;
+        btn.addEventListener('click', () => {
+          setStageView('canvas');
+          focusLocationOnCanvas(loc.id, { openEditor: true });
+        });
+        locs.appendChild(btn);
+      }
+      section.appendChild(locs);
+    }
+
+    textMount.appendChild(section);
+  }
 }
 
 function renderSuggestions() {
@@ -1934,6 +2048,7 @@ buttons.modeSmart?.addEventListener('click', () => setAgentMode('smart'));
 buttons.modeFast?.addEventListener('click', () => setAgentMode('fast'));
 buttons.tabCanvas?.addEventListener('click', () => setStageView('canvas'));
 buttons.tabMermaid?.addEventListener('click', () => setStageView('mermaid'));
+buttons.tabText?.addEventListener('click', () => setStageView('text'));
 buttons.regenerateMermaid?.addEventListener('click', () => retryMermaidDiagram());
 setAgentMode(state.agentMode);
 setStageView('canvas');

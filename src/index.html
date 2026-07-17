@@ -71,6 +71,7 @@
           <div class="stage-tabs" id="stage-tabs">
             <button type="button" class="stage-tab active" data-stage="canvas" id="tab-canvas-btn">Canvas</button>
             <button type="button" class="stage-tab" data-stage="mermaid" id="tab-mermaid-btn">Mermaid</button>
+            <button type="button" class="stage-tab" data-stage="text" id="tab-text-btn">Text</button>
             <button type="button" id="regenerate-mermaid-btn" class="stage-tab-action" title="Сгенерировать / перегенерировать mermaid">
               ↻ Mermaid
             </button>
@@ -88,6 +89,10 @@
 
           <div id="mermaid-panel" class="mermaid-panel hidden">
             <div id="mermaid-mount" class="mermaid-mount"></div>
+          </div>
+
+          <div id="text-panel" class="text-panel hidden">
+            <div id="text-mount" class="text-mount"></div>
           </div>
 
           <section id="editor-panel" class="editor-panel hidden">
