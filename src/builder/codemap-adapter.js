@@ -34,6 +34,75 @@ function paletteForIndex(index) {
 }
 
 /**
+ * Grid packer (ported from code-canvas plugin `Grid` layout).
+ *
+ * Arranges items in a compact grid instead of a single long row, so that a
+ * frame full of dependencies reads like the reference codemap area (proto2):
+ * roughly square, tightly packed, variable-sized cells.
+ *
+ * @param {Array<{width:number,height:number}>} items
+ * @param {{ hSpacing?:number, vSpacing?:number, cols?:number, aspectRatio?:number }} [opts]
+ * @returns {{ positions: Array<{x:number,y:number}>, width:number, height:number, cols:number, rows:number }}
+ */
+function packGrid(items, opts = {}) {
+  const hSpacing = opts.hSpacing ?? (COL_WIDTH - NODE_WIDTH);
+  const vSpacing = opts.vSpacing ?? AREA_GAP_Y;
+  const n = items.length;
+  if (!n) return { positions: [], width: 0, height: 0, cols: 0, rows: 0 };
+
+  // Column count: caller override, aspect-ratio fit, or a balanced square.
+  let cols;
+  if (opts.cols && opts.cols > 0) {
+    cols = Math.min(opts.cols, n);
+  } else if (opts.aspectRatio && opts.aspectRatio > 0) {
+    const avgW = items.reduce((s, it) => s + it.width, 0) / n;
+    const avgH = items.reduce((s, it) => s + it.height, 0) / n;
+    let best = Math.ceil(Math.sqrt(n));
+    let bestDiff = Infinity;
+    for (let c = 1; c <= n; c++) {
+      const rowsW = c * avgW;
+      const ratio = (Math.ceil(n / c) * avgH) / Math.max(rowsW, 1);
+      const diff = Math.abs(ratio - opts.aspectRatio);
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        best = c;
+      }
+    }
+    cols = best;
+  } else {
+    cols = Math.ceil(Math.sqrt(n));
+  }
+
+  const rows = Math.ceil(n / cols);
+  const colW = new Array(cols).fill(0);
+  const rowH = new Array(rows).fill(0);
+  items.forEach((it, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    colW[col] = Math.max(colW[col], it.width);
+    rowH[row] = Math.max(rowH[row], it.height);
+  });
+
+  const positions = [];
+  for (let i = 0; i < n; i++) {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    let x = 0;
+    for (let c = 0; c < col; c++) x += colW[c] + hSpacing;
+    let y = 0;
+    for (let r = 0; r < row; r++) y += rowH[r] + vSpacing;
+    positions.push({ x, y });
+  }
+
+  const width =
+    colW.reduce((s, w) => s + w, 0) + hSpacing * Math.max(0, cols - 1);
+  const height =
+    rowH.reduce((s, h) => s + h, 0) + vSpacing * Math.max(0, rows - 1);
+
+  return { positions, width, height, cols, rows };
+}
+
+/**
  * Map mermaid node ids (e1, a2) → location ids (1a, 2b) from labels:
  *   e1["1a: Process start"]
  */
@@ -245,22 +314,41 @@ function codemapToCanvas(codemap, options = {}) {
   const nodes = [];
   const edges = [];
   const locationIdToNodeId = new Map();
-  let cursorY = 0;
 
-  areas.forEach((area) => {
+  // Pre-compute inner grid + frame size for each area, then pack the frames
+  // themselves into a grid so they read side-by-side like proto2's right pane.
+  const areaPlans = areas
+    .map((area) => {
+      const locations = area.locationIds
+        .map((id) => byId.get(id))
+        .filter(Boolean);
+      if (!locations.length) return null;
+      const innerGrid = packGrid(
+        locations.map(() => ({ width: NODE_WIDTH, height: NODE_HEIGHT })),
+        { hSpacing: COL_WIDTH - NODE_WIDTH, vSpacing: AREA_GAP_Y }
+      );
+      return {
+        area,
+        locations,
+        innerGrid,
+        width: innerGrid.width + AREA_PAD_X * 2,
+        height: innerGrid.height + AREA_TITLE_H + AREA_PAD_Y * 2
+      };
+    })
+    .filter(Boolean);
+
+  const framesLayout = packGrid(
+    areaPlans.map((p) => ({ width: p.width, height: p.height })),
+    { hSpacing: AREA_GAP_Y, vSpacing: AREA_GAP_Y, aspectRatio: 1 }
+  );
+
+  areaPlans.forEach((plan, planIndex) => {
+    const { area, locations, innerGrid } = plan;
     const palette = paletteForIndex(area.index);
-    const locations = area.locationIds
-      .map((id) => byId.get(id))
-      .filter(Boolean);
-
-    if (!locations.length) return;
-
-    const contentWidth =
-      Math.max(1, locations.length) * COL_WIDTH - (COL_WIDTH - NODE_WIDTH);
-    const areaWidth = contentWidth + AREA_PAD_X * 2;
-    const areaHeight = AREA_TITLE_H + AREA_PAD_Y * 2 + NODE_HEIGHT;
-    const areaX = 0;
-    const areaY = cursorY;
+    const areaX = framesLayout.positions[planIndex].x;
+    const areaY = framesLayout.positions[planIndex].y;
+    const areaWidth = plan.width;
+    const areaHeight = plan.height;
 
     nodes.push({
       id: area.areaId,
@@ -303,8 +391,8 @@ function codemapToCanvas(codemap, options = {}) {
         color: palette.accent,
         language: guessLanguage(location.path),
         content: [location.lineContent, location.description].filter(Boolean).join('\n'),
-        x: areaX + AREA_PAD_X + locIndex * COL_WIDTH,
-        y: areaY + AREA_TITLE_H + AREA_PAD_Y,
+        x: areaX + AREA_PAD_X + innerGrid.positions[locIndex].x,
+        y: areaY + AREA_TITLE_H + AREA_PAD_Y + innerGrid.positions[locIndex].y,
         width: NODE_WIDTH,
         height: NODE_HEIGHT,
         zIndex: 1
@@ -324,8 +412,6 @@ function codemapToCanvas(codemap, options = {}) {
         });
       }
     });
-
-    cursorY += areaHeight + AREA_GAP_Y;
   });
 
   // Cross-area (and any labeled) edges from mermaid — prefer these over pure linear glue
@@ -450,6 +536,7 @@ function recomputeAreaBounds(nodes, options = {}) {
 module.exports = {
   TRACE_AREA_PALETTE,
   paletteForIndex,
+  packGrid,
   codemapToCanvas,
   extractMermaidEdges,
   extractMermaidSubgraphs,

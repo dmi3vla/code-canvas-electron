@@ -815,6 +815,14 @@ function renderNode(node) {
   contentLayer.appendChild(fragment);
 }
 
+function slugForPath(p) {
+  return String(p || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 96);
+}
+
 async function openNodeInEditor(node) {
   if (!node || node.type === 'group') {
     setStatus(node?.title ? `Область: ${node.title}` : 'Группа без файла');
@@ -834,23 +842,131 @@ async function openNodeInEditor(node) {
   }
 
   try {
-    const result = await window.electronAPI.readTextFile(node.path);
-    const content = result.content;
-    const resolvedPath = result.path || node.path;
-    editorPanelTitle.textContent = node.anchorLine
-      ? `${resolvedPath}:${node.anchorLine}`
-      : resolvedPath;
-    editorPanel.classList.remove('hidden');
-    resetEditorChatLayout();
-    if (!editorMounted) {
-      window.CodeCanvasEditor.mount(editorPanelMount);
-      editorMounted = true;
+    const filePath = node.path;
+    const slug = slugForPath(filePath);
+    const areaId = `area-deps-${slug}`;
+
+    // Не плодим дубли: если фрейм зависимостей для этого файла уже есть — зум
+    const existingFrame = state.nodes.find(
+      (n) => n.type === 'group' && (n.id === areaId || n.areaId === areaId)
+    );
+    if (existingFrame) {
+      trackRecentFile(filePath);
+      zoomToArea(areaId, existingFrame.title || filePath.split(/[/\\]/).pop());
+      setStatus(`Фрейм уже открыт: ${existingFrame.title}`);
+      return;
     }
-    window.CodeCanvasEditor.openFile(resolvedPath, content, node.anchorLine);
-    trackRecentFile(resolvedPath);
-    mountChat();
+
+    // Читаем главный файл + ближайшие зависимости (impl из main.js).
+    const result = await window.electronAPI.readFileWithDeps(filePath, 8);
+    const mainPath = result.main.path || filePath;
+    const mainName = mainPath.split(/[/\\]/).pop() || mainPath;
+    const files = [
+      { path: mainPath, content: result.main.content, isMain: true },
+      ...(result.dependencies || []).map((dep) => ({
+        path: dep.path,
+        content: dep.content,
+        isMain: false
+      }))
+    ];
+
+    // Раскладка карточек в гриде внутри нового фрейма (proto2)
+    const NODE_W = 320;
+    const NODE_H = 210;
+    const PAD_X = 40;
+    const PAD_Y = 28;
+    const TITLE_H = 44;
+    const H_GAP = 40;
+    const V_GAP = 72;
+    const AREA_GAP = 72;
+
+    const cols = Math.max(1, Math.ceil(Math.sqrt(files.length)));
+    const rows = Math.ceil(files.length / cols);
+    const areaW = PAD_X * 2 + cols * NODE_W + Math.max(0, cols - 1) * H_GAP;
+    const areaH = TITLE_H + PAD_Y * 2 + rows * NODE_H + Math.max(0, rows - 1) * V_GAP;
+
+    // Ставим фрейм справа от всего, что уже есть на канвасе
+    let originX = 0;
+    let originY = 0;
+    const otherNodes = state.nodes.filter((n) => n.type !== 'group');
+    if (otherNodes.length) {
+      originX = Math.max(...otherNodes.map((n) => n.x + (n.width || NODE_W))) + AREA_GAP;
+      originY = Math.min(...otherNodes.map((n) => n.y));
+    }
+
+    const existingAreasCount = state.nodes.filter((n) => n.type === 'group').length;
+    const palette = paletteForIndex(existingAreasCount);
+
+    state.nodes.push({
+      id: areaId,
+      type: 'group',
+      title: mainName,
+      subtitle: mainPath,
+      content: '',
+      x: originX,
+      y: originY,
+      width: areaW,
+      height: areaH,
+      areaId,
+      color: palette.accent,
+      fill: palette.fill,
+      border: palette.border,
+      zIndex: 0
+    });
+
+    const createdNodes = [];
+    files.forEach((f, i) => {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      const fname = f.path.split(/[/\\]/).pop() || f.path;
+      const created = {
+        id: f.isMain
+          ? `node-deps-main-${slug}`
+          : `node-deps-${slug}-${i}-${slugForPath(f.path)}`,
+        type: 'code',
+        title: fname,
+        subtitle: f.path,
+        path: f.path,
+        content: f.content || '',
+        areaId,
+        color: palette.accent,
+        x: originX + PAD_X + col * (NODE_W + H_GAP),
+        y: originY + TITLE_H + PAD_Y + row * (NODE_H + V_GAP),
+        width: NODE_W,
+        height: NODE_H,
+        isDepsMain: f.isMain,
+        zIndex: 1
+      };
+      state.nodes.push(created);
+      createdNodes.push(created);
+    });
+
+    // Стрелки: главный файл → каждая зависимость
+    const main = createdNodes.find((n) => n.isDepsMain);
+    if (main) {
+      for (const dep of createdNodes) {
+        if (dep === main) continue;
+        state.edges.push({
+          id: `edge-deps-${main.id}-${dep.id}`,
+          fromNode: main.id,
+          fromSide: 'right',
+          toNode: dep.id,
+          toSide: 'left',
+          label: 'imports'
+        });
+      }
+    }
+
+    trackRecentFile(mainPath);
+    render();
+    zoomToArea(areaId, mainName);
+    setStatus(
+      `Фрейм: ${mainName} + ${result.dependencies?.length || 0} зависимост${
+        (result.dependencies?.length || 0) === 1 ? 'ь' : 'ей'
+      }`
+    );
   } catch (err) {
-    statusText.textContent = `Не удалось открыть файл: ${err.message || err}`;
+    setStatus(`Не удалось открыть файл: ${err.message || err}`);
   }
 }
 
@@ -1049,26 +1165,56 @@ function autoLayout() {
       if (!byArea.has(key)) byArea.set(key, []);
       byArea.get(key).push(node);
     }
-    const COL = 360;
+    const NODE_W = 320;
     const NODE_H = 210;
     const PAD_X = 40;
     const PAD_Y = 28;
     const TITLE_H = 44;
-    const GAP_Y = 72;
-    let cursorY = 0;
-    let idx = 0;
+    const H_GAP = 40;
+    const V_GAP = 72;
+    const AREA_GAP = 72;
+
+    // Plan each area's inner grid + frame size, then grid-pack the frames
+    // themselves so they read side-by-side like proto2's right pane.
+    const areaPlans = [];
     for (const [, children] of byArea) {
       children.sort((a, b) => String(a.locationId || a.id).localeCompare(String(b.locationId || b.id)));
-      const palette = paletteForIndex(idx);
-      children.forEach((node, i) => {
-        node.x = PAD_X + i * COL;
-        node.y = cursorY + TITLE_H + PAD_Y;
+      const cols = Math.max(1, Math.ceil(Math.sqrt(children.length)));
+      const rows = Math.ceil(children.length / cols);
+      const areaW = PAD_X * 2 + cols * NODE_W + Math.max(0, cols - 1) * H_GAP;
+      const areaH = TITLE_H + PAD_Y * 2 + rows * NODE_H + Math.max(0, rows - 1) * V_GAP;
+      areaPlans.push({ children, cols, width: areaW, height: areaH });
+    }
+
+    const framesCols = Math.max(1, Math.ceil(Math.sqrt(areaPlans.length)));
+    const framesRows = Math.ceil(areaPlans.length / framesCols);
+    const colW = new Array(framesCols).fill(0);
+    const rowH = new Array(framesRows).fill(0);
+    areaPlans.forEach((p, i) => {
+      const c = i % framesCols;
+      const r = Math.floor(i / framesCols);
+      colW[c] = Math.max(colW[c], p.width);
+      rowH[r] = Math.max(rowH[r], p.height);
+    });
+
+    areaPlans.forEach((plan, i) => {
+      const c = i % framesCols;
+      const r = Math.floor(i / framesCols);
+      let ax = 0;
+      for (let k = 0; k < c; k++) ax += colW[k] + AREA_GAP;
+      let ay = 0;
+      for (let k = 0; k < r; k++) ay += rowH[k] + AREA_GAP;
+
+      const palette = paletteForIndex(i);
+      plan.children.forEach((node, j) => {
+        const col = j % plan.cols;
+        const row = Math.floor(j / plan.cols);
+        node.x = ax + PAD_X + col * (NODE_W + H_GAP);
+        node.y = ay + TITLE_H + PAD_Y + row * (NODE_H + V_GAP);
         node.color = palette.accent;
       });
-      const areaH = TITLE_H + PAD_Y * 2 + NODE_H;
-      cursorY += areaH + GAP_Y;
-      idx += 1;
-    }
+    });
+
     // drop old groups — ensureTraceAreas rebuilds them from areaId
     state.nodes = state.nodes.filter((n) => n.type !== 'group');
   } else {
@@ -1107,6 +1253,9 @@ function fitView() {
   setStatus('Вид подогнан под содержимое');
 }
 
+/** Cancellation token for zoom animation race protection */
+let zoomToken = 0;
+
 /** Zoom to a specific area with animation */
 function zoomToArea(areaId, areaTitle) {
   if (!window.ZoomToArea) return;
@@ -1116,6 +1265,7 @@ function zoomToArea(areaId, areaTitle) {
     return;
   }
 
+  const myToken = ++zoomToken;
   const viewportSize = { width: root.clientWidth, height: root.clientHeight };
   const toViewport = window.ZoomToArea.fitViewportToBounds(bounds, viewportSize, 60);
 
@@ -1134,6 +1284,7 @@ function zoomToArea(areaId, areaTitle) {
     toViewport,
     350,
     (v) => {
+      if (myToken !== zoomToken) return; // cancelled by newer call
       state.view.x = v.x;
       state.view.y = v.y;
       state.view.scale = v.scale;
@@ -1141,6 +1292,7 @@ function zoomToArea(areaId, areaTitle) {
       renderEdges();
     },
     () => {
+      if (myToken !== zoomToken) return;
       render();
       setStatus(`Zoom: ${areaTitle || areaId}`);
     }
@@ -1151,6 +1303,7 @@ function zoomToArea(areaId, areaTitle) {
 function zoomOutToFull() {
   if (!state.zoomState || !window.ZoomToArea) return;
 
+  const myToken = ++zoomToken;
   const toViewport = state.zoomState.fromViewport;
   state.zoomState = null;
 
@@ -1163,6 +1316,7 @@ function zoomOutToFull() {
     toViewport,
     350,
     (v) => {
+      if (myToken !== zoomToken) return;
       state.view.x = v.x;
       state.view.y = v.y;
       state.view.scale = v.scale;
@@ -1170,6 +1324,7 @@ function zoomOutToFull() {
       renderEdges();
     },
     () => {
+      if (myToken !== zoomToken) return;
       render();
       setStatus('Общий вид');
     }

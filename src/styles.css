@@ -216,6 +216,8 @@ button.active {
 .canvas-stage {
   position: relative;
   overflow: hidden;
+  flex: 1;
+  min-height: 0;
 }
 
 .canvas-root {
@@ -318,12 +320,63 @@ button.active {
 
 .editor-panel-mount {
   flex: 1;
-  overflow: auto;
+  overflow: hidden;
   min-height: 120px;
+  display: flex;
+  flex-direction: column;
 }
 
-.editor-panel-mount .cm-editor {
+.editor-view-host {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+
+.editor-view-host .cm-editor {
   height: 100%;
+}
+
+/* ── Editor tabs (главный файл + зависимости) ─────────── */
+
+.editor-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px 6px 0;
+  background: rgba(8, 12, 24, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex: 0 0 auto;
+}
+
+.editor-tab {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  color: #9aa4c2;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 11px;
+  padding: 5px 10px;
+  max-width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.editor-tab:hover {
+  color: #d7ddf0;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.editor-tab.active {
+  color: #eaf0ff;
+  background: #12172a;
+  border-color: rgba(89, 164, 255, 0.5);
+}
+
+.editor-tab-label {
+  pointer-events: none;
 }
 
 /* ── Chat panel inside editor ───────────────────────── */
@@ -778,12 +831,6 @@ button.active {
   stroke-dasharray: 8 6;
 }
 
-@media (max-width: 1280px) {
-  .main-layout {
-    grid-template-columns: 240px minmax(0, 1fr) 280px;
-  }
-}
-
 /* ── Phase 1: splash, settings, acts ─────────────────────────── */
 
 .project-splash {
@@ -1086,9 +1133,6 @@ button.active {
 }
 
 /* Stage tabs + mermaid panel */
-.canvas-stage {
-  position: relative;
-}
 
 .stage-tabs {
   position: absolute;

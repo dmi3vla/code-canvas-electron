@@ -29,6 +29,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openCanvas: () => ipcRenderer.invoke('dialog:openCanvas'),
 
   readTextFile: (targetPath) => ipcRenderer.invoke('file:readText', targetPath),
+  readFileWithDeps: (targetPath, limit) =>
+    ipcRenderer.invoke('file:readWithDeps', targetPath, limit),
+  writeTextFile: (targetPath, content) =>
+    ipcRenderer.invoke('file:writeText', targetPath, content),
   getVersion: () => ipcRenderer.invoke('app:getVersion'),
 
   // Windsurf-compatible settings (~/.cometix/codemap/settings.json)

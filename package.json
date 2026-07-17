@@ -4,9 +4,9 @@
   "description": "Electron desktop: infinite canvas + Windsurf-style semantic GPT codemap (acts, areas, mermaid).",
   "main": "main.js",
   "scripts": {
-    "start": "env -u ELECTRON_RUN_AS_NODE electron .",
-    "dev": "env -u ELECTRON_RUN_AS_NODE electron .",
-    "start:safe-gpu": "env -u ELECTRON_RUN_AS_NODE electron . --disable-gpu-vsync",
+    "start": "env -u ELECTRON_RUN_AS_NODE electron . --no-sandbox",
+    "dev": "env -u ELECTRON_RUN_AS_NODE electron . --no-sandbox",
+    "start:safe-gpu": "env -u ELECTRON_RUN_AS_NODE electron . --no-sandbox --disable-gpu-vsync",
     "build:editor": "esbuild src/editor/editor-entry.js --bundle --minify --format=iife --outfile=dist/editor.bundle.js",
     "build:mermaid": "esbuild src/ui/mermaid-entry.js --bundle --minify --format=iife --outfile=dist/mermaid.bundle.js",
     "build": "npm run build:editor && npm run build:mermaid",

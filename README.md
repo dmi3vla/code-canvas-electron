@@ -49,6 +49,8 @@ npm install
 npm start
 ```
 
+На Linux, если при запуске появляется ошибка `chrome-sandbox` / `SIGTRAP`, можно один раз выполнить `sudo chmod 4755 node_modules/electron/dist/chrome-sandbox` (после переустановки `electron` права могут сброситься) или использовать npm-скрипты проекта — в них для локальной разработки передаётся `--no-sandbox`.
+
 Сборка бандлов (editor + mermaid) идёт в `prestart` / `npm run build`.
 
 ## Workflow

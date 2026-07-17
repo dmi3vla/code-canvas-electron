@@ -51,7 +51,7 @@
     padding = padding || 40;
     const scaleX = (viewportSize.width - padding * 2) / Math.max(1, bounds.width);
     const scaleY = (viewportSize.height - padding * 2) / Math.max(1, bounds.height);
-    const scale = Math.min(1, Math.min(scaleX, scaleY));
+    const scale = Math.min(scaleX, scaleY);
     const cx = bounds.x + bounds.width / 2;
     const cy = bounds.y + bounds.height / 2;
     return {

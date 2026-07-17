@@ -199,6 +199,85 @@ function resolveImportPath(baseDir, fromFile, rawImport) {
   return absoluteCandidates.map((abs) => normalizeRel(baseDir, abs));
 }
 
+/**
+ * Resolve the nearest dependencies of a file by parsing its own
+ * import / require / #include statements (outgoing edges → header/interface
+ * files the node uses). Returns a de-duplicated list of absolute paths that
+ * exist on disk and resolve inside the open project sandbox.
+ *
+ * @param {string} absoluteFilePath absolute path of the source file
+ * @param {string} content source text of the file
+ * @param {number} [limit=8] maximum number of dependencies to return
+ * @returns {Promise<string[]>} absolute paths of dependency files
+ */
+async function resolveNearestDependencies(absoluteFilePath, content, limit = 8) {
+  const fromDir = path.dirname(absoluteFilePath);
+  const raw = [];
+
+  const importRegex = /import\s+(?:[\s\S]*?\s+from\s+)?['"]([^'"]+)['"]/g;
+  const requireRegex = /require\(\s*['"]([^'"]+)['"]\s*\)/g;
+  const dynamicImportRegex = /import\(\s*['"]([^'"]+)['"]\s*\)/g;
+  const pythonFromRegex = /^\s*from\s+([.\w]+)\s+import/gm;
+  const pythonImportRegex = /^\s*import\s+([.\w]+)/gm;
+  const includeRegex = /^\s*#\s*include\s+["<]([^">]+)[">]/gm;
+
+  for (const m of content.matchAll(importRegex)) raw.push({ spec: m[1], lang: 'js' });
+  for (const m of content.matchAll(requireRegex)) raw.push({ spec: m[1], lang: 'js' });
+  for (const m of content.matchAll(dynamicImportRegex)) raw.push({ spec: m[1], lang: 'js' });
+  for (const m of content.matchAll(pythonFromRegex)) raw.push({ spec: m[1], lang: 'py' });
+  for (const m of content.matchAll(pythonImportRegex)) raw.push({ spec: m[1], lang: 'py' });
+  for (const m of content.matchAll(includeRegex)) raw.push({ spec: m[1], lang: 'c' });
+
+  const jsExts = ['', '.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs'];
+  const jsIndex = ['index.js', 'index.ts', 'index.tsx', 'index.jsx'];
+  const seen = new Set();
+  const resolved = [];
+
+  for (const { spec, lang } of raw) {
+    if (resolved.length >= limit) break;
+    const candidates = [];
+
+    if (lang === 'js') {
+      if (!spec.startsWith('.')) continue; // skip bare/package specifiers
+      for (const ext of jsExts) candidates.push(path.resolve(fromDir, spec + ext));
+      for (const idx of jsIndex) candidates.push(path.resolve(fromDir, spec, idx));
+    } else if (lang === 'py') {
+      if (!spec.startsWith('.')) continue;
+      const rel = spec.replace(/\./g, path.sep);
+      candidates.push(path.resolve(fromDir, `${rel}.py`));
+      candidates.push(path.resolve(fromDir, rel, '__init__.py'));
+    } else if (lang === 'c') {
+      // headers are usually relative to the including file or a nearby include dir
+      candidates.push(path.resolve(fromDir, spec));
+      candidates.push(path.resolve(fromDir, 'include', spec));
+      candidates.push(path.resolve(fromDir, '..', 'include', spec));
+    }
+
+    for (const candidate of candidates) {
+      if (seen.has(candidate)) continue;
+      // sandbox: dependency must resolve inside the open project
+      let safe;
+      try {
+        safe = resolveReadPath(candidate);
+      } catch {
+        continue;
+      }
+      let stat;
+      try {
+        stat = await fs.stat(safe);
+      } catch {
+        continue;
+      }
+      if (!stat.isFile()) continue;
+      seen.add(candidate);
+      resolved.push(safe);
+      break; // first existing candidate for this spec wins
+    }
+  }
+
+  return resolved.slice(0, limit);
+}
+
 function parseDependencies(baseDir, relPath, content) {
   const edges = [];
   const importRegex = /import\s+(?:[\s\S]*?\s+from\s+)?['"]([^'"]+)['"]/g;
@@ -878,6 +957,38 @@ ipcMain.handle('file:readText', async (_, targetPath) => {
   const absolute = resolveReadPath(targetPath);
   const content = await fs.readFile(absolute, 'utf8');
   return { content, path: absolute };
+});
+
+/**
+ * Open a file together with its nearest dependencies (header/interface files
+ * it imports). Returns the main file first, then up to `limit` dependency files
+ * that exist inside the project sandbox.
+ */
+ipcMain.handle('file:readWithDeps', async (_, targetPath, limit = 8) => {
+  const absolute = resolveReadPath(targetPath);
+  const content = await fs.readFile(absolute, 'utf8');
+  const main = { path: absolute, content };
+
+  let dependencies = [];
+  try {
+    const depPaths = await resolveNearestDependencies(absolute, content, limit);
+    dependencies = await Promise.all(
+      depPaths.map(async (depPath) => ({
+        path: depPath,
+        content: await fs.readFile(depPath, 'utf8')
+      }))
+    );
+  } catch {
+    dependencies = [];
+  }
+
+  return { main, dependencies };
+});
+
+ipcMain.handle('file:writeText', async (_, targetPath, content) => {
+  const absolute = resolveReadPath(targetPath);
+  await fs.writeFile(absolute, String(content ?? ''), 'utf8');
+  return { path: absolute };
 });
 
 // ─── Settings (windsurf-compatible) ─────────────────────────────
