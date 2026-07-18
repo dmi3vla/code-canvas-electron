@@ -1,0 +1,3 @@
+Explore the installed packages to answer:
+<user_prompt>Карта пакетов Ubuntu: домены и autoremove</user_prompt>
+The 'workspace' is the APT snapshot below. Use it as ground truth; do not invent packages.

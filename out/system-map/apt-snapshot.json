@@ -1,0 +1,3613 @@
+{
+  "total_installed": 1816,
+  "manual_count": 153,
+  "auto_count": 1638,
+  "autoremove_count": 9,
+  "top_sections": [
+    [
+      "libs",
+      837
+    ],
+    [
+      "python",
+      168
+    ],
+    [
+      "admin",
+      124
+    ],
+    [
+      "libdevel",
+      112
+    ],
+    [
+      "utils",
+      98
+    ],
+    [
+      "gnome",
+      67
+    ],
+    [
+      "devel",
+      54
+    ],
+    [
+      "introspection",
+      44
+    ],
+    [
+      "misc",
+      42
+    ],
+    [
+      "net",
+      42
+    ],
+    [
+      "perl",
+      26
+    ],
+    [
+      "fonts",
+      19
+    ],
+    [
+      "editors",
+      18
+    ],
+    [
+      "x11",
+      17
+    ],
+    [
+      "oldlibs",
+      16
+    ],
+    [
+      "text",
+      14
+    ],
+    [
+      "kernel",
+      14
+    ],
+    [
+      "otherosfs",
+      12
+    ],
+    [
+      "graphics",
+      9
+    ],
+    [
+      "interpreters",
+      9
+    ]
+  ],
+  "packages": [
+    {
+      "name": "cursor",
+      "version": "3.12.17-1784259156",
+      "size": 985106432,
+      "priority": "optional",
+      "section": "devel",
+      "status": "manual",
+      "summary": "The AI Code Editor."
+    },
+    {
+      "name": "devin-desktop",
+      "version": "3.4.27-1783378423",
+      "size": 972520448,
+      "priority": "optional",
+      "section": "devel",
+      "status": "manual",
+      "summary": "Tomorrow's Editor, Today."
+    },
+    {
+      "name": "code",
+      "version": "1.129.1-1784303641",
+      "size": 962225152,
+      "priority": "optional",
+      "section": "devel",
+      "status": "manual",
+      "summary": "Code editing. Redefined."
+    },
+    {
+      "name": "claude-desktop",
+      "version": "1.22209.0",
+      "size": 535248896,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "Desktop application for Claude.ai"
+    },
+    {
+      "name": "zcode",
+      "version": "3.2.5-2316",
+      "size": 474682368,
+      "priority": "optional",
+      "section": "default",
+      "status": "manual",
+      "summary": ""
+    },
+    {
+      "name": "google-chrome-stable",
+      "version": "150.0.7871.128-1",
+      "size": 434821120,
+      "priority": "optional",
+      "section": "web",
+      "status": "manual",
+      "summary": "The web browser from Google"
+    },
+    {
+      "name": "obsidian",
+      "version": "1.12.7",
+      "size": 321465344,
+      "priority": "optional",
+      "section": "default",
+      "status": "manual",
+      "summary": ""
+    },
+    {
+      "name": "firefox",
+      "version": "152.0.6+build1-0ubuntu0.24.04.1~mt1",
+      "size": 305410048,
+      "priority": "optional",
+      "section": "web",
+      "status": "manual",
+      "summary": "Safe and easy web browser from Mozilla"
+    },
+    {
+      "name": "fonts-noto-core",
+      "version": "20201225-2",
+      "size": 43572224,
+      "priority": "optional",
+      "section": "fonts",
+      "status": "manual",
+      "summary": "\"No Tofu\" font families with large Unicode coverage (core)"
+    },
+    {
+      "name": "cmake",
+      "version": "3.28.3-1build7",
+      "size": 37368832,
+      "priority": "optional",
+      "section": "devel",
+      "status": "manual",
+      "summary": "cross-platform, open-source make system"
+    },
+    {
+      "name": "libreoffice-help-ru",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 31625216,
+      "priority": "optional",
+      "section": "doc",
+      "status": "manual",
+      "summary": "office productivity suite -- Russian help"
+    },
+    {
+      "name": "libicu55",
+      "version": "55.1-7",
+      "size": 30816256,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "International Components for Unicode"
+    },
+    {
+      "name": "gimp",
+      "version": "2.10.36-3ubuntu0.24.04.1",
+      "size": 20035584,
+      "priority": "optional",
+      "section": "graphics",
+      "status": "manual",
+      "summary": "GNU Image Manipulation Program"
+    },
+    {
+      "name": "language-pack-ru-base",
+      "version": "1:24.04+20260127",
+      "size": 15588352,
+      "priority": "optional",
+      "section": "translations",
+      "status": "manual",
+      "summary": "translations for language Russian"
+    },
+    {
+      "name": "gnome-icon-theme",
+      "version": "3.12.0-5",
+      "size": 15538176,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "manual",
+      "summary": "This package contains the default icon theme used by the GNOME"
+    },
+    {
+      "name": "libreoffice-help-common",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 15229952,
+      "priority": "optional",
+      "section": "editors",
+      "status": "manual",
+      "summary": "office productivity suite -- common files for LibreOffice help"
+    },
+    {
+      "name": "libgtk-3-dev",
+      "version": "3.24.41-4ubuntu1.3",
+      "size": 14432256,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "development files for the GTK library"
+    },
+    {
+      "name": "libssl-dev",
+      "version": "3.0.13-0ubuntu3.11",
+      "size": 13317120,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "Secure Sockets Layer toolkit - development files"
+    },
+    {
+      "name": "systemd",
+      "version": "255.4-1ubuntu8.16",
+      "size": 12029952,
+      "priority": "important",
+      "section": "admin",
+      "status": "manual",
+      "summary": "system and service manager"
+    },
+    {
+      "name": "udev",
+      "version": "255.4-1ubuntu8.16",
+      "size": 11113472,
+      "priority": "important",
+      "section": "admin",
+      "status": "manual",
+      "summary": "/dev/ and hotplug management daemon"
+    },
+    {
+      "name": "fonts-noto-color-emoji",
+      "version": "2.047-0ubuntu0.24.04.1",
+      "size": 10805248,
+      "priority": "optional",
+      "section": "fonts",
+      "status": "manual",
+      "summary": "color emoji font from Google"
+    },
+    {
+      "name": "language-pack-gnome-ru-base",
+      "version": "1:24.04+20260127",
+      "size": 10757120,
+      "priority": "optional",
+      "section": "translations",
+      "status": "manual",
+      "summary": "GNOME translations for language Russian"
+    },
+    {
+      "name": "grub-efi-amd64-signed",
+      "version": "1.202.5+2.12-1ubuntu7.3",
+      "size": 7350272,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "GRand Unified Bootloader, version 2 (EFI-AMD64 version, signed)"
+    },
+    {
+      "name": "python3-pip",
+      "version": "24.0+dfsg-1ubuntu1.3",
+      "size": 7026688,
+      "priority": "optional",
+      "section": "python",
+      "status": "manual",
+      "summary": "Python package installer"
+    },
+    {
+      "name": "python3-scapy",
+      "version": "2.5.0+dfsg-2ubuntu1",
+      "size": 6771712,
+      "priority": "optional",
+      "section": "python",
+      "status": "manual",
+      "summary": "Packet generator/sniffer and network scanner/discovery (Python 3)"
+    },
+    {
+      "name": "hunspell-ru",
+      "version": "1:24.2.1-1",
+      "size": 6282240,
+      "priority": "optional",
+      "section": "text",
+      "status": "manual",
+      "summary": "Russian dictionary for hunspell"
+    },
+    {
+      "name": "libwebkit2gtk-4.1-dev",
+      "version": "2.52.3-0ubuntu0.24.04.1",
+      "size": 5772288,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "Web content engine library for GTK - development files"
+    },
+    {
+      "name": "libreoffice-l10n-ru",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 5591040,
+      "priority": "optional",
+      "section": "localization",
+      "status": "manual",
+      "summary": "office productivity suite -- Russian language package"
+    },
+    {
+      "name": "gthumb",
+      "version": "3:3.12.6-1",
+      "size": 5362688,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "manual",
+      "summary": "image viewer and browser"
+    },
+    {
+      "name": "btrfs-progs",
+      "version": "6.6.3-1.1build2",
+      "size": 5071872,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "Checksumming Copy on Write Filesystem utilities"
+    },
+    {
+      "name": "shim-signed",
+      "version": "1.58+15.8-0ubuntu1",
+      "size": 4853760,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "Secure Boot chain-loading bootloader (Microsoft-signed binary)"
+    },
+    {
+      "name": "apt",
+      "version": "2.8.3",
+      "size": 4206592,
+      "priority": "important",
+      "section": "admin",
+      "status": "manual",
+      "summary": "commandline package manager"
+    },
+    {
+      "name": "lvm2",
+      "version": "2.03.16-3ubuntu3.2",
+      "size": 4101120,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "Linux Logical Volume Manager"
+    },
+    {
+      "name": "wpasupplicant",
+      "version": "2:2.10-21ubuntu0.4",
+      "size": 3857408,
+      "priority": "optional",
+      "section": "net",
+      "status": "manual",
+      "summary": "client support for WPA and WPA2 (IEEE 802.11i)"
+    },
+    {
+      "name": "mythes-ru",
+      "version": "1:24.2.1-1",
+      "size": 3566592,
+      "priority": "optional",
+      "section": "text",
+      "status": "manual",
+      "summary": "Russian Thesaurus for LibreOffice"
+    },
+    {
+      "name": "sudo",
+      "version": "1.9.15p5-3ubuntu5.24.04.2",
+      "size": 3551232,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "Provide limited super user privileges to specific users"
+    },
+    {
+      "name": "util-linux",
+      "version": "2.39.3-9ubuntu6.5",
+      "size": 3520512,
+      "priority": "required",
+      "section": "utils",
+      "status": "manual",
+      "summary": "miscellaneous system utilities"
+    },
+    {
+      "name": "mpv",
+      "version": "0.37.0-1ubuntu4",
+      "size": 3509248,
+      "priority": "optional",
+      "section": "video",
+      "status": "manual",
+      "summary": "video player based on MPlayer/mplayer2"
+    },
+    {
+      "name": "libssl1.0.0",
+      "version": "1.0.2n-1ubuntu5.13",
+      "size": 3501056,
+      "priority": "important",
+      "section": "libs",
+      "status": "manual",
+      "summary": "Secure Sockets Layer toolkit - shared libraries"
+    },
+    {
+      "name": "cloud-init",
+      "version": "26.1-0ubuntu1~24.04.1",
+      "size": 3269632,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "initialization and customization tool for cloud instances"
+    },
+    {
+      "name": "apparmor",
+      "version": "4.0.1really4.0.1-0ubuntu0.24.04.7",
+      "size": 3223552,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "user-space parser utility for AppArmor"
+    },
+    {
+      "name": "xfsprogs",
+      "version": "6.6.0-1ubuntu2.1",
+      "size": 3067904,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "Utilities for managing the XFS filesystem"
+    },
+    {
+      "name": "fonts-firacode",
+      "version": "6.2-2",
+      "size": 3005440,
+      "priority": "optional",
+      "section": "fonts",
+      "status": "manual",
+      "summary": "Monospaced font with programming ligatures"
+    },
+    {
+      "name": "libx11-dev",
+      "version": "2:1.8.7-1build1",
+      "size": 2538496,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X11 client-side library (development headers)"
+    },
+    {
+      "name": "libfreetype-dev",
+      "version": "2.13.2+dfsg-1ubuntu0.1",
+      "size": 2115584,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "FreeType 2 font engine, development files"
+    },
+    {
+      "name": "bash",
+      "version": "5.2.21-2ubuntu4",
+      "size": 1945600,
+      "priority": "required",
+      "section": "shells",
+      "status": "manual",
+      "summary": "GNU Bourne Again SHell"
+    },
+    {
+      "name": "nautilus",
+      "version": "1:46.4-0ubuntu0.2",
+      "size": 1643520,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "manual",
+      "summary": "file manager and graphical shell for GNOME"
+    },
+    {
+      "name": "btop",
+      "version": "1.3.0-1",
+      "size": 1619968,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "Modern and colorful command line resource monitor that shows usage and stats"
+    },
+    {
+      "name": "gnome-text-editor",
+      "version": "46.3-0ubuntu2",
+      "size": 1544192,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "manual",
+      "summary": "simple text editor for GNOME"
+    },
+    {
+      "name": "e2fsprogs",
+      "version": "1.47.0-2.4~exp1ubuntu4.1",
+      "size": 1540096,
+      "priority": "required",
+      "section": "admin",
+      "status": "manual",
+      "summary": "ext2/ext3/ext4 file system utilities"
+    },
+    {
+      "name": "libcairo2",
+      "version": "1.18.0-3build1",
+      "size": 1382400,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "Cairo 2D vector graphics library"
+    },
+    {
+      "name": "gpg",
+      "version": "2.4.4-2ubuntu17.4",
+      "size": 1234944,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "GNU Privacy Guard -- minimalist public key operations"
+    },
+    {
+      "name": "open-iscsi",
+      "version": "2.1.9-3ubuntu5.4",
+      "size": 1200128,
+      "priority": "optional",
+      "section": "net",
+      "status": "manual",
+      "summary": "iSCSI initiator tools"
+    },
+    {
+      "name": "fonts-noto-mono",
+      "version": "20201225-2",
+      "size": 1183744,
+      "priority": "optional",
+      "section": "fonts",
+      "status": "manual",
+      "summary": "\"No Tofu\" monospaced font family with large Unicode coverage"
+    },
+    {
+      "name": "multipath-tools",
+      "version": "0.9.4-5ubuntu8.2",
+      "size": 1174528,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "maintain multipath block device access"
+    },
+    {
+      "name": "mdadm",
+      "version": "4.3-1ubuntu2.1",
+      "size": 1157120,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "tool for managing Linux MD devices (software RAID)"
+    },
+    {
+      "name": "libkrb5-3",
+      "version": "1.20.1-6ubuntu2.6",
+      "size": 1039360,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "MIT Kerberos runtime libraries"
+    },
+    {
+      "name": "wget",
+      "version": "1.21.4-1ubuntu4.3",
+      "size": 937984,
+      "priority": "standard",
+      "section": "web",
+      "status": "manual",
+      "summary": "retrieves files from the web"
+    },
+    {
+      "name": "systemd-resolved",
+      "version": "255.4-1ubuntu8.16",
+      "size": 907264,
+      "priority": "important",
+      "section": "admin",
+      "status": "manual",
+      "summary": "systemd DNS resolver"
+    },
+    {
+      "name": "login",
+      "version": "1:4.13+dfsg1-4ubuntu3.2",
+      "size": 905216,
+      "priority": "required",
+      "section": "admin",
+      "status": "manual",
+      "summary": "system login tools"
+    },
+    {
+      "name": "libfreetype6",
+      "version": "2.13.2+dfsg-1ubuntu0.1",
+      "size": 896000,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "FreeType 2 font engine, shared library files"
+    },
+    {
+      "name": "net-tools",
+      "version": "2.10-0.1ubuntu4.4",
+      "size": 811008,
+      "priority": "important",
+      "section": "net",
+      "status": "manual",
+      "summary": "NET-3 networking toolkit"
+    },
+    {
+      "name": "libxi-dev",
+      "version": "2:1.8.1-1build1",
+      "size": 709632,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X11 Input extension library (development headers)"
+    },
+    {
+      "name": "libxcb1-dev",
+      "version": "1.15-1ubuntu2",
+      "size": 693248,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X C Binding, development files"
+    },
+    {
+      "name": "perl",
+      "version": "5.38.2-3.2ubuntu0.3",
+      "size": 689152,
+      "priority": "standard",
+      "section": "perl",
+      "status": "manual",
+      "summary": "Larry Wall's Practical Extraction and Report Language"
+    },
+    {
+      "name": "apport",
+      "version": "2.28.2-0ubuntu0.1",
+      "size": 671744,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "automatically generate crash reports for debugging"
+    },
+    {
+      "name": "x11-utils",
+      "version": "7.7+6build2",
+      "size": 666624,
+      "priority": "optional",
+      "section": "x11",
+      "status": "manual",
+      "summary": "X11 utilities"
+    },
+    {
+      "name": "ncurses-bin",
+      "version": "6.4+20240113-1ubuntu2.1",
+      "size": 662528,
+      "priority": "required",
+      "section": "utils",
+      "status": "manual",
+      "summary": "terminal-related programs and man pages"
+    },
+    {
+      "name": "findutils",
+      "version": "4.9.0-5build1",
+      "size": 565248,
+      "priority": "required",
+      "section": "utils",
+      "status": "manual",
+      "summary": "utilities for finding files--find, xargs"
+    },
+    {
+      "name": "needrestart",
+      "version": "3.6-7ubuntu4.5",
+      "size": 520192,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "check which daemons need to be restarted after library upgrades"
+    },
+    {
+      "name": "app-terminator",
+      "version": "0.2.0-1~noble1",
+      "size": 474112,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "manual",
+      "summary": "Unified manager for installed applications"
+    },
+    {
+      "name": "diffutils",
+      "version": "1:3.10-1build1",
+      "size": 462848,
+      "priority": "required",
+      "section": "utils",
+      "status": "manual",
+      "summary": "File comparison utilities"
+    },
+    {
+      "name": "libpq5",
+      "version": "16.14-0ubuntu0.24.04.1",
+      "size": 446464,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "PostgreSQL C client library"
+    },
+    {
+      "name": "cryptsetup",
+      "version": "2:2.7.0-1ubuntu4.2",
+      "size": 440320,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "disk encryption support - startup scripts"
+    },
+    {
+      "name": "base-files",
+      "version": "13ubuntu10.4",
+      "size": 436224,
+      "priority": "required",
+      "section": "admin",
+      "status": "manual",
+      "summary": "Debian base system miscellaneous files"
+    },
+    {
+      "name": "libgssapi-krb5-2",
+      "version": "1.20.1-6ubuntu2.6",
+      "size": 436224,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "MIT Kerberos runtime libraries - krb5 GSS-API Mechanism"
+    },
+    {
+      "name": "liblcms2-2",
+      "version": "2.14-2ubuntu0.1",
+      "size": 430080,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "Little CMS 2 color management library"
+    },
+    {
+      "name": "libxcb-glx0-dev",
+      "version": "1.15-1ubuntu2",
+      "size": 420864,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X C Binding, glx extension, development files"
+    },
+    {
+      "name": "ncurses-base",
+      "version": "6.4+20240113-1ubuntu2.1",
+      "size": 393216,
+      "priority": "required",
+      "section": "misc",
+      "status": "manual",
+      "summary": "basic terminal type definitions"
+    },
+    {
+      "name": "libglu1-mesa",
+      "version": "9.0.2-1.1build1",
+      "size": 378880,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "Mesa OpenGL utility library (GLU)"
+    },
+    {
+      "name": "python3-fastapi",
+      "version": "0.101.0-3",
+      "size": 374784,
+      "priority": "optional",
+      "section": "python",
+      "status": "manual",
+      "summary": "modern, fast, web framework for building APIs, based on type hints"
+    },
+    {
+      "name": "ninja-build",
+      "version": "1.11.1-2",
+      "size": 363520,
+      "priority": "optional",
+      "section": "devel",
+      "status": "manual",
+      "summary": "small build system closest in spirit to Make"
+    },
+    {
+      "name": "libxkbcommon-dev",
+      "version": "1.6.0-1build1",
+      "size": 361472,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "library interface to the XKB compiler - development files"
+    },
+    {
+      "name": "grep",
+      "version": "3.11-4build1",
+      "size": 352256,
+      "priority": "required",
+      "section": "utils",
+      "status": "manual",
+      "summary": "GNU grep, egrep and fgrep"
+    },
+    {
+      "name": "python3-httpx",
+      "version": "0.26.0-2",
+      "size": 343040,
+      "priority": "optional",
+      "section": "python",
+      "status": "manual",
+      "summary": "next generation HTTP client"
+    },
+    {
+      "name": "feh",
+      "version": "3.10.1-1ubuntu0.1",
+      "size": 329728,
+      "priority": "optional",
+      "section": "graphics",
+      "status": "manual",
+      "summary": "imlib2 based image viewer"
+    },
+    {
+      "name": "libfuse2t64",
+      "version": "2.9.9-8.1build1",
+      "size": 325632,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "Filesystem in Userspace (library)"
+    },
+    {
+      "name": "libxext-dev",
+      "version": "2:1.3.4-1build2",
+      "size": 313344,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X11 miscellaneous extensions library (development headers)"
+    },
+    {
+      "name": "bsdutils",
+      "version": "1:2.39.3-9ubuntu6.5",
+      "size": 294912,
+      "priority": "required",
+      "section": "utils",
+      "status": "manual",
+      "summary": "basic utilities from 4.4BSD-Lite"
+    },
+    {
+      "name": "ubuntu-drivers-common",
+      "version": "1:0.9.7.6ubuntu3.7",
+      "size": 291840,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "Detect and install additional Ubuntu driver packages"
+    },
+    {
+      "name": "patchelf",
+      "version": "0.18.0-1.1build1",
+      "size": 279552,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "modify properties of ELF executables"
+    },
+    {
+      "name": "librsvg2-dev",
+      "version": "2.58.0+dfsg-1build1",
+      "size": 277504,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "SAX-based renderer library for SVG files (development)"
+    },
+    {
+      "name": "ubuntu-release-upgrader-core",
+      "version": "1:24.04.28",
+      "size": 274432,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "manage release upgrades"
+    },
+    {
+      "name": "gzip",
+      "version": "1.12-1ubuntu3.2",
+      "size": 249856,
+      "priority": "required",
+      "section": "utils",
+      "status": "manual",
+      "summary": "GNU compression utilities"
+    },
+    {
+      "name": "python3-uvicorn",
+      "version": "0.27.1-1",
+      "size": 242688,
+      "priority": "optional",
+      "section": "python",
+      "status": "manual",
+      "summary": "ASGI server implementation, using uvloop and httptools (Python3 version)"
+    },
+    {
+      "name": "libxcb-randr0-dev",
+      "version": "1.15-1ubuntu2",
+      "size": 240640,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X C Binding, randr extension, development files"
+    },
+    {
+      "name": "grub-efi-amd64",
+      "version": "2.12-1ubuntu7.3",
+      "size": 208896,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "GRand Unified Bootloader, version 2 (EFI-AMD64 version)"
+    },
+    {
+      "name": "dash",
+      "version": "0.5.12-6ubuntu5",
+      "size": 191488,
+      "priority": "required",
+      "section": "shells",
+      "status": "manual",
+      "summary": "POSIX-compliant shell"
+    },
+    {
+      "name": "libxcb-render-util0-dev",
+      "version": "0.3.9-1build4",
+      "size": 177152,
+      "priority": "extra",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "utility libraries for X C Binding -- render-util"
+    },
+    {
+      "name": "dbus",
+      "version": "1.14.10-4ubuntu4.1",
+      "size": 171008,
+      "priority": "standard",
+      "section": "admin",
+      "status": "manual",
+      "summary": "simple interprocess messaging system (system message bus)"
+    },
+    {
+      "name": "power-profiles-daemon",
+      "version": "0.21-1ubuntu1",
+      "size": 164864,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "Makes power profiles handling available over D-Bus."
+    },
+    {
+      "name": "traceroute",
+      "version": "1:2.1.5-1",
+      "size": 161792,
+      "priority": "important",
+      "section": "net",
+      "status": "manual",
+      "summary": "Traces the route taken by packets over an IPv4/IPv6 network"
+    },
+    {
+      "name": "libxcursor-dev",
+      "version": "1:1.2.1-1build1",
+      "size": 159744,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X cursor management library (development files)"
+    },
+    {
+      "name": "libfribidi0",
+      "version": "1.0.13-3build1",
+      "size": 147456,
+      "priority": "optional",
+      "section": "libs",
+      "status": "manual",
+      "summary": "Free Implementation of the Unicode BiDi algorithm"
+    },
+    {
+      "name": "libayatana-appindicator3-dev",
+      "version": "0.5.93-1build3",
+      "size": 135168,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "Ayatana Application Indicators (development files, GTK-3+ version)"
+    },
+    {
+      "name": "libxrandr-dev",
+      "version": "2:1.5.2-2build1",
+      "size": 129024,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X11 RandR extension library (development headers)"
+    },
+    {
+      "name": "systemd-sysv",
+      "version": "255.4-1ubuntu8.16",
+      "size": 129024,
+      "priority": "important",
+      "section": "admin",
+      "status": "manual",
+      "summary": "system and service manager - SysV compatibility symlinks"
+    },
+    {
+      "name": "libxcb-xfixes0-dev",
+      "version": "1.15-1ubuntu2",
+      "size": 120832,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X C Binding, xfixes extension, development files"
+    },
+    {
+      "name": "tree",
+      "version": "2.1.1-2ubuntu3.24.04.2",
+      "size": 110592,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "displays an indented directory tree, in color"
+    },
+    {
+      "name": "bcache-tools",
+      "version": "1.0.8-5build1",
+      "size": 108544,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "bcache userspace tools"
+    },
+    {
+      "name": "libxcb-icccm4-dev",
+      "version": "0.4.1-1.1build3",
+      "size": 99328,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "utility libraries for X C Binding -- icccm, development files"
+    },
+    {
+      "name": "libxrender-dev",
+      "version": "1:0.9.10-1.1build1",
+      "size": 98304,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X Rendering Extension client library (development files)"
+    },
+    {
+      "name": "efibootmgr",
+      "version": "18-1build2",
+      "size": 94208,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "Interact with the EFI Boot Manager"
+    },
+    {
+      "name": "libxcb-sync-dev",
+      "version": "1.15-1ubuntu2",
+      "size": 91136,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X C Binding, sync extension, development files"
+    },
+    {
+      "name": "gnome-browser-connector",
+      "version": "42.1-4",
+      "size": 84992,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "manual",
+      "summary": "GNOME Shell extensions integration for web browsers"
+    },
+    {
+      "name": "ttf-mscorefonts-installer",
+      "version": "3.8.1ubuntu1",
+      "size": 84992,
+      "priority": "optional",
+      "section": "contrib/fonts",
+      "status": "manual",
+      "summary": "Installer for Microsoft TrueType core fonts"
+    },
+    {
+      "name": "cabextract",
+      "version": "1.11-2",
+      "size": 83968,
+      "priority": "optional",
+      "section": "utils",
+      "status": "manual",
+      "summary": "Microsoft Cabinet file unpacker"
+    },
+    {
+      "name": "python3",
+      "version": "3.12.3-0ubuntu2.1",
+      "size": 82944,
+      "priority": "optional",
+      "section": "python",
+      "status": "manual",
+      "summary": "interactive high-level object-oriented language (default python3 version)"
+    },
+    {
+      "name": "libgsf-bin",
+      "version": "1.14.51-2ubuntu0.1",
+      "size": 80896,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "manual",
+      "summary": "Structured File Library - programs"
+    },
+    {
+      "name": "hyphen-ru",
+      "version": "20030310-1ubuntu3",
+      "size": 74752,
+      "priority": "optional",
+      "section": "text",
+      "status": "manual",
+      "summary": "Russian hyphenation patterns for LibreOffice/OpenOffice.org"
+    },
+    {
+      "name": "libx11-xcb-dev",
+      "version": "2:1.8.7-1build1",
+      "size": 71680,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "Xlib/XCB interface library (development headers)"
+    },
+    {
+      "name": "libxcb-image0-dev",
+      "version": "0.4.0-2build1",
+      "size": 69632,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "utility libraries for X C Binding -- image, development files"
+    },
+    {
+      "name": "libxfixes-dev",
+      "version": "1:6.0.0-2build1",
+      "size": 60416,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X11 miscellaneous 'fixes' extension library (development headers)"
+    },
+    {
+      "name": "libxcb-shm0-dev",
+      "version": "1.15-1ubuntu2",
+      "size": 55296,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X C Binding, shm extension, development files"
+    },
+    {
+      "name": "libxcb-util-dev",
+      "version": "0.4.0-1build3",
+      "size": 55296,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "utility libraries for X C Binding -- atom, aux and event"
+    },
+    {
+      "name": "libxcb-cursor-dev",
+      "version": "0.1.4-1build1",
+      "size": 54272,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "utility libraries for X C Binding -- cursor, development files"
+    },
+    {
+      "name": "libxcb-shape0-dev",
+      "version": "1.15-1ubuntu2",
+      "size": 50176,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X C Binding, shape extension, development files"
+    },
+    {
+      "name": "libxcomposite-dev",
+      "version": "1:0.4.5-1build3",
+      "size": 48128,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X11 Composite extension library (development headers)"
+    },
+    {
+      "name": "hostname",
+      "version": "3.23+nmu2ubuntu2",
+      "size": 47104,
+      "priority": "required",
+      "section": "admin",
+      "status": "manual",
+      "summary": "utility to set/show the host name or domain name"
+    },
+    {
+      "name": "libxcb-keysyms1-dev",
+      "version": "0.4.0-1build4",
+      "size": 46080,
+      "priority": "extra",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "utility libraries for X C Binding -- keysyms, development files"
+    },
+    {
+      "name": "libgl1-mesa-dev",
+      "version": "25.2.8-0ubuntu0.24.04.2",
+      "size": 45056,
+      "priority": "optional",
+      "section": "oldlibs",
+      "status": "manual",
+      "summary": "transitional dummy package"
+    },
+    {
+      "name": "pollinate",
+      "version": "4.33-3.1ubuntu1.3",
+      "size": 44032,
+      "priority": "optional",
+      "section": "admin",
+      "status": "manual",
+      "summary": "seed the pseudo random number generator"
+    },
+    {
+      "name": "libxcb-xinerama0-dev",
+      "version": "1.15-1ubuntu2",
+      "size": 40960,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X C Binding, xinerama extension, development files"
+    },
+    {
+      "name": "gnome-themes-extra",
+      "version": "3.28-2ubuntu5",
+      "size": 39936,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "manual",
+      "summary": "Adwaita GTK 2 theme — engine"
+    },
+    {
+      "name": "apt-transport-https",
+      "version": "2.8.3",
+      "size": 36864,
+      "priority": "optional",
+      "section": "oldlibs",
+      "status": "manual",
+      "summary": "transitional package for https support"
+    },
+    {
+      "name": "netbase",
+      "version": "6.4",
+      "size": 36864,
+      "priority": "important",
+      "section": "admin",
+      "status": "manual",
+      "summary": "Basic TCP/IP networking system"
+    },
+    {
+      "name": "pkg-config",
+      "version": "1.8.1-2build1",
+      "size": 29696,
+      "priority": "optional",
+      "section": "oldlibs",
+      "status": "manual",
+      "summary": "manage compile and link flags for libraries (transitional package)"
+    },
+    {
+      "name": "libxkbcommon-x11-dev",
+      "version": "1.6.0-1build1",
+      "size": 28672,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "library to create keymaps with the XKB X11 protocol - development files"
+    },
+    {
+      "name": "python3.12-venv",
+      "version": "3.12.3-1ubuntu0.15",
+      "size": 28672,
+      "priority": "optional",
+      "section": "python",
+      "status": "manual",
+      "summary": "Interactive high-level object-oriented language (pyvenv binary, version 3.12)"
+    },
+    {
+      "name": "libxdamage-dev",
+      "version": "1:1.1.6-1build1",
+      "size": 27648,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "manual",
+      "summary": "X11 damaged region extension library (development headers)"
+    },
+    {
+      "name": "linux-generic",
+      "version": "6.8.0-136.136",
+      "size": 18432,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "manual",
+      "summary": "Complete Generic Linux kernel and headers"
+    },
+    {
+      "name": "build-essential",
+      "version": "12.10ubuntu1",
+      "size": 17408,
+      "priority": "optional",
+      "section": "devel",
+      "status": "manual",
+      "summary": "Informational list of build-essential packages"
+    },
+    {
+      "name": "fonts-roboto",
+      "version": "2:0~20170802-3",
+      "size": 17408,
+      "priority": "optional",
+      "section": "fonts",
+      "status": "manual",
+      "summary": "metapackage to pull in Roboto fonts"
+    },
+    {
+      "name": "init",
+      "version": "1.66ubuntu1",
+      "size": 17408,
+      "priority": "important",
+      "section": "metapackages",
+      "status": "manual",
+      "summary": "metapackage ensuring an init system is installed"
+    },
+    {
+      "name": "ubuntu-minimal",
+      "version": "1.539.2",
+      "size": 17408,
+      "priority": "optional",
+      "section": "metapackages",
+      "status": "manual",
+      "summary": "Minimal core of Ubuntu"
+    },
+    {
+      "name": "ubuntu-server",
+      "version": "1.539.2",
+      "size": 17408,
+      "priority": "optional",
+      "section": "metapackages",
+      "status": "manual",
+      "summary": "Ubuntu Server system"
+    },
+    {
+      "name": "ubuntu-standard",
+      "version": "1.539.2",
+      "size": 17408,
+      "priority": "optional",
+      "section": "metapackages",
+      "status": "manual",
+      "summary": "Ubuntu standard system"
+    },
+    {
+      "name": "postgrespro-1c-16",
+      "version": "16.14-1.noble",
+      "size": 16384,
+      "priority": "optional",
+      "section": "database",
+      "status": "manual",
+      "summary": "Easy configuration for Postgres Pro 1c 16"
+    },
+    {
+      "name": "unminimize",
+      "version": "0.2.1",
+      "size": 16384,
+      "priority": "optional",
+      "section": "devel",
+      "status": "manual",
+      "summary": "Un-minimize your minimial images or setup"
+    },
+    {
+      "name": "libfontconfig1-dev",
+      "version": "2.15.0-1.1ubuntu2",
+      "size": 13312,
+      "priority": "optional",
+      "section": "oldlibs",
+      "status": "manual",
+      "summary": "generic font configuration library - dummy package"
+    },
+    {
+      "name": "language-pack-gnome-ru",
+      "version": "1:24.04+20260127",
+      "size": 9216,
+      "priority": "optional",
+      "section": "translations",
+      "status": "manual",
+      "summary": "GNOME translation updates for language Russian"
+    },
+    {
+      "name": "language-pack-ru",
+      "version": "1:24.04+20260127",
+      "size": 9216,
+      "priority": "optional",
+      "section": "translations",
+      "status": "manual",
+      "summary": "translation updates for language Russian"
+    },
+    {
+      "name": "transmission",
+      "version": "4.0.5-1ubuntu0.1",
+      "size": 9216,
+      "priority": "optional",
+      "section": "net",
+      "status": "manual",
+      "summary": "lightweight BitTorrent client"
+    },
+    {
+      "name": "linux-modules-extra-6.8.0-100-generic",
+      "version": "6.8.0-100.100",
+      "size": 112460800,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "autoremove",
+      "summary": "Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP"
+    },
+    {
+      "name": "linux-headers-6.8.0-100",
+      "version": "6.8.0-100.100",
+      "size": 86174720,
+      "priority": "optional",
+      "section": "devel",
+      "status": "autoremove",
+      "summary": "Header files related to Linux kernel version 6.8.0"
+    },
+    {
+      "name": "linux-modules-6.8.0-100-generic",
+      "version": "6.8.0-100.100",
+      "size": 39346176,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "autoremove",
+      "summary": "Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP"
+    },
+    {
+      "name": "linux-headers-6.8.0-100-generic",
+      "version": "6.8.0-100.100",
+      "size": 29433856,
+      "priority": "optional",
+      "section": "devel",
+      "status": "autoremove",
+      "summary": "Linux kernel headers for version 6.8.0 on 64 bit x86 SMP"
+    },
+    {
+      "name": "linux-tools-6.8.0-100",
+      "version": "6.8.0-100.100",
+      "size": 19238912,
+      "priority": "optional",
+      "section": "devel",
+      "status": "autoremove",
+      "summary": "Linux kernel version specific tools for version 6.8.0-100"
+    },
+    {
+      "name": "linux-image-6.8.0-100-generic",
+      "version": "6.8.0-100.100",
+      "size": 15057920,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "autoremove",
+      "summary": "Signed kernel image generic"
+    },
+    {
+      "name": "linux-tools-6.8.0-100-generic",
+      "version": "6.8.0-100.100",
+      "size": 662528,
+      "priority": "optional",
+      "section": "devel",
+      "status": "autoremove",
+      "summary": "Linux kernel version specific tools for version 6.8.0-100"
+    },
+    {
+      "name": "libwoff1",
+      "version": "1.0.2-2build1",
+      "size": 132096,
+      "priority": "optional",
+      "section": "libs",
+      "status": "autoremove",
+      "summary": "library for converting fonts to WOFF 2.0"
+    },
+    {
+      "name": "windsurf",
+      "version": "3.4.27-1783378471",
+      "size": 0,
+      "priority": "optional",
+      "section": "oldlibs",
+      "status": "autoremove",
+      "summary": "transitional package for devin-desktop"
+    },
+    {
+      "name": "trae",
+      "version": "1.107.1-1783236609",
+      "size": 1115993088,
+      "priority": "optional",
+      "section": "devel",
+      "status": "installed",
+      "summary": "TRAE, The Real AI Engine."
+    },
+    {
+      "name": "linux-firmware",
+      "version": "20240318.git3b128b60-0ubuntu2.27",
+      "size": 641030144,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "Firmware for Linux kernel drivers"
+    },
+    {
+      "name": "opencode",
+      "version": "1.4.3",
+      "size": 385273856,
+      "priority": "optional",
+      "section": "default",
+      "status": "installed",
+      "summary": ""
+    },
+    {
+      "name": "libreoffice-core",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 151382016,
+      "priority": "optional",
+      "section": "editors",
+      "status": "auto",
+      "summary": "office productivity suite -- arch-dependent files"
+    },
+    {
+      "name": "libllvm20",
+      "version": "1:20.1.2-0ubuntu1~24.04.3",
+      "size": 143610880,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Modular compiler and toolchain technologies, runtime library"
+    },
+    {
+      "name": "libllvm18",
+      "version": "1:18.1.3-1ubuntu1",
+      "size": 123278336,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Modular compiler and toolchain technologies, runtime library"
+    },
+    {
+      "name": "linux-modules-extra-6.8.0-136-generic",
+      "version": "6.8.0-136.136",
+      "size": 112559104,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "auto",
+      "summary": "Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP"
+    },
+    {
+      "name": "linux-modules-extra-6.8.0-107-generic",
+      "version": "6.8.0-107.107",
+      "size": 112555008,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "auto",
+      "summary": "Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP"
+    },
+    {
+      "name": "libwebkit2gtk-4.1-0",
+      "version": "2.52.3-0ubuntu0.24.04.1",
+      "size": 95117312,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Web content engine library for GTK"
+    },
+    {
+      "name": "python3-botocore",
+      "version": "1.34.46+repack-1ubuntu1",
+      "size": 94088192,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Low-level, data-driven core of boto 3 (Python 3)"
+    },
+    {
+      "name": "libwebkitgtk-6.0-4",
+      "version": "2.52.3-0ubuntu0.24.04.1",
+      "size": 94019584,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Web content engine library for GTK"
+    },
+    {
+      "name": "gimp-data",
+      "version": "2.10.36-3ubuntu0.24.04.1",
+      "size": 89049088,
+      "priority": "optional",
+      "section": "graphics",
+      "status": "auto",
+      "summary": "Data files for GIMP"
+    },
+    {
+      "name": "linux-headers-6.8.0-107",
+      "version": "6.8.0-107.107",
+      "size": 86269952,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "Header files related to Linux kernel version 6.8.0"
+    },
+    {
+      "name": "linux-headers-6.8.0-136",
+      "version": "6.8.0-136.136",
+      "size": 86263808,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "Header files related to Linux kernel version 6.8.0"
+    },
+    {
+      "name": "libclang-cpp18",
+      "version": "1:18.1.3-1ubuntu1",
+      "size": 64855040,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "C++ interface to the Clang library"
+    },
+    {
+      "name": "gcc-13-x86-64-linux-gnu",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "size": 62804992,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "GNU C compiler for the x86_64-linux-gnu architecture"
+    },
+    {
+      "name": "python3-scipy",
+      "version": "1.11.4-6build1",
+      "size": 61733888,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "scientific tools for Python 3"
+    },
+    {
+      "name": "qemu-system-x86",
+      "version": "1:8.2.2+ds-0ubuntu1.17",
+      "size": 59959296,
+      "priority": "optional",
+      "section": "otherosfs",
+      "status": "auto",
+      "summary": "QEMU full system emulation binaries (x86)"
+    },
+    {
+      "name": "libicu-dev",
+      "version": "74.2-1ubuntu3.1",
+      "size": 48999424,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "auto",
+      "summary": "Development files for International Components for Unicode"
+    },
+    {
+      "name": "ubuntu-wallpapers-noble",
+      "version": "24.04.2",
+      "size": 48974848,
+      "priority": "optional",
+      "section": "x11",
+      "status": "auto",
+      "summary": "Ubuntu 24.04 Wallpapers"
+    },
+    {
+      "name": "libreoffice-common",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 48421888,
+      "priority": "optional",
+      "section": "editors",
+      "status": "auto",
+      "summary": "office productivity suite -- arch-independent files"
+    },
+    {
+      "name": "mesa-libgallium",
+      "version": "25.2.8-0ubuntu0.24.04.2",
+      "size": 43472896,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "shared infrastructure for Mesa drivers"
+    },
+    {
+      "name": "unicode-data",
+      "version": "15.1.0-1",
+      "size": 40432640,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "Property data for the Unicode character set"
+    },
+    {
+      "name": "linux-modules-6.8.0-107-generic",
+      "version": "6.8.0-107.107",
+      "size": 39400448,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "auto",
+      "summary": "Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP"
+    },
+    {
+      "name": "linux-modules-6.8.0-136-generic",
+      "version": "6.8.0-136.136",
+      "size": 39396352,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "auto",
+      "summary": "Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP"
+    },
+    {
+      "name": "vim-runtime",
+      "version": "2:9.1.0016-1ubuntu7.18",
+      "size": 37414912,
+      "priority": "optional",
+      "section": "editors",
+      "status": "auto",
+      "summary": "Vi IMproved - Runtime files"
+    },
+    {
+      "name": "libicu74",
+      "version": "74.2-1ubuntu3.1",
+      "size": 36781056,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "International Components for Unicode"
+    },
+    {
+      "name": "libreoffice-writer",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 35753984,
+      "priority": "optional",
+      "section": "editors",
+      "status": "auto",
+      "summary": "office productivity suite -- word processor"
+    },
+    {
+      "name": "libclang1-18",
+      "version": "1:18.1.3-1ubuntu1",
+      "size": 34638848,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "C interface to the Clang library"
+    },
+    {
+      "name": "g++-13-x86-64-linux-gnu",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "size": 34350080,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "GNU C++ compiler for x86_64-linux-gnu architecture"
+    },
+    {
+      "name": "gnome-backgrounds",
+      "version": "45.0-1",
+      "size": 34208768,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "Set of backgrounds packaged with the GNOME desktop"
+    },
+    {
+      "name": "libjavascriptcoregtk-4.1-0",
+      "version": "2.52.3-0ubuntu0.24.04.1",
+      "size": 32260096,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "JavaScript engine library from WebKitGTK"
+    },
+    {
+      "name": "libjavascriptcoregtk-6.0-1",
+      "version": "2.52.3-0ubuntu0.24.04.1",
+      "size": 32260096,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "JavaScript engine library from WebKitGTK"
+    },
+    {
+      "name": "postgrespro-1c-16-server",
+      "version": "16.14-1.noble",
+      "size": 31921152,
+      "priority": "optional",
+      "section": "database",
+      "status": "auto",
+      "summary": "object-relational SQL database, version 16 server"
+    },
+    {
+      "name": "cpp-13-x86-64-linux-gnu",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "size": 31546368,
+      "priority": "optional",
+      "section": "interpreters",
+      "status": "auto",
+      "summary": "GNU C preprocessor for x86_64-linux-gnu"
+    },
+    {
+      "name": "libmozjs-115-0t64",
+      "version": "115.10.0-1",
+      "size": 31481856,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "SpiderMonkey JavaScript library"
+    },
+    {
+      "name": "libperl5.38t64",
+      "version": "5.38.2-3.2ubuntu0.3",
+      "size": 30039040,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "shared Perl library"
+    },
+    {
+      "name": "python-babel-localedata",
+      "version": "2.10.3-3build1",
+      "size": 29901824,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "tools for internationalizing Python applications - locale data files"
+    },
+    {
+      "name": "libreoffice-calc",
+      "version": "4:24.2.7-0ubuntu0.24.04.4",
+      "size": 29850624,
+      "priority": "optional",
+      "section": "editors",
+      "status": "installed",
+      "summary": "office productivity suite -- spreadsheet"
+    },
+    {
+      "name": "libpython3.12-dev",
+      "version": "3.12.3-1ubuntu0.15",
+      "size": 29732864,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "auto",
+      "summary": "Header files and a static library for Python (v3.12)"
+    },
+    {
+      "name": "linux-headers-6.8.0-107-generic",
+      "version": "6.8.0-107.107",
+      "size": 29510656,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "Linux kernel headers for version 6.8.0 on 64 bit x86 SMP"
+    },
+    {
+      "name": "speech-dispatcher",
+      "version": "0.12.0~rc2-2build3",
+      "size": 29499392,
+      "priority": "optional",
+      "section": "sound",
+      "status": "auto",
+      "summary": "Common interface to speech synthesizers"
+    },
+    {
+      "name": "linux-headers-6.8.0-136-generic",
+      "version": "6.8.0-136.136",
+      "size": 29423616,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "Linux kernel headers for version 6.8.0 on 64 bit x86 SMP"
+    },
+    {
+      "name": "libflite1",
+      "version": "2.2-6build3",
+      "size": 28182528,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Small run-time speech synthesis engine - shared libraries"
+    },
+    {
+      "name": "libgs10",
+      "version": "10.02.1~dfsg1-0ubuntu7.8",
+      "size": 25178112,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "interpreter for the PostScript language and for PDF - Library"
+    },
+    {
+      "name": "python3-sympy",
+      "version": "1.12-7",
+      "size": 24971264,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Computer Algebra System (CAS) in Python (Python 3)"
+    },
+    {
+      "name": "evolution-common",
+      "version": "3.52.3-0ubuntu1.1",
+      "size": 24399872,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "architecture independent files for Evolution"
+    },
+    {
+      "name": "samba-libs",
+      "version": "2:4.19.5+dfsg-4ubuntu9.6",
+      "size": 24287232,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Samba core libraries"
+    },
+    {
+      "name": "python3-numpy",
+      "version": "1:1.26.4+ds-6ubuntu1",
+      "size": 23875584,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Fast array facility to the Python language (Python 3)"
+    },
+    {
+      "name": "git",
+      "version": "1:2.43.0-1ubuntu7.3",
+      "size": 22212608,
+      "priority": "optional",
+      "section": "vcs",
+      "status": "auto",
+      "summary": "fast, scalable, distributed revision control system"
+    },
+    {
+      "name": "libstdc++-13-dev",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "size": 22181888,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "auto",
+      "summary": "GNU Standard C++ Library v3 (development files)"
+    },
+    {
+      "name": "intel-microcode",
+      "version": "3.20260210.0ubuntu0.24.04.1",
+      "size": 21453824,
+      "priority": "standard",
+      "section": "non-free-firmware/admin",
+      "status": "auto",
+      "summary": "Processor microcode firmware for Intel CPUs"
+    },
+    {
+      "name": "humanity-icon-theme",
+      "version": "0.6.16",
+      "size": 21155840,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "Humanity Icon theme"
+    },
+    {
+      "name": "iso-codes",
+      "version": "4.16.0-1",
+      "size": 20908032,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "ISO language, territory, currency, script codes and their translations"
+    },
+    {
+      "name": "desktop-base",
+      "version": "12.0.6+nmu1ubuntu1",
+      "size": 20135936,
+      "priority": "optional",
+      "section": "x11",
+      "status": "auto",
+      "summary": "common files for the Debian Desktop"
+    },
+    {
+      "name": "linux-tools-6.8.0-136",
+      "version": "6.8.0-136.136",
+      "size": 19806208,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "Linux kernel version specific tools for version 6.8.0-136"
+    },
+    {
+      "name": "python3-matplotlib",
+      "version": "3.6.3-1ubuntu5",
+      "size": 19710976,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Python based plotting system in a style similar to Matlab (Python 3)"
+    },
+    {
+      "name": "perl-modules-5.38",
+      "version": "5.38.2-3.2ubuntu0.3",
+      "size": 19620864,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Core Perl modules"
+    },
+    {
+      "name": "linux-tools-6.8.0-107",
+      "version": "6.8.0-107.107",
+      "size": 19298304,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "Linux kernel version specific tools for version 6.8.0-107"
+    },
+    {
+      "name": "ovmf",
+      "version": "2024.02-2ubuntu0.9",
+      "size": 17378304,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "UEFI firmware for 64-bit x86 virtual machines"
+    },
+    {
+      "name": "locales",
+      "version": "2.39-0ubuntu8.7",
+      "size": 17113088,
+      "priority": "standard",
+      "section": "localization",
+      "status": "auto",
+      "summary": "GNU C Library: National Language (locale) data [support]"
+    },
+    {
+      "name": "libcodec2-1.2",
+      "version": "1.2.0-2build1",
+      "size": 16857088,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Codec2 runtime library"
+    },
+    {
+      "name": "libavcodec60",
+      "version": "7:6.1.1-3ubuntu5",
+      "size": 16626688,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "FFmpeg library with de/encoders for audio/video codecs - runtime files"
+    },
+    {
+      "name": "libx265-199",
+      "version": "3.5-2build1",
+      "size": 16484352,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "H.265/HEVC video stream encoder (shared library)"
+    },
+    {
+      "name": "libgcc-13-dev",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "size": 16467968,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "auto",
+      "summary": "GCC support library (development files)"
+    },
+    {
+      "name": "librados2",
+      "version": "19.2.3-0ubuntu0.24.04.3",
+      "size": 16033792,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "RADOS distributed object store client library"
+    },
+    {
+      "name": "fonts-urw-base35",
+      "version": "20200910-8",
+      "size": 15933440,
+      "priority": "optional",
+      "section": "fonts",
+      "status": "auto",
+      "summary": "font set metric-compatible with the 35 PostScript Level 2 Base Fonts"
+    },
+    {
+      "name": "yaru-theme-gnome-shell",
+      "version": "24.04.2-0ubuntu1",
+      "size": 15847424,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "Yaru GNOME Shell desktop theme from the Ubuntu Community"
+    },
+    {
+      "name": "librbd1",
+      "version": "19.2.3-0ubuntu0.24.04.3",
+      "size": 15148032,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "RADOS block device client library"
+    },
+    {
+      "name": "linux-image-6.8.0-136-generic",
+      "version": "6.8.0-136.136",
+      "size": 15090688,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "auto",
+      "summary": "Signed kernel image generic"
+    },
+    {
+      "name": "linux-image-6.8.0-107-generic",
+      "version": "6.8.0-107.107",
+      "size": 15070208,
+      "priority": "optional",
+      "section": "kernel",
+      "status": "auto",
+      "summary": "Signed kernel image generic"
+    },
+    {
+      "name": "libc6",
+      "version": "2.39-0ubuntu8.7",
+      "size": 13753344,
+      "priority": "required",
+      "section": "libs",
+      "status": "auto",
+      "summary": "GNU C Library: Shared libraries"
+    },
+    {
+      "name": "ieee-data",
+      "version": "20220827.1",
+      "size": 13707264,
+      "priority": "optional",
+      "section": "net",
+      "status": "auto",
+      "summary": "OUI and IAB listings"
+    },
+    {
+      "name": "libavfilter9",
+      "version": "7:6.1.1-3ubuntu5",
+      "size": 13619200,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "FFmpeg library containing media filters - runtime files"
+    },
+    {
+      "name": "libc6-dev",
+      "version": "2.39-0ubuntu8.7",
+      "size": 13426688,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "auto",
+      "summary": "GNU C Library: Development Libraries and Header Files"
+    },
+    {
+      "name": "poppler-data",
+      "version": "0.4.12-1",
+      "size": 13400064,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "encoding data for the poppler PDF rendering library"
+    },
+    {
+      "name": "python3-twisted",
+      "version": "24.3.0-1ubuntu0.2",
+      "size": 13270016,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Event-based framework for internet applications"
+    },
+    {
+      "name": "fwupd",
+      "version": "2.0.20-1ubuntu2~24.04.2",
+      "size": 13073408,
+      "priority": "optional",
+      "section": "admin",
+      "status": "auto",
+      "summary": "Firmware update daemon"
+    },
+    {
+      "name": "grub-common",
+      "version": "2.12-1ubuntu7.3",
+      "size": 12812288,
+      "priority": "optional",
+      "section": "admin",
+      "status": "auto",
+      "summary": "GRand Unified Bootloader (common files)"
+    },
+    {
+      "name": "liblouis-data",
+      "version": "3.29.0-1build1",
+      "size": 12798976,
+      "priority": "optional",
+      "section": "text",
+      "status": "auto",
+      "summary": "Braille translation library - data"
+    },
+    {
+      "name": "libsane1",
+      "version": "1.2.1-7build4",
+      "size": 12737536,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "API library for scanners"
+    },
+    {
+      "name": "libreoffice-draw",
+      "version": "4:24.2.7-0ubuntu0.24.04.4",
+      "size": 12652544,
+      "priority": "optional",
+      "section": "editors",
+      "status": "installed",
+      "summary": "office productivity suite -- drawing"
+    },
+    {
+      "name": "firmware-sof-signed",
+      "version": "2023.12.1-1ubuntu1.11",
+      "size": 12512256,
+      "priority": "optional",
+      "section": "non-free-firmware/kernel",
+      "status": "auto",
+      "summary": "Intel SOF firmware - signed"
+    },
+    {
+      "name": "adwaita-icon-theme",
+      "version": "46.0-1",
+      "size": 12340224,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "default icon theme of GNOME"
+    },
+    {
+      "name": "libgtk-4-1",
+      "version": "4.14.5+ds-0ubuntu0.10",
+      "size": 12266496,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "GTK graphical user interface library"
+    },
+    {
+      "name": "libreoffice-style-colibre",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 11999232,
+      "priority": "optional",
+      "section": "editors",
+      "status": "auto",
+      "summary": "office productivity suite -- colibre symbol style"
+    },
+    {
+      "name": "binutils-x86-64-linux-gnu",
+      "version": "2.42-4ubuntu2.10",
+      "size": 11826176,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "GNU binary utilities, for x86-64-linux-gnu target"
+    },
+    {
+      "name": "gir1.2-glib-2.0-dev",
+      "version": "2.80.0-6ubuntu3.8",
+      "size": 11787264,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "auto",
+      "summary": "GIR XML for GLib, GObject, Gio and GModule"
+    },
+    {
+      "name": "ubuntu-wallpapers",
+      "version": "24.04.2",
+      "size": 11378688,
+      "priority": "optional",
+      "section": "metapackages",
+      "status": "auto",
+      "summary": "Ubuntu Wallpapers"
+    },
+    {
+      "name": "qemu-utils",
+      "version": "1:8.2.2+ds-0ubuntu1.17",
+      "size": 11318272,
+      "priority": "optional",
+      "section": "otherosfs",
+      "status": "auto",
+      "summary": "QEMU utilities"
+    },
+    {
+      "name": "cmake-data",
+      "version": "3.28.3-1build7",
+      "size": 11247616,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "CMake data files (modules, templates and documentation)"
+    },
+    {
+      "name": "libasan8",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "size": 11049984,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "AddressSanitizer -- a fast memory error detector"
+    },
+    {
+      "name": "libglib2.0-dev",
+      "version": "2.80.0-6ubuntu3.8",
+      "size": 11034624,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "auto",
+      "summary": "Development files for the GLib library"
+    },
+    {
+      "name": "python3-fonttools",
+      "version": "4.46.0-1build2",
+      "size": 10984448,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Converts OpenType and TrueType fonts to and from XML (Python 3 Library)"
+    },
+    {
+      "name": "python3-typeshed",
+      "version": "0.0~git20231111.6764465-3",
+      "size": 10835968,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "collection of library stubs for Python, with static types"
+    },
+    {
+      "name": "brasero-common",
+      "version": "3.12.3-2build4",
+      "size": 10763264,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "Common files for the Brasero CD burning application and library"
+    },
+    {
+      "name": "yt-dlp",
+      "version": "2024.04.09-1",
+      "size": 10541056,
+      "priority": "optional",
+      "section": "web",
+      "status": "auto",
+      "summary": "downloader of videos from YouTube and other sites"
+    },
+    {
+      "name": "grub-efi-amd64-bin",
+      "version": "2.12-1ubuntu7.3",
+      "size": 10484736,
+      "priority": "optional",
+      "section": "admin",
+      "status": "auto",
+      "summary": "GRand Unified Bootloader, version 2 (EFI-AMD64 modules)"
+    },
+    {
+      "name": "yudit-common",
+      "version": "3.1.0-1",
+      "size": 10207232,
+      "priority": "optional",
+      "section": "editors",
+      "status": "auto",
+      "summary": "Unicode text editor (arch-independent files)"
+    },
+    {
+      "name": "libevolution",
+      "version": "3.52.3-0ubuntu1.1",
+      "size": 10184704,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "evolution libraries"
+    },
+    {
+      "name": "libgtk-3-0t64",
+      "version": "3.24.41-4ubuntu1.3",
+      "size": 10006528,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "GTK graphical user interface library"
+    },
+    {
+      "name": "postgrespro-1c-16-client",
+      "version": "16.14-1.noble",
+      "size": 9782272,
+      "priority": "optional",
+      "section": "database",
+      "status": "auto",
+      "summary": "front-end programs for Postgres Pro 1c 16"
+    },
+    {
+      "name": "qemu-system-data",
+      "version": "1:8.2.2+ds-0ubuntu1.17",
+      "size": 9298944,
+      "priority": "optional",
+      "section": "otherosfs",
+      "status": "auto",
+      "summary": "QEMU full system emulation (data files)"
+    },
+    {
+      "name": "libreoffice-uiconfig-writer",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 9284608,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "UI data (\"config\") for LibreOffice Writer"
+    },
+    {
+      "name": "python-matplotlib-data",
+      "version": "3.6.3-1ubuntu5",
+      "size": 9284608,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Python based plotting system (data package)"
+    },
+    {
+      "name": "libpython3.12-stdlib",
+      "version": "3.12.3-1ubuntu0.15",
+      "size": 9249792,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Interactive high-level object-oriented language (standard library, version 3.12)"
+    },
+    {
+      "name": "libpython3.12t64",
+      "version": "3.12.3-1ubuntu0.15",
+      "size": 9137152,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Shared Python runtime library (version 3.12)"
+    },
+    {
+      "name": "libtsan2",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "size": 9115648,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "ThreadSanitizer -- a Valgrind-based detector of data races (runtime)"
+    },
+    {
+      "name": "pgadmin3",
+      "version": "1.18.1-2",
+      "size": 8920064,
+      "priority": "optional",
+      "section": "database",
+      "status": "installed",
+      "summary": "graphical administration tool for PostgreSQL"
+    },
+    {
+      "name": "libplacebo338",
+      "version": "6.338.2-2build1",
+      "size": 8867840,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "GPU-accelerated video/image rendering primitives (shared library)"
+    },
+    {
+      "name": "libmagic-mgc",
+      "version": "1:5.45-3build1",
+      "size": 8535040,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "File type determination library using \"magic\" numbers (compiled magic file)"
+    },
+    {
+      "name": "libreoffice-uiconfig-common",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 8518656,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "UI data (\"config\") for LibreOffice (\"common\" set)"
+    },
+    {
+      "name": "gnome-control-center",
+      "version": "1:46.7-0ubuntu0.24.04.4",
+      "size": 8341504,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "utilities to configure the GNOME desktop"
+    },
+    {
+      "name": "gthumb-data",
+      "version": "3:3.12.6-1",
+      "size": 8337408,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "image viewer and browser - arch-independent files"
+    },
+    {
+      "name": "libgegl-0.4-0t64",
+      "version": "1:0.4.48-2.4build2",
+      "size": 8186880,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Generic Graphics Library"
+    },
+    {
+      "name": "python3.12-minimal",
+      "version": "3.12.3-1ubuntu0.15",
+      "size": 8118272,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Minimal subset of the Python language (version 3.12)"
+    },
+    {
+      "name": "perl-base",
+      "version": "5.38.2-3.2ubuntu0.3",
+      "size": 8103936,
+      "priority": "required",
+      "section": "perl",
+      "status": "auto",
+      "summary": "minimal Perl system"
+    },
+    {
+      "name": "network-manager",
+      "version": "1.46.0-1ubuntu2.7",
+      "size": 7782400,
+      "priority": "optional",
+      "section": "net",
+      "status": "auto",
+      "summary": "network management framework (daemon and userspace tools)"
+    },
+    {
+      "name": "linux-libc-dev",
+      "version": "6.8.0-136.136",
+      "size": 7768064,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "Linux Kernel Headers for development"
+    },
+    {
+      "name": "python3-pydantic",
+      "version": "1.10.14-1",
+      "size": 7634944,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Data validation and settings management using Python type hinting"
+    },
+    {
+      "name": "gstreamer1.0-plugins-good",
+      "version": "1.24.2-1ubuntu1.4",
+      "size": 7598080,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "GStreamer plugins from the \"good\" set"
+    },
+    {
+      "name": "liblapack3",
+      "version": "3.12.0-3build1.1",
+      "size": 7297024,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Library of linear algebra routines 3 - shared version"
+    },
+    {
+      "name": "qemu-system-common",
+      "version": "1:8.2.2+ds-0ubuntu1.17",
+      "size": 7259136,
+      "priority": "optional",
+      "section": "otherosfs",
+      "status": "auto",
+      "summary": "QEMU full system emulation binaries (common files)"
+    },
+    {
+      "name": "libsvtav1enc1d1",
+      "version": "1.7.0+dfsg-2build1",
+      "size": 7218176,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Scalable Video Technology for AV1 (libsvtav1enc shared library)"
+    },
+    {
+      "name": "coreutils",
+      "version": "9.4-3ubuntu6.2",
+      "size": 7110656,
+      "priority": "required",
+      "section": "utils",
+      "status": "auto",
+      "summary": "GNU core utilities"
+    },
+    {
+      "name": "librsvg2-2",
+      "version": "2.58.0+dfsg-1build1",
+      "size": 6867968,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "SAX-based renderer library for SVG files (runtime)"
+    },
+    {
+      "name": "gnome-shell",
+      "version": "46.0-0ubuntu6~24.04.14",
+      "size": 6839296,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "graphical shell for the GNOME desktop"
+    },
+    {
+      "name": "libssl3t64",
+      "version": "3.0.13-0ubuntu3.11",
+      "size": 6772736,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Secure Sockets Layer toolkit - shared libraries"
+    },
+    {
+      "name": "libgtk-4-common",
+      "version": "4.14.5+ds-0ubuntu0.10",
+      "size": 6746112,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "common files for the GTK graphical user interface library"
+    },
+    {
+      "name": "libmwaw-0.3-3",
+      "version": "0.3.22-1build1",
+      "size": 6624256,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "import library for some old Mac text documents"
+    },
+    {
+      "name": "dpkg",
+      "version": "1.22.6ubuntu6.6",
+      "size": 6387712,
+      "priority": "required",
+      "section": "admin",
+      "status": "auto",
+      "summary": "Debian package management system"
+    },
+    {
+      "name": "fonts-roboto-unhinted",
+      "version": "2:0~20170802-3",
+      "size": 6387712,
+      "priority": "optional",
+      "section": "fonts",
+      "status": "auto",
+      "summary": "Google's signature family of fonts (unhinted)"
+    },
+    {
+      "name": "libgtk2.0-0t64",
+      "version": "2.24.33-4ubuntu1.1",
+      "size": 6126592,
+      "priority": "optional",
+      "section": "oldlibs",
+      "status": "auto",
+      "summary": "GTK graphical user interface library - old version"
+    },
+    {
+      "name": "libsystemd-shared",
+      "version": "255.4-1ubuntu8.16",
+      "size": 6008832,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "systemd shared private library"
+    },
+    {
+      "name": "libgtkmm-4.0-0",
+      "version": "4.10.0-4build3",
+      "size": 5997568,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "C++ wrappers for GTK4 (shared libraries)"
+    },
+    {
+      "name": "orca",
+      "version": "46.1-1ubuntu1",
+      "size": 5734400,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "Scriptable screen reader"
+    },
+    {
+      "name": "ubuntu-mono",
+      "version": "24.04-0ubuntu1",
+      "size": 5700608,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "Ubuntu Mono Icon theme"
+    },
+    {
+      "name": "python3-jedi",
+      "version": "0.19.1+ds1-1",
+      "size": 5636096,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "autocompletion tool for Python 3"
+    },
+    {
+      "name": "libaom3",
+      "version": "3.8.2-2ubuntu0.1",
+      "size": 5478400,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "AV1 Video Codec Library"
+    },
+    {
+      "name": "libpython3.12-minimal",
+      "version": "3.12.3-1ubuntu0.15",
+      "size": 5308416,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Minimal subset of the Python language (version 3.12)"
+    },
+    {
+      "name": "apache2-bin",
+      "version": "2.4.58-1ubuntu8.15",
+      "size": 5147648,
+      "priority": "optional",
+      "section": "httpd",
+      "status": "auto",
+      "summary": "Apache HTTP Server (modules and other binary files)"
+    },
+    {
+      "name": "libhwasan0",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "size": 5014528,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "AddressSanitizer -- a fast memory error detector"
+    },
+    {
+      "name": "ipxe-qemu",
+      "version": "1.21.1+git-20220113.fbbdc3926-0ubuntu2",
+      "size": 4978688,
+      "priority": "optional",
+      "section": "admin",
+      "status": "auto",
+      "summary": "PXE boot firmware - ROM images for qemu"
+    },
+    {
+      "name": "libgegl-common",
+      "version": "1:0.4.48-2.4build2",
+      "size": 4971520,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "Generic Graphics Library - common files"
+    },
+    {
+      "name": "python3-lxml",
+      "version": "5.2.1-1",
+      "size": 4901888,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "pythonic binding for the libxml2 and libxslt libraries"
+    },
+    {
+      "name": "libsane-common",
+      "version": "1.2.1-7build4",
+      "size": 4886528,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "API library for scanners -- documentation and support files"
+    },
+    {
+      "name": "modemmanager",
+      "version": "1.23.4-0ubuntu2",
+      "size": 4751360,
+      "priority": "optional",
+      "section": "net",
+      "status": "auto",
+      "summary": "D-Bus service for managing modems"
+    },
+    {
+      "name": "ure",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 4669440,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "LibreOffice UNO runtime environment"
+    },
+    {
+      "name": "bluez",
+      "version": "5.72-0ubuntu5.5",
+      "size": 4563968,
+      "priority": "optional",
+      "section": "admin",
+      "status": "auto",
+      "summary": "Bluetooth tools and daemons"
+    },
+    {
+      "name": "python3-pygments",
+      "version": "2.17.2+dfsg-1",
+      "size": 4524032,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "syntax highlighting package written in Python 3"
+    },
+    {
+      "name": "libopenexr-3-1-30",
+      "version": "3.1.5-5.1build3",
+      "size": 4467712,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "runtime files for the OpenEXR image library"
+    },
+    {
+      "name": "libqmi-glib5",
+      "version": "1.35.2-0ubuntu2",
+      "size": 4444160,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Support library to use the Qualcomm MSM Interface (QMI) protocol"
+    },
+    {
+      "name": "libgtk-3-common",
+      "version": "3.24.41-4ubuntu1.3",
+      "size": 4427776,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "common files for the GTK graphical user interface library"
+    },
+    {
+      "name": "libintl-perl",
+      "version": "1.33-1build3",
+      "size": 4392960,
+      "priority": "optional",
+      "section": "perl",
+      "status": "auto",
+      "summary": "Uniforum message translations system compatible i18n library"
+    },
+    {
+      "name": "fonts-liberation",
+      "version": "1:2.1.5-3",
+      "size": 4387840,
+      "priority": "optional",
+      "section": "fonts",
+      "status": "auto",
+      "summary": "fonts with the same metrics as Times, Arial and Courier"
+    },
+    {
+      "name": "libgimp2.0t64",
+      "version": "2.10.36-3ubuntu0.24.04.1",
+      "size": 4376576,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Libraries for the GNU Image Manipulation Program"
+    },
+    {
+      "name": "libglib2.0-0t64",
+      "version": "2.80.0-6ubuntu3.8",
+      "size": 4294656,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "GLib library of C routines"
+    },
+    {
+      "name": "libmutter-14-0",
+      "version": "46.2-1ubuntu0.24.04.16",
+      "size": 4276224,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "window manager library from the Mutter window manager"
+    },
+    {
+      "name": "xkb-data",
+      "version": "2.41-2ubuntu1.1",
+      "size": 4255744,
+      "priority": "optional",
+      "section": "x11",
+      "status": "auto",
+      "summary": "X Keyboard Extension (XKB) configuration data"
+    },
+    {
+      "name": "vim",
+      "version": "2:9.1.0016-1ubuntu7.18",
+      "size": 4232192,
+      "priority": "optional",
+      "section": "editors",
+      "status": "auto",
+      "summary": "Vi IMproved - enhanced vi editor"
+    },
+    {
+      "name": "libtcl8.6",
+      "version": "8.6.14+dfsg-1build1",
+      "size": 4183040,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Tcl (the Tool Command Language) v8.6 - run-time library files"
+    },
+    {
+      "name": "libnss3",
+      "version": "2:3.98-1ubuntu0.2",
+      "size": 4059136,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Network Security Service libraries"
+    },
+    {
+      "name": "python3-pycryptodome",
+      "version": "3.20.0+dfsg-1",
+      "size": 4050944,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "cryptographic Python library (Python 3)"
+    },
+    {
+      "name": "libgprofng0",
+      "version": "2.42-4ubuntu2.10",
+      "size": 3924992,
+      "priority": "optional",
+      "section": "devel",
+      "status": "auto",
+      "summary": "GNU Next Generation profiler (runtime library)"
+    },
+    {
+      "name": "libpipewire-0.3-modules",
+      "version": "1.0.5-1ubuntu3.3",
+      "size": 3920896,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "libraries for the PipeWire multimedia server - modules"
+    },
+    {
+      "name": "liblsan0",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "size": 3919872,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "LeakSanitizer -- a memory leak detector (runtime)"
+    },
+    {
+      "name": "libsnmp40t64",
+      "version": "5.9.4+dfsg-1.1ubuntu3.2",
+      "size": 3822592,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "SNMP (Simple Network Management Protocol) library"
+    },
+    {
+      "name": "manpages-dev",
+      "version": "6.7-2",
+      "size": 3813376,
+      "priority": "optional",
+      "section": "doc",
+      "status": "auto",
+      "summary": "Manual pages about using GNU/Linux for development"
+    },
+    {
+      "name": "groff-base",
+      "version": "1.23.0-3build2",
+      "size": 3810304,
+      "priority": "important",
+      "section": "text",
+      "status": "auto",
+      "summary": "GNU troff text-formatting system (base system components)"
+    },
+    {
+      "name": "gnome-shell-common",
+      "version": "46.0-0ubuntu6~24.04.14",
+      "size": 3772416,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "common files for the GNOME graphical shell"
+    },
+    {
+      "name": "libpoppler134",
+      "version": "24.02.0-1ubuntu9.9",
+      "size": 3704832,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "PDF rendering library"
+    },
+    {
+      "name": "libjxl0.7",
+      "version": "0.7.0-10.2ubuntu6.1",
+      "size": 3682304,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "JPEG XL Image Coding System - \"JXL\" (shared libraries)"
+    },
+    {
+      "name": "openssh-client",
+      "version": "1:9.6p1-3ubuntu13.18",
+      "size": 3622912,
+      "priority": "standard",
+      "section": "net",
+      "status": "auto",
+      "summary": "secure shell (SSH) client, for secure access to remote machines"
+    },
+    {
+      "name": "libgstreamer1.0-0",
+      "version": "1.24.2-1ubuntu0.1",
+      "size": 3584000,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Core GStreamer libraries and elements"
+    },
+    {
+      "name": "libreoffice-base-core",
+      "version": "4:24.2.7-0ubuntu0.24.04.6",
+      "size": 3569664,
+      "priority": "optional",
+      "section": "editors",
+      "status": "auto",
+      "summary": "office productivity suite -- shared library"
+    },
+    {
+      "name": "libglibmm-2.68-1t64",
+      "version": "2.78.1-2.2build2",
+      "size": 3557376,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "C++ wrapper for the GLib toolkit (shared libraries)"
+    },
+    {
+      "name": "bind9-libs",
+      "version": "1:9.18.39-0ubuntu0.24.04.5",
+      "size": 3525632,
+      "priority": "standard",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Shared Libraries used by BIND 9"
+    },
+    {
+      "name": "bpftrace",
+      "version": "0.20.2-1ubuntu4.3",
+      "size": 3509248,
+      "priority": "optional",
+      "section": "utils",
+      "status": "auto",
+      "summary": "high-level tracing language for Linux eBPF"
+    },
+    {
+      "name": "libubsan1",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "size": 3444736,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "UBSan -- undefined behaviour sanitizer (runtime)"
+    },
+    {
+      "name": "libvpx9",
+      "version": "1.14.0-1ubuntu2.3",
+      "size": 3429376,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "VP8 and VP9 video codec (shared library)"
+    },
+    {
+      "name": "libhwy1t64",
+      "version": "1.0.7-8.1build1",
+      "size": 3423232,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Efficient and performance-portable SIMD wrapper (runtime files)"
+    },
+    {
+      "name": "libsqlite3-dev",
+      "version": "3.45.1-1ubuntu2.6",
+      "size": 3403776,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "auto",
+      "summary": "SQLite 3 development files"
+    },
+    {
+      "name": "libreoffice-impress",
+      "version": "4:24.2.7-0ubuntu0.24.04.4",
+      "size": 3362816,
+      "priority": "optional",
+      "section": "editors",
+      "status": "installed",
+      "summary": "office productivity suite -- presentation"
+    },
+    {
+      "name": "libgfortran5",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "size": 3334144,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Runtime library for GNU Fortran applications"
+    },
+    {
+      "name": "libapt-pkg6.0t64",
+      "version": "2.8.3",
+      "size": 3326976,
+      "priority": "important",
+      "section": "libs",
+      "status": "auto",
+      "summary": "package management runtime library"
+    },
+    {
+      "name": "python3-cryptography",
+      "version": "41.0.7-4ubuntu0.4",
+      "size": 3321856,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Python library exposing cryptographic recipes and primitives (Python 3)"
+    },
+    {
+      "name": "librav1e0",
+      "version": "0.7.1-2",
+      "size": 3314688,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "Fastest and safest AV1 encoder - shared library"
+    },
+    {
+      "name": "gnome-software",
+      "version": "46.0-1ubuntu2",
+      "size": 3206144,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "Software Center for GNOME"
+    },
+    {
+      "name": "libstdc++6",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "size": 3184640,
+      "priority": "important",
+      "section": "libs",
+      "status": "auto",
+      "summary": "GNU Standard C++ Library v3"
+    },
+    {
+      "name": "libexiv2-27",
+      "version": "0.27.6-1ubuntu0.3",
+      "size": 3125248,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "EXIF/IPTC/XMP metadata manipulation library"
+    },
+    {
+      "name": "liblvm2cmd2.03",
+      "version": "2.03.16-3ubuntu3.2",
+      "size": 3118080,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "LVM2 command library"
+    },
+    {
+      "name": "iproute2",
+      "version": "6.1.0-1ubuntu6.4",
+      "size": 3105792,
+      "priority": "important",
+      "section": "net",
+      "status": "auto",
+      "summary": "networking and traffic control tools"
+    },
+    {
+      "name": "open-vm-tools",
+      "version": "2:13.0.0-2~ubuntu0.24.04.1",
+      "size": 3086336,
+      "priority": "optional",
+      "section": "admin",
+      "status": "auto",
+      "summary": "Open VMware Tools for virtual machines hosted on VMware (CLI)"
+    },
+    {
+      "name": "libprotobuf32t64",
+      "version": "3.21.12-8.2ubuntu0.3",
+      "size": 3083264,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "protocol buffers C++ library"
+    },
+    {
+      "name": "evolution-data-server",
+      "version": "3.52.3-0ubuntu1.2",
+      "size": 3058688,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "evolution database backend server"
+    },
+    {
+      "name": "libgtksourceview-5-common",
+      "version": "5.12.0-1build1",
+      "size": 3047424,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "common files for the GTK 4 syntax highlighting widget"
+    },
+    {
+      "name": "gnome-keyring",
+      "version": "46.1-2ubuntu0.2",
+      "size": 3006464,
+      "priority": "optional",
+      "section": "gnome",
+      "status": "auto",
+      "summary": "GNOME keyring services (daemon and tools)"
+    },
+    {
+      "name": "man-db",
+      "version": "2.12.0-4build2",
+      "size": 2998272,
+      "priority": "important",
+      "section": "doc",
+      "status": "auto",
+      "summary": "tools for reading manual pages"
+    },
+    {
+      "name": "postgrespro-1c-16-contrib",
+      "version": "16.14-1.noble",
+      "size": 2979840,
+      "priority": "optional",
+      "section": "database",
+      "status": "auto",
+      "summary": "additional facilities for Postgres Pro 1c 16"
+    },
+    {
+      "name": "transmission-gtk",
+      "version": "4.0.5-1ubuntu0.1",
+      "size": 2977792,
+      "priority": "optional",
+      "section": "net",
+      "status": "auto",
+      "summary": "lightweight BitTorrent client (GTK+ interface)"
+    },
+    {
+      "name": "shared-mime-info",
+      "version": "2.4-4",
+      "size": 2920448,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "FreeDesktop.org shared MIME database and spec"
+    },
+    {
+      "name": "libavformat60",
+      "version": "7:6.1.1-3ubuntu5",
+      "size": 2916352,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "FFmpeg library with (de)muxers for multimedia containers - runtime files"
+    },
+    {
+      "name": "bpfcc-tools",
+      "version": "0.29.1+ds-1ubuntu7",
+      "size": 2884608,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "tools for BPF Compiler Collection (BCC)"
+    },
+    {
+      "name": "libgstreamer-plugins-base1.0-0",
+      "version": "1.24.2-1ubuntu0.4",
+      "size": 2879488,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "GStreamer libraries from the \"base\" set"
+    },
+    {
+      "name": "sg3-utils",
+      "version": "1.46-3ubuntu4",
+      "size": 2866176,
+      "priority": "optional",
+      "section": "admin",
+      "status": "auto",
+      "summary": "utilities for devices using the SCSI command set"
+    },
+    {
+      "name": "virtiofsd",
+      "version": "1.10.0-1",
+      "size": 2805760,
+      "priority": "optional",
+      "section": "otherosfs",
+      "status": "auto",
+      "summary": "Virtio-fs vhost-user device daemon"
+    },
+    {
+      "name": "libboost-locale1.83.0",
+      "version": "1.83.0-2.1ubuntu3.2",
+      "size": 2804736,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "C++ facilities for localization"
+    },
+    {
+      "name": "python3-ipython",
+      "version": "8.20.0-1",
+      "size": 2725888,
+      "priority": "optional",
+      "section": "python",
+      "status": "auto",
+      "summary": "Enhanced interactive Python shell (Python 3 version)"
+    },
+    {
+      "name": "libgphoto2-6t64",
+      "version": "2.5.31-2.1ubuntu1",
+      "size": 2673664,
+      "priority": "optional",
+      "section": "libs",
+      "status": "auto",
+      "summary": "gphoto2 digital camera library"
+    },
+    {
+      "name": "libpcre2-dev",
+      "version": "10.42-4ubuntu2.1",
+      "size": 2601984,
+      "priority": "optional",
+      "section": "libdevel",
+      "status": "auto",
+      "summary": "New Perl Compatible Regular Expression Library - development files"
+    },
+    {
+      "name": "libbpfcc",
+      "version": "0.29.1+ds-1ubuntu7",
+      "size": 2580480,
+      "priority": "optional",
+      "section": "misc",
+      "status": "auto",
+      "summary": "shared library for BPF Compiler Collection (BCC)"
+    }
+  ],
+  "autoremove": [
+    "linux-modules-extra-6.8.0-100-generic",
+    "linux-headers-6.8.0-100",
+    "linux-modules-6.8.0-100-generic",
+    "linux-headers-6.8.0-100-generic",
+    "linux-tools-6.8.0-100",
+    "linux-image-6.8.0-100-generic",
+    "linux-tools-6.8.0-100-generic",
+    "libwoff1",
+    "windsurf"
+  ],
+  "manual": [
+    "cursor",
+    "devin-desktop",
+    "code",
+    "claude-desktop",
+    "zcode",
+    "google-chrome-stable",
+    "obsidian",
+    "firefox",
+    "fonts-noto-core",
+    "cmake",
+    "libreoffice-help-ru",
+    "libicu55",
+    "gimp",
+    "language-pack-ru-base",
+    "gnome-icon-theme",
+    "libreoffice-help-common",
+    "libgtk-3-dev",
+    "libssl-dev",
+    "systemd",
+    "udev",
+    "fonts-noto-color-emoji",
+    "language-pack-gnome-ru-base",
+    "grub-efi-amd64-signed",
+    "python3-pip",
+    "python3-scapy",
+    "hunspell-ru",
+    "libwebkit2gtk-4.1-dev",
+    "libreoffice-l10n-ru",
+    "gthumb",
+    "btrfs-progs",
+    "shim-signed",
+    "apt",
+    "lvm2",
+    "wpasupplicant",
+    "mythes-ru",
+    "sudo",
+    "util-linux",
+    "mpv",
+    "libssl1.0.0",
+    "cloud-init",
+    "apparmor",
+    "xfsprogs",
+    "fonts-firacode",
+    "libx11-dev",
+    "libfreetype-dev",
+    "bash",
+    "nautilus",
+    "btop",
+    "gnome-text-editor",
+    "e2fsprogs",
+    "libcairo2",
+    "gpg",
+    "open-iscsi",
+    "fonts-noto-mono",
+    "multipath-tools",
+    "mdadm",
+    "libkrb5-3",
+    "wget",
+    "systemd-resolved",
+    "login",
+    "libfreetype6",
+    "net-tools",
+    "libxi-dev",
+    "libxcb1-dev",
+    "perl",
+    "apport",
+    "x11-utils",
+    "ncurses-bin",
+    "findutils",
+    "needrestart",
+    "app-terminator",
+    "diffutils",
+    "libpq5",
+    "cryptsetup",
+    "base-files",
+    "libgssapi-krb5-2",
+    "liblcms2-2",
+    "libxcb-glx0-dev",
+    "ncurses-base",
+    "libglu1-mesa",
+    "python3-fastapi",
+    "ninja-build",
+    "libxkbcommon-dev",
+    "grep",
+    "python3-httpx",
+    "feh",
+    "libfuse2t64",
+    "libxext-dev",
+    "bsdutils",
+    "ubuntu-drivers-common",
+    "patchelf",
+    "librsvg2-dev",
+    "ubuntu-release-upgrader-core",
+    "gzip",
+    "python3-uvicorn",
+    "libxcb-randr0-dev",
+    "grub-efi-amd64",
+    "dash",
+    "libxcb-render-util0-dev",
+    "dbus",
+    "power-profiles-daemon",
+    "traceroute",
+    "libxcursor-dev",
+    "libfribidi0",
+    "libayatana-appindicator3-dev",
+    "libxrandr-dev",
+    "systemd-sysv",
+    "libxcb-xfixes0-dev",
+    "tree",
+    "bcache-tools",
+    "libxcb-icccm4-dev",
+    "libxrender-dev",
+    "efibootmgr",
+    "libxcb-sync-dev",
+    "gnome-browser-connector",
+    "ttf-mscorefonts-installer",
+    "cabextract",
+    "python3",
+    "libgsf-bin",
+    "hyphen-ru",
+    "libx11-xcb-dev",
+    "libxcb-image0-dev",
+    "libxfixes-dev",
+    "libxcb-shm0-dev",
+    "libxcb-util-dev",
+    "libxcb-cursor-dev",
+    "libxcb-shape0-dev",
+    "libxcomposite-dev",
+    "hostname",
+    "libxcb-keysyms1-dev",
+    "libgl1-mesa-dev",
+    "pollinate",
+    "libxcb-xinerama0-dev",
+    "gnome-themes-extra",
+    "apt-transport-https",
+    "netbase",
+    "pkg-config",
+    "libxkbcommon-x11-dev",
+    "python3.12-venv",
+    "libxdamage-dev",
+    "linux-generic",
+    "build-essential",
+    "fonts-roboto",
+    "init",
+    "ubuntu-minimal",
+    "ubuntu-server",
+    "ubuntu-standard",
+    "postgrespro-1c-16",
+    "unminimize",
+    "libfontconfig1-dev",
+    "language-pack-gnome-ru",
+    "language-pack-ru",
+    "transmission"
+  ]
+}

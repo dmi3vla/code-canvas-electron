@@ -1,0 +1,570 @@
+I am done researching. 1 sentence summary: analyzed the APT snapshot (1816 installed packages, 153 manual roots, 9 autoremove candidates) and grouped packages by functional domain, dependency status and unused set.
+
+<APT_SNAPSHOT>
+# APT snapshot
+total_installed: 1816
+manual: 153  auto: 1638  autoremove: 9
+
+## Sections (top 20)
+- libs: 837
+- python: 168
+- admin: 124
+- libdevel: 112
+- utils: 98
+- gnome: 67
+- devel: 54
+- introspection: 44
+- misc: 42
+- net: 42
+- perl: 26
+- fonts: 19
+- editors: 18
+- x11: 17
+- oldlibs: 16
+- text: 14
+- kernel: 14
+- otherosfs: 12
+- graphics: 9
+- interpreters: 9
+
+## Autoremove candidates (unused)
+- linux-modules-extra-6.8.0-100-generic
+- linux-headers-6.8.0-100
+- linux-modules-6.8.0-100-generic
+- linux-headers-6.8.0-100-generic
+- linux-tools-6.8.0-100
+- linux-image-6.8.0-100-generic
+- linux-tools-6.8.0-100-generic
+- libwoff1
+- windsurf
+
+## Manual roots
+- cursor  3.12.17-1784259156  939.5MB  [devel]  The AI Code Editor.
+- devin-desktop  3.4.27-1783378423  927.5MB  [devel]  Tomorrow's Editor, Today.
+- code  1.129.1-1784303641  917.6MB  [devel]  Code editing. Redefined.
+- claude-desktop  1.22209.0  510.5MB  [utils]  Desktop application for Claude.ai
+- zcode  3.2.5-2316  452.7MB  [default]  
+- google-chrome-stable  150.0.7871.128-1  414.7MB  [web]  The web browser from Google
+- obsidian  1.12.7  306.6MB  [default]  
+- firefox  152.0.6+build1-0ubuntu0.24.04.1~mt1  291.3MB  [web]  Safe and easy web browser from Mozilla
+- fonts-noto-core  20201225-2  41.6MB  [fonts]  "No Tofu" font families with large Unicode coverage (core)
+- cmake  3.28.3-1build7  35.6MB  [devel]  cross-platform, open-source make system
+- libreoffice-help-ru  4:24.2.7-0ubuntu0.24.04.6  30.2MB  [doc]  office productivity suite -- Russian help
+- libicu55  55.1-7  29.4MB  [libs]  International Components for Unicode
+- gimp  2.10.36-3ubuntu0.24.04.1  19.1MB  [graphics]  GNU Image Manipulation Program
+- language-pack-ru-base  1:24.04+20260127  14.9MB  [translations]  translations for language Russian
+- gnome-icon-theme  3.12.0-5  14.8MB  [gnome]  This package contains the default icon theme used by the GNOME
+- libreoffice-help-common  4:24.2.7-0ubuntu0.24.04.6  14.5MB  [editors]  office productivity suite -- common files for LibreOffice help
+- libgtk-3-dev  3.24.41-4ubuntu1.3  13.8MB  [libdevel]  development files for the GTK library
+- libssl-dev  3.0.13-0ubuntu3.11  12.7MB  [libdevel]  Secure Sockets Layer toolkit - development files
+- systemd  255.4-1ubuntu8.16  11.5MB  [admin]  system and service manager
+- udev  255.4-1ubuntu8.16  10.6MB  [admin]  /dev/ and hotplug management daemon
+- fonts-noto-color-emoji  2.047-0ubuntu0.24.04.1  10.3MB  [fonts]  color emoji font from Google
+- language-pack-gnome-ru-base  1:24.04+20260127  10.3MB  [translations]  GNOME translations for language Russian
+- grub-efi-amd64-signed  1.202.5+2.12-1ubuntu7.3  7.0MB  [utils]  GRand Unified Bootloader, version 2 (EFI-AMD64 version, signed)
+- python3-pip  24.0+dfsg-1ubuntu1.3  6.7MB  [python]  Python package installer
+- python3-scapy  2.5.0+dfsg-2ubuntu1  6.5MB  [python]  Packet generator/sniffer and network scanner/discovery (Python 3)
+- hunspell-ru  1:24.2.1-1  6.0MB  [text]  Russian dictionary for hunspell
+- libwebkit2gtk-4.1-dev  2.52.3-0ubuntu0.24.04.1  5.5MB  [libdevel]  Web content engine library for GTK - development files
+- libreoffice-l10n-ru  4:24.2.7-0ubuntu0.24.04.6  5.3MB  [localization]  office productivity suite -- Russian language package
+- gthumb  3:3.12.6-1  5.1MB  [gnome]  image viewer and browser
+- btrfs-progs  6.6.3-1.1build2  4.8MB  [admin]  Checksumming Copy on Write Filesystem utilities
+- shim-signed  1.58+15.8-0ubuntu1  4.6MB  [utils]  Secure Boot chain-loading bootloader (Microsoft-signed binary)
+- apt  2.8.3  4.0MB  [admin]  commandline package manager
+- lvm2  2.03.16-3ubuntu3.2  3.9MB  [admin]  Linux Logical Volume Manager
+- wpasupplicant  2:2.10-21ubuntu0.4  3.7MB  [net]  client support for WPA and WPA2 (IEEE 802.11i)
+- mythes-ru  1:24.2.1-1  3.4MB  [text]  Russian Thesaurus for LibreOffice
+- sudo  1.9.15p5-3ubuntu5.24.04.2  3.4MB  [admin]  Provide limited super user privileges to specific users
+- util-linux  2.39.3-9ubuntu6.5  3.4MB  [utils]  miscellaneous system utilities
+- mpv  0.37.0-1ubuntu4  3.3MB  [video]  video player based on MPlayer/mplayer2
+- libssl1.0.0  1.0.2n-1ubuntu5.13  3.3MB  [libs]  Secure Sockets Layer toolkit - shared libraries
+- cloud-init  26.1-0ubuntu1~24.04.1  3.1MB  [admin]  initialization and customization tool for cloud instances
+- apparmor  4.0.1really4.0.1-0ubuntu0.24.04.7  3.1MB  [admin]  user-space parser utility for AppArmor
+- xfsprogs  6.6.0-1ubuntu2.1  2.9MB  [admin]  Utilities for managing the XFS filesystem
+- fonts-firacode  6.2-2  2.9MB  [fonts]  Monospaced font with programming ligatures
+- libx11-dev  2:1.8.7-1build1  2.4MB  [libdevel]  X11 client-side library (development headers)
+- libfreetype-dev  2.13.2+dfsg-1ubuntu0.1  2.0MB  [libdevel]  FreeType 2 font engine, development files
+- bash  5.2.21-2ubuntu4  1.9MB  [shells]  GNU Bourne Again SHell
+- nautilus  1:46.4-0ubuntu0.2  1.6MB  [gnome]  file manager and graphical shell for GNOME
+- btop  1.3.0-1  1.5MB  [utils]  Modern and colorful command line resource monitor that shows usage and stats
+- gnome-text-editor  46.3-0ubuntu2  1.5MB  [gnome]  simple text editor for GNOME
+- e2fsprogs  1.47.0-2.4~exp1ubuntu4.1  1.5MB  [admin]  ext2/ext3/ext4 file system utilities
+- libcairo2  1.18.0-3build1  1.3MB  [libs]  Cairo 2D vector graphics library
+- gpg  2.4.4-2ubuntu17.4  1.2MB  [utils]  GNU Privacy Guard -- minimalist public key operations
+- open-iscsi  2.1.9-3ubuntu5.4  1.1MB  [net]  iSCSI initiator tools
+- fonts-noto-mono  20201225-2  1.1MB  [fonts]  "No Tofu" monospaced font family with large Unicode coverage
+- multipath-tools  0.9.4-5ubuntu8.2  1.1MB  [admin]  maintain multipath block device access
+- mdadm  4.3-1ubuntu2.1  1.1MB  [admin]  tool for managing Linux MD devices (software RAID)
+- libkrb5-3  1.20.1-6ubuntu2.6  1.0MB  [libs]  MIT Kerberos runtime libraries
+- wget  1.21.4-1ubuntu4.3  0.9MB  [web]  retrieves files from the web
+- systemd-resolved  255.4-1ubuntu8.16  0.9MB  [admin]  systemd DNS resolver
+- login  1:4.13+dfsg1-4ubuntu3.2  0.9MB  [admin]  system login tools
+- libfreetype6  2.13.2+dfsg-1ubuntu0.1  0.9MB  [libs]  FreeType 2 font engine, shared library files
+- net-tools  2.10-0.1ubuntu4.4  0.8MB  [net]  NET-3 networking toolkit
+- libxi-dev  2:1.8.1-1build1  0.7MB  [libdevel]  X11 Input extension library (development headers)
+- libxcb1-dev  1.15-1ubuntu2  0.7MB  [libdevel]  X C Binding, development files
+- perl  5.38.2-3.2ubuntu0.3  0.7MB  [perl]  Larry Wall's Practical Extraction and Report Language
+- apport  2.28.2-0ubuntu0.1  0.6MB  [utils]  automatically generate crash reports for debugging
+- x11-utils  7.7+6build2  0.6MB  [x11]  X11 utilities
+- ncurses-bin  6.4+20240113-1ubuntu2.1  0.6MB  [utils]  terminal-related programs and man pages
+- findutils  4.9.0-5build1  0.5MB  [utils]  utilities for finding files--find, xargs
+- needrestart  3.6-7ubuntu4.5  0.5MB  [admin]  check which daemons need to be restarted after library upgrades
+- app-terminator  0.2.0-1~noble1  0.5MB  [gnome]  Unified manager for installed applications
+- diffutils  1:3.10-1build1  0.4MB  [utils]  File comparison utilities
+- libpq5  16.14-0ubuntu0.24.04.1  0.4MB  [libs]  PostgreSQL C client library
+- cryptsetup  2:2.7.0-1ubuntu4.2  0.4MB  [admin]  disk encryption support - startup scripts
+- base-files  13ubuntu10.4  0.4MB  [admin]  Debian base system miscellaneous files
+- libgssapi-krb5-2  1.20.1-6ubuntu2.6  0.4MB  [libs]  MIT Kerberos runtime libraries - krb5 GSS-API Mechanism
+- liblcms2-2  2.14-2ubuntu0.1  0.4MB  [libs]  Little CMS 2 color management library
+- libxcb-glx0-dev  1.15-1ubuntu2  0.4MB  [libdevel]  X C Binding, glx extension, development files
+- ncurses-base  6.4+20240113-1ubuntu2.1  0.4MB  [misc]  basic terminal type definitions
+- libglu1-mesa  9.0.2-1.1build1  0.4MB  [libs]  Mesa OpenGL utility library (GLU)
+- python3-fastapi  0.101.0-3  0.4MB  [python]  modern, fast, web framework for building APIs, based on type hints
+- ninja-build  1.11.1-2  0.3MB  [devel]  small build system closest in spirit to Make
+- libxkbcommon-dev  1.6.0-1build1  0.3MB  [libdevel]  library interface to the XKB compiler - development files
+- grep  3.11-4build1  0.3MB  [utils]  GNU grep, egrep and fgrep
+- python3-httpx  0.26.0-2  0.3MB  [python]  next generation HTTP client
+- feh  3.10.1-1ubuntu0.1  0.3MB  [graphics]  imlib2 based image viewer
+- libfuse2t64  2.9.9-8.1build1  0.3MB  [libs]  Filesystem in Userspace (library)
+- libxext-dev  2:1.3.4-1build2  0.3MB  [libdevel]  X11 miscellaneous extensions library (development headers)
+- bsdutils  1:2.39.3-9ubuntu6.5  0.3MB  [utils]  basic utilities from 4.4BSD-Lite
+- ubuntu-drivers-common  1:0.9.7.6ubuntu3.7  0.3MB  [admin]  Detect and install additional Ubuntu driver packages
+- patchelf  0.18.0-1.1build1  0.3MB  [utils]  modify properties of ELF executables
+- librsvg2-dev  2.58.0+dfsg-1build1  0.3MB  [libdevel]  SAX-based renderer library for SVG files (development)
+- ubuntu-release-upgrader-core  1:24.04.28  0.3MB  [admin]  manage release upgrades
+- gzip  1.12-1ubuntu3.2  0.2MB  [utils]  GNU compression utilities
+- python3-uvicorn  0.27.1-1  0.2MB  [python]  ASGI server implementation, using uvloop and httptools (Python3 version)
+- libxcb-randr0-dev  1.15-1ubuntu2  0.2MB  [libdevel]  X C Binding, randr extension, development files
+- grub-efi-amd64  2.12-1ubuntu7.3  0.2MB  [admin]  GRand Unified Bootloader, version 2 (EFI-AMD64 version)
+- dash  0.5.12-6ubuntu5  0.2MB  [shells]  POSIX-compliant shell
+- libxcb-render-util0-dev  0.3.9-1build4  0.2MB  [libdevel]  utility libraries for X C Binding -- render-util
+- dbus  1.14.10-4ubuntu4.1  0.2MB  [admin]  simple interprocess messaging system (system message bus)
+- power-profiles-daemon  0.21-1ubuntu1  0.2MB  [admin]  Makes power profiles handling available over D-Bus.
+- traceroute  1:2.1.5-1  0.2MB  [net]  Traces the route taken by packets over an IPv4/IPv6 network
+- libxcursor-dev  1:1.2.1-1build1  0.2MB  [libdevel]  X cursor management library (development files)
+- libfribidi0  1.0.13-3build1  0.1MB  [libs]  Free Implementation of the Unicode BiDi algorithm
+- libayatana-appindicator3-dev  0.5.93-1build3  0.1MB  [libdevel]  Ayatana Application Indicators (development files, GTK-3+ version)
+- libxrandr-dev  2:1.5.2-2build1  0.1MB  [libdevel]  X11 RandR extension library (development headers)
+- systemd-sysv  255.4-1ubuntu8.16  0.1MB  [admin]  system and service manager - SysV compatibility symlinks
+- libxcb-xfixes0-dev  1.15-1ubuntu2  0.1MB  [libdevel]  X C Binding, xfixes extension, development files
+- tree  2.1.1-2ubuntu3.24.04.2  0.1MB  [utils]  displays an indented directory tree, in color
+- bcache-tools  1.0.8-5build1  0.1MB  [utils]  bcache userspace tools
+- libxcb-icccm4-dev  0.4.1-1.1build3  0.1MB  [libdevel]  utility libraries for X C Binding -- icccm, development files
+- libxrender-dev  1:0.9.10-1.1build1  0.1MB  [libdevel]  X Rendering Extension client library (development files)
+- efibootmgr  18-1build2  0.1MB  [admin]  Interact with the EFI Boot Manager
+- libxcb-sync-dev  1.15-1ubuntu2  0.1MB  [libdevel]  X C Binding, sync extension, development files
+- gnome-browser-connector  42.1-4  0.1MB  [gnome]  GNOME Shell extensions integration for web browsers
+- ttf-mscorefonts-installer  3.8.1ubuntu1  0.1MB  [contrib/fonts]  Installer for Microsoft TrueType core fonts
+- cabextract  1.11-2  0.1MB  [utils]  Microsoft Cabinet file unpacker
+- python3  3.12.3-0ubuntu2.1  0.1MB  [python]  interactive high-level object-oriented language (default python3 version)
+- libgsf-bin  1.14.51-2ubuntu0.1  0.1MB  [gnome]  Structured File Library - programs
+- hyphen-ru  20030310-1ubuntu3  0.1MB  [text]  Russian hyphenation patterns for LibreOffice/OpenOffice.org
+- libx11-xcb-dev  2:1.8.7-1build1  0.1MB  [libdevel]  Xlib/XCB interface library (development headers)
+- libxcb-image0-dev  0.4.0-2build1  0.1MB  [libdevel]  utility libraries for X C Binding -- image, development files
+- libxfixes-dev  1:6.0.0-2build1  0.1MB  [libdevel]  X11 miscellaneous 'fixes' extension library (development headers)
+- libxcb-shm0-dev  1.15-1ubuntu2  0.1MB  [libdevel]  X C Binding, shm extension, development files
+- libxcb-util-dev  0.4.0-1build3  0.1MB  [libdevel]  utility libraries for X C Binding -- atom, aux and event
+- libxcb-cursor-dev  0.1.4-1build1  0.1MB  [libdevel]  utility libraries for X C Binding -- cursor, development files
+- libxcb-shape0-dev  1.15-1ubuntu2  0.0MB  [libdevel]  X C Binding, shape extension, development files
+- libxcomposite-dev  1:0.4.5-1build3  0.0MB  [libdevel]  X11 Composite extension library (development headers)
+- hostname  3.23+nmu2ubuntu2  0.0MB  [admin]  utility to set/show the host name or domain name
+- libxcb-keysyms1-dev  0.4.0-1build4  0.0MB  [libdevel]  utility libraries for X C Binding -- keysyms, development files
+- libgl1-mesa-dev  25.2.8-0ubuntu0.24.04.2  0.0MB  [oldlibs]  transitional dummy package
+- pollinate  4.33-3.1ubuntu1.3  0.0MB  [admin]  seed the pseudo random number generator
+- libxcb-xinerama0-dev  1.15-1ubuntu2  0.0MB  [libdevel]  X C Binding, xinerama extension, development files
+- gnome-themes-extra  3.28-2ubuntu5  0.0MB  [gnome]  Adwaita GTK 2 theme — engine
+- apt-transport-https  2.8.3  0.0MB  [oldlibs]  transitional package for https support
+- netbase  6.4  0.0MB  [admin]  Basic TCP/IP networking system
+- pkg-config  1.8.1-2build1  0.0MB  [oldlibs]  manage compile and link flags for libraries (transitional package)
+- libxkbcommon-x11-dev  1.6.0-1build1  0.0MB  [libdevel]  library to create keymaps with the XKB X11 protocol - development files
+- python3.12-venv  3.12.3-1ubuntu0.15  0.0MB  [python]  Interactive high-level object-oriented language (pyvenv binary, version 3.12)
+- libxdamage-dev  1:1.1.6-1build1  0.0MB  [libdevel]  X11 damaged region extension library (development headers)
+- linux-generic  6.8.0-136.136  0.0MB  [kernel]  Complete Generic Linux kernel and headers
+- build-essential  12.10ubuntu1  0.0MB  [devel]  Informational list of build-essential packages
+- fonts-roboto  2:0~20170802-3  0.0MB  [fonts]  metapackage to pull in Roboto fonts
+- init  1.66ubuntu1  0.0MB  [metapackages]  metapackage ensuring an init system is installed
+- ubuntu-minimal  1.539.2  0.0MB  [metapackages]  Minimal core of Ubuntu
+- ubuntu-server  1.539.2  0.0MB  [metapackages]  Ubuntu Server system
+- ubuntu-standard  1.539.2  0.0MB  [metapackages]  Ubuntu standard system
+- postgrespro-1c-16  16.14-1.noble  0.0MB  [database]  Easy configuration for Postgres Pro 1c 16
+- unminimize  0.2.1  0.0MB  [devel]  Un-minimize your minimial images or setup
+- libfontconfig1-dev  2.15.0-1.1ubuntu2  0.0MB  [oldlibs]  generic font configuration library - dummy package
+- language-pack-gnome-ru  1:24.04+20260127  0.0MB  [translations]  GNOME translation updates for language Russian
+- language-pack-ru  1:24.04+20260127  0.0MB  [translations]  translation updates for language Russian
+- transmission  4.0.5-1ubuntu0.1  0.0MB  [net]  lightweight BitTorrent client
+
+## Packages by size (top)
+- [manual] cursor  3.12.17-1784259156  939.5MB  [devel]  The AI Code Editor.
+- [manual] devin-desktop  3.4.27-1783378423  927.5MB  [devel]  Tomorrow's Editor, Today.
+- [manual] code  1.129.1-1784303641  917.6MB  [devel]  Code editing. Redefined.
+- [manual] claude-desktop  1.22209.0  510.5MB  [utils]  Desktop application for Claude.ai
+- [manual] zcode  3.2.5-2316  452.7MB  [default]  
+- [manual] google-chrome-stable  150.0.7871.128-1  414.7MB  [web]  The web browser from Google
+- [manual] obsidian  1.12.7  306.6MB  [default]  
+- [manual] firefox  152.0.6+build1-0ubuntu0.24.04.1~mt1  291.3MB  [web]  Safe and easy web browser from Mozilla
+- [manual] fonts-noto-core  20201225-2  41.6MB  [fonts]  "No Tofu" font families with large Unicode coverage (core)
+- [manual] cmake  3.28.3-1build7  35.6MB  [devel]  cross-platform, open-source make system
+- [manual] libreoffice-help-ru  4:24.2.7-0ubuntu0.24.04.6  30.2MB  [doc]  office productivity suite -- Russian help
+- [manual] libicu55  55.1-7  29.4MB  [libs]  International Components for Unicode
+- [manual] gimp  2.10.36-3ubuntu0.24.04.1  19.1MB  [graphics]  GNU Image Manipulation Program
+- [manual] language-pack-ru-base  1:24.04+20260127  14.9MB  [translations]  translations for language Russian
+- [manual] gnome-icon-theme  3.12.0-5  14.8MB  [gnome]  This package contains the default icon theme used by the GNOME
+- [manual] libreoffice-help-common  4:24.2.7-0ubuntu0.24.04.6  14.5MB  [editors]  office productivity suite -- common files for LibreOffice help
+- [manual] libgtk-3-dev  3.24.41-4ubuntu1.3  13.8MB  [libdevel]  development files for the GTK library
+- [manual] libssl-dev  3.0.13-0ubuntu3.11  12.7MB  [libdevel]  Secure Sockets Layer toolkit - development files
+- [manual] systemd  255.4-1ubuntu8.16  11.5MB  [admin]  system and service manager
+- [manual] udev  255.4-1ubuntu8.16  10.6MB  [admin]  /dev/ and hotplug management daemon
+- [manual] fonts-noto-color-emoji  2.047-0ubuntu0.24.04.1  10.3MB  [fonts]  color emoji font from Google
+- [manual] language-pack-gnome-ru-base  1:24.04+20260127  10.3MB  [translations]  GNOME translations for language Russian
+- [manual] grub-efi-amd64-signed  1.202.5+2.12-1ubuntu7.3  7.0MB  [utils]  GRand Unified Bootloader, version 2 (EFI-AMD64 version, signed)
+- [manual] python3-pip  24.0+dfsg-1ubuntu1.3  6.7MB  [python]  Python package installer
+- [manual] python3-scapy  2.5.0+dfsg-2ubuntu1  6.5MB  [python]  Packet generator/sniffer and network scanner/discovery (Python 3)
+- [manual] hunspell-ru  1:24.2.1-1  6.0MB  [text]  Russian dictionary for hunspell
+- [manual] libwebkit2gtk-4.1-dev  2.52.3-0ubuntu0.24.04.1  5.5MB  [libdevel]  Web content engine library for GTK - development files
+- [manual] libreoffice-l10n-ru  4:24.2.7-0ubuntu0.24.04.6  5.3MB  [localization]  office productivity suite -- Russian language package
+- [manual] gthumb  3:3.12.6-1  5.1MB  [gnome]  image viewer and browser
+- [manual] btrfs-progs  6.6.3-1.1build2  4.8MB  [admin]  Checksumming Copy on Write Filesystem utilities
+- [manual] shim-signed  1.58+15.8-0ubuntu1  4.6MB  [utils]  Secure Boot chain-loading bootloader (Microsoft-signed binary)
+- [manual] apt  2.8.3  4.0MB  [admin]  commandline package manager
+- [manual] lvm2  2.03.16-3ubuntu3.2  3.9MB  [admin]  Linux Logical Volume Manager
+- [manual] wpasupplicant  2:2.10-21ubuntu0.4  3.7MB  [net]  client support for WPA and WPA2 (IEEE 802.11i)
+- [manual] mythes-ru  1:24.2.1-1  3.4MB  [text]  Russian Thesaurus for LibreOffice
+- [manual] sudo  1.9.15p5-3ubuntu5.24.04.2  3.4MB  [admin]  Provide limited super user privileges to specific users
+- [manual] util-linux  2.39.3-9ubuntu6.5  3.4MB  [utils]  miscellaneous system utilities
+- [manual] mpv  0.37.0-1ubuntu4  3.3MB  [video]  video player based on MPlayer/mplayer2
+- [manual] libssl1.0.0  1.0.2n-1ubuntu5.13  3.3MB  [libs]  Secure Sockets Layer toolkit - shared libraries
+- [manual] cloud-init  26.1-0ubuntu1~24.04.1  3.1MB  [admin]  initialization and customization tool for cloud instances
+- [manual] apparmor  4.0.1really4.0.1-0ubuntu0.24.04.7  3.1MB  [admin]  user-space parser utility for AppArmor
+- [manual] xfsprogs  6.6.0-1ubuntu2.1  2.9MB  [admin]  Utilities for managing the XFS filesystem
+- [manual] fonts-firacode  6.2-2  2.9MB  [fonts]  Monospaced font with programming ligatures
+- [manual] libx11-dev  2:1.8.7-1build1  2.4MB  [libdevel]  X11 client-side library (development headers)
+- [manual] libfreetype-dev  2.13.2+dfsg-1ubuntu0.1  2.0MB  [libdevel]  FreeType 2 font engine, development files
+- [manual] bash  5.2.21-2ubuntu4  1.9MB  [shells]  GNU Bourne Again SHell
+- [manual] nautilus  1:46.4-0ubuntu0.2  1.6MB  [gnome]  file manager and graphical shell for GNOME
+- [manual] btop  1.3.0-1  1.5MB  [utils]  Modern and colorful command line resource monitor that shows usage and stats
+- [manual] gnome-text-editor  46.3-0ubuntu2  1.5MB  [gnome]  simple text editor for GNOME
+- [manual] e2fsprogs  1.47.0-2.4~exp1ubuntu4.1  1.5MB  [admin]  ext2/ext3/ext4 file system utilities
+- [manual] libcairo2  1.18.0-3build1  1.3MB  [libs]  Cairo 2D vector graphics library
+- [manual] gpg  2.4.4-2ubuntu17.4  1.2MB  [utils]  GNU Privacy Guard -- minimalist public key operations
+- [manual] open-iscsi  2.1.9-3ubuntu5.4  1.1MB  [net]  iSCSI initiator tools
+- [manual] fonts-noto-mono  20201225-2  1.1MB  [fonts]  "No Tofu" monospaced font family with large Unicode coverage
+- [manual] multipath-tools  0.9.4-5ubuntu8.2  1.1MB  [admin]  maintain multipath block device access
+- [manual] mdadm  4.3-1ubuntu2.1  1.1MB  [admin]  tool for managing Linux MD devices (software RAID)
+- [manual] libkrb5-3  1.20.1-6ubuntu2.6  1.0MB  [libs]  MIT Kerberos runtime libraries
+- [manual] wget  1.21.4-1ubuntu4.3  0.9MB  [web]  retrieves files from the web
+- [manual] systemd-resolved  255.4-1ubuntu8.16  0.9MB  [admin]  systemd DNS resolver
+- [manual] login  1:4.13+dfsg1-4ubuntu3.2  0.9MB  [admin]  system login tools
+- [manual] libfreetype6  2.13.2+dfsg-1ubuntu0.1  0.9MB  [libs]  FreeType 2 font engine, shared library files
+- [manual] net-tools  2.10-0.1ubuntu4.4  0.8MB  [net]  NET-3 networking toolkit
+- [manual] libxi-dev  2:1.8.1-1build1  0.7MB  [libdevel]  X11 Input extension library (development headers)
+- [manual] libxcb1-dev  1.15-1ubuntu2  0.7MB  [libdevel]  X C Binding, development files
+- [manual] perl  5.38.2-3.2ubuntu0.3  0.7MB  [perl]  Larry Wall's Practical Extraction and Report Language
+- [manual] apport  2.28.2-0ubuntu0.1  0.6MB  [utils]  automatically generate crash reports for debugging
+- [manual] x11-utils  7.7+6build2  0.6MB  [x11]  X11 utilities
+- [manual] ncurses-bin  6.4+20240113-1ubuntu2.1  0.6MB  [utils]  terminal-related programs and man pages
+- [manual] findutils  4.9.0-5build1  0.5MB  [utils]  utilities for finding files--find, xargs
+- [manual] needrestart  3.6-7ubuntu4.5  0.5MB  [admin]  check which daemons need to be restarted after library upgrades
+- [manual] app-terminator  0.2.0-1~noble1  0.5MB  [gnome]  Unified manager for installed applications
+- [manual] diffutils  1:3.10-1build1  0.4MB  [utils]  File comparison utilities
+- [manual] libpq5  16.14-0ubuntu0.24.04.1  0.4MB  [libs]  PostgreSQL C client library
+- [manual] cryptsetup  2:2.7.0-1ubuntu4.2  0.4MB  [admin]  disk encryption support - startup scripts
+- [manual] base-files  13ubuntu10.4  0.4MB  [admin]  Debian base system miscellaneous files
+- [manual] libgssapi-krb5-2  1.20.1-6ubuntu2.6  0.4MB  [libs]  MIT Kerberos runtime libraries - krb5 GSS-API Mechanism
+- [manual] liblcms2-2  2.14-2ubuntu0.1  0.4MB  [libs]  Little CMS 2 color management library
+- [manual] libxcb-glx0-dev  1.15-1ubuntu2  0.4MB  [libdevel]  X C Binding, glx extension, development files
+- [manual] ncurses-base  6.4+20240113-1ubuntu2.1  0.4MB  [misc]  basic terminal type definitions
+- [manual] libglu1-mesa  9.0.2-1.1build1  0.4MB  [libs]  Mesa OpenGL utility library (GLU)
+- [manual] python3-fastapi  0.101.0-3  0.4MB  [python]  modern, fast, web framework for building APIs, based on type hints
+- [manual] ninja-build  1.11.1-2  0.3MB  [devel]  small build system closest in spirit to Make
+- [manual] libxkbcommon-dev  1.6.0-1build1  0.3MB  [libdevel]  library interface to the XKB compiler - development files
+- [manual] grep  3.11-4build1  0.3MB  [utils]  GNU grep, egrep and fgrep
+- [manual] python3-httpx  0.26.0-2  0.3MB  [python]  next generation HTTP client
+- [manual] feh  3.10.1-1ubuntu0.1  0.3MB  [graphics]  imlib2 based image viewer
+- [manual] libfuse2t64  2.9.9-8.1build1  0.3MB  [libs]  Filesystem in Userspace (library)
+- [manual] libxext-dev  2:1.3.4-1build2  0.3MB  [libdevel]  X11 miscellaneous extensions library (development headers)
+- [manual] bsdutils  1:2.39.3-9ubuntu6.5  0.3MB  [utils]  basic utilities from 4.4BSD-Lite
+- [manual] ubuntu-drivers-common  1:0.9.7.6ubuntu3.7  0.3MB  [admin]  Detect and install additional Ubuntu driver packages
+- [manual] patchelf  0.18.0-1.1build1  0.3MB  [utils]  modify properties of ELF executables
+- [manual] librsvg2-dev  2.58.0+dfsg-1build1  0.3MB  [libdevel]  SAX-based renderer library for SVG files (development)
+- [manual] ubuntu-release-upgrader-core  1:24.04.28  0.3MB  [admin]  manage release upgrades
+- [manual] gzip  1.12-1ubuntu3.2  0.2MB  [utils]  GNU compression utilities
+- [manual] python3-uvicorn  0.27.1-1  0.2MB  [python]  ASGI server implementation, using uvloop and httptools (Python3 version)
+- [manual] libxcb-randr0-dev  1.15-1ubuntu2  0.2MB  [libdevel]  X C Binding, randr extension, development files
+- [manual] grub-efi-amd64  2.12-1ubuntu7.3  0.2MB  [admin]  GRand Unified Bootloader, version 2 (EFI-AMD64 version)
+- [manual] dash  0.5.12-6ubuntu5  0.2MB  [shells]  POSIX-compliant shell
+- [manual] libxcb-render-util0-dev  0.3.9-1build4  0.2MB  [libdevel]  utility libraries for X C Binding -- render-util
+- [manual] dbus  1.14.10-4ubuntu4.1  0.2MB  [admin]  simple interprocess messaging system (system message bus)
+- [manual] power-profiles-daemon  0.21-1ubuntu1  0.2MB  [admin]  Makes power profiles handling available over D-Bus.
+- [manual] traceroute  1:2.1.5-1  0.2MB  [net]  Traces the route taken by packets over an IPv4/IPv6 network
+- [manual] libxcursor-dev  1:1.2.1-1build1  0.2MB  [libdevel]  X cursor management library (development files)
+- [manual] libfribidi0  1.0.13-3build1  0.1MB  [libs]  Free Implementation of the Unicode BiDi algorithm
+- [manual] libayatana-appindicator3-dev  0.5.93-1build3  0.1MB  [libdevel]  Ayatana Application Indicators (development files, GTK-3+ version)
+- [manual] libxrandr-dev  2:1.5.2-2build1  0.1MB  [libdevel]  X11 RandR extension library (development headers)
+- [manual] systemd-sysv  255.4-1ubuntu8.16  0.1MB  [admin]  system and service manager - SysV compatibility symlinks
+- [manual] libxcb-xfixes0-dev  1.15-1ubuntu2  0.1MB  [libdevel]  X C Binding, xfixes extension, development files
+- [manual] tree  2.1.1-2ubuntu3.24.04.2  0.1MB  [utils]  displays an indented directory tree, in color
+- [manual] bcache-tools  1.0.8-5build1  0.1MB  [utils]  bcache userspace tools
+- [manual] libxcb-icccm4-dev  0.4.1-1.1build3  0.1MB  [libdevel]  utility libraries for X C Binding -- icccm, development files
+- [manual] libxrender-dev  1:0.9.10-1.1build1  0.1MB  [libdevel]  X Rendering Extension client library (development files)
+- [manual] efibootmgr  18-1build2  0.1MB  [admin]  Interact with the EFI Boot Manager
+- [manual] libxcb-sync-dev  1.15-1ubuntu2  0.1MB  [libdevel]  X C Binding, sync extension, development files
+- [manual] gnome-browser-connector  42.1-4  0.1MB  [gnome]  GNOME Shell extensions integration for web browsers
+- [manual] ttf-mscorefonts-installer  3.8.1ubuntu1  0.1MB  [contrib/fonts]  Installer for Microsoft TrueType core fonts
+- [manual] cabextract  1.11-2  0.1MB  [utils]  Microsoft Cabinet file unpacker
+- [manual] python3  3.12.3-0ubuntu2.1  0.1MB  [python]  interactive high-level object-oriented language (default python3 version)
+- [manual] libgsf-bin  1.14.51-2ubuntu0.1  0.1MB  [gnome]  Structured File Library - programs
+- [manual] hyphen-ru  20030310-1ubuntu3  0.1MB  [text]  Russian hyphenation patterns for LibreOffice/OpenOffice.org
+- [manual] libx11-xcb-dev  2:1.8.7-1build1  0.1MB  [libdevel]  Xlib/XCB interface library (development headers)
+- [manual] libxcb-image0-dev  0.4.0-2build1  0.1MB  [libdevel]  utility libraries for X C Binding -- image, development files
+- [manual] libxfixes-dev  1:6.0.0-2build1  0.1MB  [libdevel]  X11 miscellaneous 'fixes' extension library (development headers)
+- [manual] libxcb-shm0-dev  1.15-1ubuntu2  0.1MB  [libdevel]  X C Binding, shm extension, development files
+- [manual] libxcb-util-dev  0.4.0-1build3  0.1MB  [libdevel]  utility libraries for X C Binding -- atom, aux and event
+- [manual] libxcb-cursor-dev  0.1.4-1build1  0.1MB  [libdevel]  utility libraries for X C Binding -- cursor, development files
+- [manual] libxcb-shape0-dev  1.15-1ubuntu2  0.0MB  [libdevel]  X C Binding, shape extension, development files
+- [manual] libxcomposite-dev  1:0.4.5-1build3  0.0MB  [libdevel]  X11 Composite extension library (development headers)
+- [manual] hostname  3.23+nmu2ubuntu2  0.0MB  [admin]  utility to set/show the host name or domain name
+- [manual] libxcb-keysyms1-dev  0.4.0-1build4  0.0MB  [libdevel]  utility libraries for X C Binding -- keysyms, development files
+- [manual] libgl1-mesa-dev  25.2.8-0ubuntu0.24.04.2  0.0MB  [oldlibs]  transitional dummy package
+- [manual] pollinate  4.33-3.1ubuntu1.3  0.0MB  [admin]  seed the pseudo random number generator
+- [manual] libxcb-xinerama0-dev  1.15-1ubuntu2  0.0MB  [libdevel]  X C Binding, xinerama extension, development files
+- [manual] gnome-themes-extra  3.28-2ubuntu5  0.0MB  [gnome]  Adwaita GTK 2 theme — engine
+- [manual] apt-transport-https  2.8.3  0.0MB  [oldlibs]  transitional package for https support
+- [manual] netbase  6.4  0.0MB  [admin]  Basic TCP/IP networking system
+- [manual] pkg-config  1.8.1-2build1  0.0MB  [oldlibs]  manage compile and link flags for libraries (transitional package)
+- [manual] libxkbcommon-x11-dev  1.6.0-1build1  0.0MB  [libdevel]  library to create keymaps with the XKB X11 protocol - development files
+- [manual] python3.12-venv  3.12.3-1ubuntu0.15  0.0MB  [python]  Interactive high-level object-oriented language (pyvenv binary, version 3.12)
+- [manual] libxdamage-dev  1:1.1.6-1build1  0.0MB  [libdevel]  X11 damaged region extension library (development headers)
+- [manual] linux-generic  6.8.0-136.136  0.0MB  [kernel]  Complete Generic Linux kernel and headers
+- [manual] build-essential  12.10ubuntu1  0.0MB  [devel]  Informational list of build-essential packages
+- [manual] fonts-roboto  2:0~20170802-3  0.0MB  [fonts]  metapackage to pull in Roboto fonts
+- [manual] init  1.66ubuntu1  0.0MB  [metapackages]  metapackage ensuring an init system is installed
+- [manual] ubuntu-minimal  1.539.2  0.0MB  [metapackages]  Minimal core of Ubuntu
+- [manual] ubuntu-server  1.539.2  0.0MB  [metapackages]  Ubuntu Server system
+- [manual] ubuntu-standard  1.539.2  0.0MB  [metapackages]  Ubuntu standard system
+- [manual] postgrespro-1c-16  16.14-1.noble  0.0MB  [database]  Easy configuration for Postgres Pro 1c 16
+- [manual] unminimize  0.2.1  0.0MB  [devel]  Un-minimize your minimial images or setup
+- [manual] libfontconfig1-dev  2.15.0-1.1ubuntu2  0.0MB  [oldlibs]  generic font configuration library - dummy package
+- [manual] language-pack-gnome-ru  1:24.04+20260127  0.0MB  [translations]  GNOME translation updates for language Russian
+- [manual] language-pack-ru  1:24.04+20260127  0.0MB  [translations]  translation updates for language Russian
+- [manual] transmission  4.0.5-1ubuntu0.1  0.0MB  [net]  lightweight BitTorrent client
+- [autoremove] linux-modules-extra-6.8.0-100-generic  6.8.0-100.100  107.3MB  [kernel]  Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+- [autoremove] linux-headers-6.8.0-100  6.8.0-100.100  82.2MB  [devel]  Header files related to Linux kernel version 6.8.0
+- [autoremove] linux-modules-6.8.0-100-generic  6.8.0-100.100  37.5MB  [kernel]  Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+- [autoremove] linux-headers-6.8.0-100-generic  6.8.0-100.100  28.1MB  [devel]  Linux kernel headers for version 6.8.0 on 64 bit x86 SMP
+- [autoremove] linux-tools-6.8.0-100  6.8.0-100.100  18.3MB  [devel]  Linux kernel version specific tools for version 6.8.0-100
+- [autoremove] linux-image-6.8.0-100-generic  6.8.0-100.100  14.4MB  [kernel]  Signed kernel image generic
+- [autoremove] linux-tools-6.8.0-100-generic  6.8.0-100.100  0.6MB  [devel]  Linux kernel version specific tools for version 6.8.0-100
+- [autoremove] libwoff1  1.0.2-2build1  0.1MB  [libs]  library for converting fonts to WOFF 2.0
+- [autoremove] windsurf  3.4.27-1783378471  0.0MB  [oldlibs]  transitional package for devin-desktop
+- [installed] trae  1.107.1-1783236609  1064.3MB  [devel]  TRAE, The Real AI Engine.
+- [auto] linux-firmware  20240318.git3b128b60-0ubuntu2.27  611.3MB  [misc]  Firmware for Linux kernel drivers
+- [installed] opencode  1.4.3  367.4MB  [default]  
+- [auto] libreoffice-core  4:24.2.7-0ubuntu0.24.04.6  144.4MB  [editors]  office productivity suite -- arch-dependent files
+- [auto] libllvm20  1:20.1.2-0ubuntu1~24.04.3  137.0MB  [libs]  Modular compiler and toolchain technologies, runtime library
+- [auto] libllvm18  1:18.1.3-1ubuntu1  117.6MB  [libs]  Modular compiler and toolchain technologies, runtime library
+- [auto] linux-modules-extra-6.8.0-136-generic  6.8.0-136.136  107.3MB  [kernel]  Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+- [auto] linux-modules-extra-6.8.0-107-generic  6.8.0-107.107  107.3MB  [kernel]  Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+- [auto] libwebkit2gtk-4.1-0  2.52.3-0ubuntu0.24.04.1  90.7MB  [libs]  Web content engine library for GTK
+- [auto] python3-botocore  1.34.46+repack-1ubuntu1  89.7MB  [python]  Low-level, data-driven core of boto 3 (Python 3)
+- [auto] libwebkitgtk-6.0-4  2.52.3-0ubuntu0.24.04.1  89.7MB  [libs]  Web content engine library for GTK
+- [auto] gimp-data  2.10.36-3ubuntu0.24.04.1  84.9MB  [graphics]  Data files for GIMP
+- [auto] linux-headers-6.8.0-107  6.8.0-107.107  82.3MB  [devel]  Header files related to Linux kernel version 6.8.0
+- [auto] linux-headers-6.8.0-136  6.8.0-136.136  82.3MB  [devel]  Header files related to Linux kernel version 6.8.0
+- [auto] libclang-cpp18  1:18.1.3-1ubuntu1  61.9MB  [libs]  C++ interface to the Clang library
+- [auto] gcc-13-x86-64-linux-gnu  13.3.0-6ubuntu2~24.04.1  59.9MB  [devel]  GNU C compiler for the x86_64-linux-gnu architecture
+- [auto] python3-scipy  1.11.4-6build1  58.9MB  [python]  scientific tools for Python 3
+- [auto] qemu-system-x86  1:8.2.2+ds-0ubuntu1.17  57.2MB  [otherosfs]  QEMU full system emulation binaries (x86)
+- [auto] libicu-dev  74.2-1ubuntu3.1  46.7MB  [libdevel]  Development files for International Components for Unicode
+- [auto] ubuntu-wallpapers-noble  24.04.2  46.7MB  [x11]  Ubuntu 24.04 Wallpapers
+- [auto] libreoffice-common  4:24.2.7-0ubuntu0.24.04.6  46.2MB  [editors]  office productivity suite -- arch-independent files
+- [auto] mesa-libgallium  25.2.8-0ubuntu0.24.04.2  41.5MB  [libs]  shared infrastructure for Mesa drivers
+- [auto] unicode-data  15.1.0-1  38.6MB  [misc]  Property data for the Unicode character set
+- [auto] linux-modules-6.8.0-107-generic  6.8.0-107.107  37.6MB  [kernel]  Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+- [auto] linux-modules-6.8.0-136-generic  6.8.0-136.136  37.6MB  [kernel]  Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+- [auto] vim-runtime  2:9.1.0016-1ubuntu7.18  35.7MB  [editors]  Vi IMproved - Runtime files
+- [auto] libicu74  74.2-1ubuntu3.1  35.1MB  [libs]  International Components for Unicode
+- [auto] libreoffice-writer  4:24.2.7-0ubuntu0.24.04.6  34.1MB  [editors]  office productivity suite -- word processor
+- [auto] libclang1-18  1:18.1.3-1ubuntu1  33.0MB  [libs]  C interface to the Clang library
+- [auto] g++-13-x86-64-linux-gnu  13.3.0-6ubuntu2~24.04.1  32.8MB  [devel]  GNU C++ compiler for x86_64-linux-gnu architecture
+- [auto] gnome-backgrounds  45.0-1  32.6MB  [gnome]  Set of backgrounds packaged with the GNOME desktop
+- [auto] libjavascriptcoregtk-4.1-0  2.52.3-0ubuntu0.24.04.1  30.8MB  [libs]  JavaScript engine library from WebKitGTK
+- [auto] libjavascriptcoregtk-6.0-1  2.52.3-0ubuntu0.24.04.1  30.8MB  [libs]  JavaScript engine library from WebKitGTK
+- [auto] postgrespro-1c-16-server  16.14-1.noble  30.4MB  [database]  object-relational SQL database, version 16 server
+- [auto] cpp-13-x86-64-linux-gnu  13.3.0-6ubuntu2~24.04.1  30.1MB  [interpreters]  GNU C preprocessor for x86_64-linux-gnu
+- [auto] libmozjs-115-0t64  115.10.0-1  30.0MB  [libs]  SpiderMonkey JavaScript library
+- [auto] libperl5.38t64  5.38.2-3.2ubuntu0.3  28.6MB  [libs]  shared Perl library
+- [auto] python-babel-localedata  2.10.3-3build1  28.5MB  [python]  tools for internationalizing Python applications - locale data files
+- [installed] libreoffice-calc  4:24.2.7-0ubuntu0.24.04.4  28.5MB  [editors]  office productivity suite -- spreadsheet
+- [auto] libpython3.12-dev  3.12.3-1ubuntu0.15  28.4MB  [libdevel]  Header files and a static library for Python (v3.12)
+- [auto] linux-headers-6.8.0-107-generic  6.8.0-107.107  28.1MB  [devel]  Linux kernel headers for version 6.8.0 on 64 bit x86 SMP
+- [auto] speech-dispatcher  0.12.0~rc2-2build3  28.1MB  [sound]  Common interface to speech synthesizers
+- [auto] linux-headers-6.8.0-136-generic  6.8.0-136.136  28.1MB  [devel]  Linux kernel headers for version 6.8.0 on 64 bit x86 SMP
+- [auto] libflite1  2.2-6build3  26.9MB  [libs]  Small run-time speech synthesis engine - shared libraries
+- [auto] libgs10  10.02.1~dfsg1-0ubuntu7.8  24.0MB  [libs]  interpreter for the PostScript language and for PDF - Library
+- [auto] python3-sympy  1.12-7  23.8MB  [python]  Computer Algebra System (CAS) in Python (Python 3)
+- [auto] evolution-common  3.52.3-0ubuntu1.1  23.3MB  [gnome]  architecture independent files for Evolution
+- [auto] samba-libs  2:4.19.5+dfsg-4ubuntu9.6  23.2MB  [libs]  Samba core libraries
+- [auto] python3-numpy  1:1.26.4+ds-6ubuntu1  22.8MB  [python]  Fast array facility to the Python language (Python 3)
+- [auto] git  1:2.43.0-1ubuntu7.3  21.2MB  [vcs]  fast, scalable, distributed revision control system
+- [auto] libstdc++-13-dev  13.3.0-6ubuntu2~24.04.1  21.2MB  [libdevel]  GNU Standard C++ Library v3 (development files)
+- [auto] intel-microcode  3.20260210.0ubuntu0.24.04.1  20.5MB  [non-free-firmware/admin]  Processor microcode firmware for Intel CPUs
+- [auto] humanity-icon-theme  0.6.16  20.2MB  [gnome]  Humanity Icon theme
+- [auto] iso-codes  4.16.0-1  19.9MB  [misc]  ISO language, territory, currency, script codes and their translations
+- [auto] desktop-base  12.0.6+nmu1ubuntu1  19.2MB  [x11]  common files for the Debian Desktop
+- [auto] linux-tools-6.8.0-136  6.8.0-136.136  18.9MB  [devel]  Linux kernel version specific tools for version 6.8.0-136
+- [auto] python3-matplotlib  3.6.3-1ubuntu5  18.8MB  [python]  Python based plotting system in a style similar to Matlab (Python 3)
+- [auto] perl-modules-5.38  5.38.2-3.2ubuntu0.3  18.7MB  [libs]  Core Perl modules
+- [auto] linux-tools-6.8.0-107  6.8.0-107.107  18.4MB  [devel]  Linux kernel version specific tools for version 6.8.0-107
+- [auto] ovmf  2024.02-2ubuntu0.9  16.6MB  [misc]  UEFI firmware for 64-bit x86 virtual machines
+- [auto] locales  2.39-0ubuntu8.7  16.3MB  [localization]  GNU C Library: National Language (locale) data [support]
+- [auto] libcodec2-1.2  1.2.0-2build1  16.1MB  [libs]  Codec2 runtime library
+- [auto] libavcodec60  7:6.1.1-3ubuntu5  15.9MB  [libs]  FFmpeg library with de/encoders for audio/video codecs - runtime files
+- [auto] libx265-199  3.5-2build1  15.7MB  [libs]  H.265/HEVC video stream encoder (shared library)
+- [auto] libgcc-13-dev  13.3.0-6ubuntu2~24.04.1  15.7MB  [libdevel]  GCC support library (development files)
+- [auto] librados2  19.2.3-0ubuntu0.24.04.3  15.3MB  [libs]  RADOS distributed object store client library
+- [auto] fonts-urw-base35  20200910-8  15.2MB  [fonts]  font set metric-compatible with the 35 PostScript Level 2 Base Fonts
+- [auto] yaru-theme-gnome-shell  24.04.2-0ubuntu1  15.1MB  [misc]  Yaru GNOME Shell desktop theme from the Ubuntu Community
+- [auto] librbd1  19.2.3-0ubuntu0.24.04.3  14.4MB  [libs]  RADOS block device client library
+- [auto] linux-image-6.8.0-136-generic  6.8.0-136.136  14.4MB  [kernel]  Signed kernel image generic
+- [auto] linux-image-6.8.0-107-generic  6.8.0-107.107  14.4MB  [kernel]  Signed kernel image generic
+- [auto] libc6  2.39-0ubuntu8.7  13.1MB  [libs]  GNU C Library: Shared libraries
+- [auto] ieee-data  20220827.1  13.1MB  [net]  OUI and IAB listings
+- [auto] libavfilter9  7:6.1.1-3ubuntu5  13.0MB  [libs]  FFmpeg library containing media filters - runtime files
+- [auto] libc6-dev  2.39-0ubuntu8.7  12.8MB  [libdevel]  GNU C Library: Development Libraries and Header Files
+- [auto] poppler-data  0.4.12-1  12.8MB  [misc]  encoding data for the poppler PDF rendering library
+- [auto] python3-twisted  24.3.0-1ubuntu0.2  12.7MB  [python]  Event-based framework for internet applications
+- [auto] fwupd  2.0.20-1ubuntu2~24.04.2  12.5MB  [admin]  Firmware update daemon
+- [auto] grub-common  2.12-1ubuntu7.3  12.2MB  [admin]  GRand Unified Bootloader (common files)
+- [auto] liblouis-data  3.29.0-1build1  12.2MB  [text]  Braille translation library - data
+- [auto] libsane1  1.2.1-7build4  12.1MB  [libs]  API library for scanners
+- [installed] libreoffice-draw  4:24.2.7-0ubuntu0.24.04.4  12.1MB  [editors]  office productivity suite -- drawing
+- [auto] firmware-sof-signed  2023.12.1-1ubuntu1.11  11.9MB  [non-free-firmware/kernel]  Intel SOF firmware - signed
+- [auto] adwaita-icon-theme  46.0-1  11.8MB  [gnome]  default icon theme of GNOME
+- [auto] libgtk-4-1  4.14.5+ds-0ubuntu0.10  11.7MB  [libs]  GTK graphical user interface library
+- [auto] libreoffice-style-colibre  4:24.2.7-0ubuntu0.24.04.6  11.4MB  [editors]  office productivity suite -- colibre symbol style
+- [auto] binutils-x86-64-linux-gnu  2.42-4ubuntu2.10  11.3MB  [devel]  GNU binary utilities, for x86-64-linux-gnu target
+- [auto] gir1.2-glib-2.0-dev  2.80.0-6ubuntu3.8  11.2MB  [libdevel]  GIR XML for GLib, GObject, Gio and GModule
+- [auto] ubuntu-wallpapers  24.04.2  10.9MB  [metapackages]  Ubuntu Wallpapers
+- [auto] qemu-utils  1:8.2.2+ds-0ubuntu1.17  10.8MB  [otherosfs]  QEMU utilities
+- [auto] cmake-data  3.28.3-1build7  10.7MB  [devel]  CMake data files (modules, templates and documentation)
+- [auto] libasan8  14.2.0-4ubuntu2~24.04.1  10.5MB  [libs]  AddressSanitizer -- a fast memory error detector
+- [auto] libglib2.0-dev  2.80.0-6ubuntu3.8  10.5MB  [libdevel]  Development files for the GLib library
+- [auto] python3-fonttools  4.46.0-1build2  10.5MB  [python]  Converts OpenType and TrueType fonts to and from XML (Python 3 Library)
+- [auto] python3-typeshed  0.0~git20231111.6764465-3  10.3MB  [python]  collection of library stubs for Python, with static types
+- [auto] brasero-common  3.12.3-2build4  10.3MB  [gnome]  Common files for the Brasero CD burning application and library
+- [auto] yt-dlp  2024.04.09-1  10.1MB  [web]  downloader of videos from YouTube and other sites
+- [auto] grub-efi-amd64-bin  2.12-1ubuntu7.3  10.0MB  [admin]  GRand Unified Bootloader, version 2 (EFI-AMD64 modules)
+- [auto] yudit-common  3.1.0-1  9.7MB  [editors]  Unicode text editor (arch-independent files)
+- [auto] libevolution  3.52.3-0ubuntu1.1  9.7MB  [libs]  evolution libraries
+- [auto] libgtk-3-0t64  3.24.41-4ubuntu1.3  9.5MB  [libs]  GTK graphical user interface library
+- [auto] postgrespro-1c-16-client  16.14-1.noble  9.3MB  [database]  front-end programs for Postgres Pro 1c 16
+- [auto] qemu-system-data  1:8.2.2+ds-0ubuntu1.17  8.9MB  [otherosfs]  QEMU full system emulation (data files)
+- [auto] libreoffice-uiconfig-writer  4:24.2.7-0ubuntu0.24.04.6  8.9MB  [misc]  UI data ("config") for LibreOffice Writer
+- [auto] python-matplotlib-data  3.6.3-1ubuntu5  8.9MB  [python]  Python based plotting system (data package)
+- [auto] libpython3.12-stdlib  3.12.3-1ubuntu0.15  8.8MB  [python]  Interactive high-level object-oriented language (standard library, version 3.12)
+- [auto] libpython3.12t64  3.12.3-1ubuntu0.15  8.7MB  [libs]  Shared Python runtime library (version 3.12)
+- [auto] libtsan2  14.2.0-4ubuntu2~24.04.1  8.7MB  [libs]  ThreadSanitizer -- a Valgrind-based detector of data races (runtime)
+- [installed] pgadmin3  1.18.1-2  8.5MB  [database]  graphical administration tool for PostgreSQL
+- [auto] libplacebo338  6.338.2-2build1  8.5MB  [libs]  GPU-accelerated video/image rendering primitives (shared library)
+- [auto] libmagic-mgc  1:5.45-3build1  8.1MB  [libs]  File type determination library using "magic" numbers (compiled magic file)
+- [auto] libreoffice-uiconfig-common  4:24.2.7-0ubuntu0.24.04.6  8.1MB  [misc]  UI data ("config") for LibreOffice ("common" set)
+- [auto] gnome-control-center  1:46.7-0ubuntu0.24.04.4  8.0MB  [gnome]  utilities to configure the GNOME desktop
+- [auto] gthumb-data  3:3.12.6-1  8.0MB  [gnome]  image viewer and browser - arch-independent files
+- [auto] libgegl-0.4-0t64  1:0.4.48-2.4build2  7.8MB  [libs]  Generic Graphics Library
+- [auto] python3.12-minimal  3.12.3-1ubuntu0.15  7.7MB  [python]  Minimal subset of the Python language (version 3.12)
+- [auto] perl-base  5.38.2-3.2ubuntu0.3  7.7MB  [perl]  minimal Perl system
+- [auto] network-manager  1.46.0-1ubuntu2.7  7.4MB  [net]  network management framework (daemon and userspace tools)
+- [auto] linux-libc-dev  6.8.0-136.136  7.4MB  [devel]  Linux Kernel Headers for development
+- [auto] python3-pydantic  1.10.14-1  7.3MB  [python]  Data validation and settings management using Python type hinting
+- [auto] gstreamer1.0-plugins-good  1.24.2-1ubuntu1.4  7.2MB  [libs]  GStreamer plugins from the "good" set
+- [auto] liblapack3  3.12.0-3build1.1  7.0MB  [libs]  Library of linear algebra routines 3 - shared version
+- [auto] qemu-system-common  1:8.2.2+ds-0ubuntu1.17  6.9MB  [otherosfs]  QEMU full system emulation binaries (common files)
+- [auto] libsvtav1enc1d1  1.7.0+dfsg-2build1  6.9MB  [libs]  Scalable Video Technology for AV1 (libsvtav1enc shared library)
+- [auto] coreutils  9.4-3ubuntu6.2  6.8MB  [utils]  GNU core utilities
+- [auto] librsvg2-2  2.58.0+dfsg-1build1  6.5MB  [libs]  SAX-based renderer library for SVG files (runtime)
+- [auto] gnome-shell  46.0-0ubuntu6~24.04.14  6.5MB  [gnome]  graphical shell for the GNOME desktop
+- [auto] libssl3t64  3.0.13-0ubuntu3.11  6.5MB  [libs]  Secure Sockets Layer toolkit - shared libraries
+- [auto] libgtk-4-common  4.14.5+ds-0ubuntu0.10  6.4MB  [misc]  common files for the GTK graphical user interface library
+- [auto] libmwaw-0.3-3  0.3.22-1build1  6.3MB  [libs]  import library for some old Mac text documents
+- [auto] dpkg  1.22.6ubuntu6.6  6.1MB  [admin]  Debian package management system
+- [auto] fonts-roboto-unhinted  2:0~20170802-3  6.1MB  [fonts]  Google's signature family of fonts (unhinted)
+- [auto] libgtk2.0-0t64  2.24.33-4ubuntu1.1  5.8MB  [oldlibs]  GTK graphical user interface library - old version
+- [auto] libsystemd-shared  255.4-1ubuntu8.16  5.7MB  [libs]  systemd shared private library
+- [auto] libgtkmm-4.0-0  4.10.0-4build3  5.7MB  [libs]  C++ wrappers for GTK4 (shared libraries)
+- [auto] orca  46.1-1ubuntu1  5.5MB  [gnome]  Scriptable screen reader
+- [auto] ubuntu-mono  24.04-0ubuntu1  5.4MB  [gnome]  Ubuntu Mono Icon theme
+- [auto] python3-jedi  0.19.1+ds1-1  5.4MB  [python]  autocompletion tool for Python 3
+- [auto] libaom3  3.8.2-2ubuntu0.1  5.2MB  [libs]  AV1 Video Codec Library
+- [auto] libpython3.12-minimal  3.12.3-1ubuntu0.15  5.1MB  [python]  Minimal subset of the Python language (version 3.12)
+- [auto] apache2-bin  2.4.58-1ubuntu8.15  4.9MB  [httpd]  Apache HTTP Server (modules and other binary files)
+- [auto] libhwasan0  14.2.0-4ubuntu2~24.04.1  4.8MB  [libs]  AddressSanitizer -- a fast memory error detector
+- [auto] ipxe-qemu  1.21.1+git-20220113.fbbdc3926-0ubuntu2  4.7MB  [admin]  PXE boot firmware - ROM images for qemu
+- [auto] libgegl-common  1:0.4.48-2.4build2  4.7MB  [devel]  Generic Graphics Library - common files
+- [auto] python3-lxml  5.2.1-1  4.7MB  [python]  pythonic binding for the libxml2 and libxslt libraries
+- [auto] libsane-common  1.2.1-7build4  4.7MB  [libs]  API library for scanners -- documentation and support files
+- [auto] modemmanager  1.23.4-0ubuntu2  4.5MB  [net]  D-Bus service for managing modems
+- [auto] ure  4:24.2.7-0ubuntu0.24.04.6  4.5MB  [libs]  LibreOffice UNO runtime environment
+- [auto] bluez  5.72-0ubuntu5.5  4.4MB  [admin]  Bluetooth tools and daemons
+- [auto] python3-pygments  2.17.2+dfsg-1  4.3MB  [python]  syntax highlighting package written in Python 3
+- [auto] libopenexr-3-1-30  3.1.5-5.1build3  4.3MB  [libs]  runtime files for the OpenEXR image library
+- [auto] libqmi-glib5  1.35.2-0ubuntu2  4.2MB  [libs]  Support library to use the Qualcomm MSM Interface (QMI) protocol
+- [auto] libgtk-3-common  3.24.41-4ubuntu1.3  4.2MB  [misc]  common files for the GTK graphical user interface library
+- [auto] libintl-perl  1.33-1build3  4.2MB  [perl]  Uniforum message translations system compatible i18n library
+- [auto] fonts-liberation  1:2.1.5-3  4.2MB  [fonts]  fonts with the same metrics as Times, Arial and Courier
+- [auto] libgimp2.0t64  2.10.36-3ubuntu0.24.04.1  4.2MB  [libs]  Libraries for the GNU Image Manipulation Program
+- [auto] libglib2.0-0t64  2.80.0-6ubuntu3.8  4.1MB  [libs]  GLib library of C routines
+- [auto] libmutter-14-0  46.2-1ubuntu0.24.04.16  4.1MB  [libs]  window manager library from the Mutter window manager
+- [auto] xkb-data  2.41-2ubuntu1.1  4.1MB  [x11]  X Keyboard Extension (XKB) configuration data
+- [auto] vim  2:9.1.0016-1ubuntu7.18  4.0MB  [editors]  Vi IMproved - enhanced vi editor
+- [auto] libtcl8.6  8.6.14+dfsg-1build1  4.0MB  [libs]  Tcl (the Tool Command Language) v8.6 - run-time library files
+- [auto] libnss3  2:3.98-1ubuntu0.2  3.9MB  [libs]  Network Security Service libraries
+- [auto] python3-pycryptodome  3.20.0+dfsg-1  3.9MB  [python]  cryptographic Python library (Python 3)
+- [auto] libgprofng0  2.42-4ubuntu2.10  3.7MB  [devel]  GNU Next Generation profiler (runtime library)
+- [auto] libpipewire-0.3-modules  1.0.5-1ubuntu3.3  3.7MB  [libs]  libraries for the PipeWire multimedia server - modules
+- [auto] liblsan0  14.2.0-4ubuntu2~24.04.1  3.7MB  [libs]  LeakSanitizer -- a memory leak detector (runtime)
+- [auto] libsnmp40t64  5.9.4+dfsg-1.1ubuntu3.2  3.6MB  [libs]  SNMP (Simple Network Management Protocol) library
+- [auto] manpages-dev  6.7-2  3.6MB  [doc]  Manual pages about using GNU/Linux for development
+- [auto] groff-base  1.23.0-3build2  3.6MB  [text]  GNU troff text-formatting system (base system components)
+- [auto] gnome-shell-common  46.0-0ubuntu6~24.04.14  3.6MB  [gnome]  common files for the GNOME graphical shell
+- [auto] libpoppler134  24.02.0-1ubuntu9.9  3.5MB  [libs]  PDF rendering library
+- [auto] libjxl0.7  0.7.0-10.2ubuntu6.1  3.5MB  [libs]  JPEG XL Image Coding System - "JXL" (shared libraries)
+- [auto] openssh-client  1:9.6p1-3ubuntu13.18  3.5MB  [net]  secure shell (SSH) client, for secure access to remote machines
+- [auto] libgstreamer1.0-0  1.24.2-1ubuntu0.1  3.4MB  [libs]  Core GStreamer libraries and elements
+- [auto] libreoffice-base-core  4:24.2.7-0ubuntu0.24.04.6  3.4MB  [editors]  office productivity suite -- shared library
+- [auto] libglibmm-2.68-1t64  2.78.1-2.2build2  3.4MB  [libs]  C++ wrapper for the GLib toolkit (shared libraries)
+- [auto] bind9-libs  1:9.18.39-0ubuntu0.24.04.5  3.4MB  [libs]  Shared Libraries used by BIND 9
+- [auto] bpftrace  0.20.2-1ubuntu4.3  3.3MB  [utils]  high-level tracing language for Linux eBPF
+- [auto] libubsan1  14.2.0-4ubuntu2~24.04.1  3.3MB  [libs]  UBSan -- undefined behaviour sanitizer (runtime)
+- [auto] libvpx9  1.14.0-1ubuntu2.3  3.3MB  [libs]  VP8 and VP9 video codec (shared library)
+- [auto] libhwy1t64  1.0.7-8.1build1  3.3MB  [libs]  Efficient and performance-portable SIMD wrapper (runtime files)
+- [auto] libsqlite3-dev  3.45.1-1ubuntu2.6  3.2MB  [libdevel]  SQLite 3 development files
+- [installed] libreoffice-impress  4:24.2.7-0ubuntu0.24.04.4  3.2MB  [editors]  office productivity suite -- presentation
+- [auto] libgfortran5  14.2.0-4ubuntu2~24.04.1  3.2MB  [libs]  Runtime library for GNU Fortran applications
+- [auto] libapt-pkg6.0t64  2.8.3  3.2MB  [libs]  package management runtime library
+- [auto] python3-cryptography  41.0.7-4ubuntu0.4  3.2MB  [python]  Python library exposing cryptographic recipes and primitives (Python 3)
+- [auto] librav1e0  0.7.1-2  3.2MB  [libs]  Fastest and safest AV1 encoder - shared library
+- [auto] gnome-software  46.0-1ubuntu2  3.1MB  [gnome]  Software Center for GNOME
+- [auto] libstdc++6  14.2.0-4ubuntu2~24.04.1  3.0MB  [libs]  GNU Standard C++ Library v3
+- [auto] libexiv2-27  0.27.6-1ubuntu0.3  3.0MB  [libs]  EXIF/IPTC/XMP metadata manipulation library
+- [auto] liblvm2cmd2.03  2.03.16-3ubuntu3.2  3.0MB  [libs]  LVM2 command library
+- [auto] iproute2  6.1.0-1ubuntu6.4  3.0MB  [net]  networking and traffic control tools
+- [auto] open-vm-tools  2:13.0.0-2~ubuntu0.24.04.1  2.9MB  [admin]  Open VMware Tools for virtual machines hosted on VMware (CLI)
+- [auto] libprotobuf32t64  3.21.12-8.2ubuntu0.3  2.9MB  [libs]  protocol buffers C++ library
+- [auto] evolution-data-server  3.52.3-0ubuntu1.2  2.9MB  [gnome]  evolution database backend server
+- [auto] libgtksourceview-5-common  5.12.0-1build1  2.9MB  [libs]  common files for the GTK 4 syntax highlighting widget
+- [auto] gnome-keyring  46.1-2ubuntu0.2  2.9MB  [gnome]  GNOME keyring services (daemon and tools)
+- [auto] man-db  2.12.0-4build2  2.9MB  [doc]  tools for reading manual pages
+- [auto] postgrespro-1c-16-contrib  16.14-1.noble  2.8MB  [database]  additional facilities for Postgres Pro 1c 16
+- [auto] transmission-gtk  4.0.5-1ubuntu0.1  2.8MB  [net]  lightweight BitTorrent client (GTK+ interface)
+- [auto] shared-mime-info  2.4-4  2.8MB  [misc]  FreeDesktop.org shared MIME database and spec
+- [auto] libavformat60  7:6.1.1-3ubuntu5  2.8MB  [libs]  FFmpeg library with (de)muxers for multimedia containers - runtime files
+- [auto] bpfcc-tools  0.29.1+ds-1ubuntu7  2.8MB  [misc]  tools for BPF Compiler Collection (BCC)
+- [auto] libgstreamer-plugins-base1.0-0  1.24.2-1ubuntu0.4  2.7MB  [libs]  GStreamer libraries from the "base" set
+- [auto] sg3-utils  1.46-3ubuntu4  2.7MB  [admin]  utilities for devices using the SCSI command set
+- [auto] virtiofsd  1.10.0-1  2.7MB  [otherosfs]  Virtio-fs vhost-user device daemon
+- [auto] libboost-locale1.83.0  1.83.0-2.1ubuntu3.2  2.7MB  [libs]  C++ facilities for localization
+- [auto] python3-ipython  8.20.0-1  2.6MB  [python]  Enhanced interactive Python shell (Python 3 version)
+- [auto] libgphoto2-6t64  2.5.31-2.1ubuntu1  2.5MB  [libs]  gphoto2 digital camera library
+- [auto] libpcre2-dev  10.42-4ubuntu2.1  2.5MB  [libdevel]  New Perl Compatible Regular Expression Library - development files
+- [auto] libbpfcc  0.29.1+ds-1ubuntu7  2.5MB  [misc]  shared library for BPF Compiler Collection (BCC)
+</APT_SNAPSHOT>

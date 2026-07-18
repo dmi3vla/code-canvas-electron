@@ -1,0 +1,383 @@
+{
+  "title": "Карта установленных пакетов Ubuntu 24.04: функциональные домены и autoremove",
+  "description": "Обзор 1816 установленных пакетов (153 manual, 1638 auto, 9 autoremove), сгруппированных по 7 функциональным доменам. Ключевые точки: ручные пакеты-гиганты [1a], цепочка сборки [2a], сетевой стек [3a], мультимедиа-конвейер [4a], загрузка ядра [5a], системные библиотеки [6a], мусор для удаления [7a].",
+  "traces": [
+    {
+      "id": "1",
+      "title": "Desktop & GNOME",
+      "description": "Графическое окружение: GNOME Shell 46, Mutter, Nautilus, Control Center, Keyring. Ручные пакеты-гиганты (cursor, code, devin-desktop) живут в этом домене как приложения поверх DE.",
+      "locations": [
+        {
+          "id": "1a",
+          "path": "pkg://cursor",
+          "lineNumber": 0,
+          "lineContent": "cursor  3.12.17-1784259156  939.5MB  [devel]  The AI Code Editor.",
+          "title": "Ручной: cursor",
+          "description": "Крупнейший ручной пакет (940 МБ), AI-редактор кода, manual"
+        },
+        {
+          "id": "1b",
+          "path": "pkg://gnome-shell",
+          "lineNumber": 0,
+          "lineContent": "gnome-shell  46.0-0ubuntu6~24.04.14  6.5MB  [gnome]  graphical shell for the GNOME desktop",
+          "title": "GNOME Shell",
+          "description": "Основной компонент DE, запускается systemd --user, auto"
+        },
+        {
+          "id": "1c",
+          "path": "pkg://mutter",
+          "lineNumber": 0,
+          "lineContent": "libmutter-14-0  46.2-1ubuntu0.24.04.16  4.1MB  [libs]  window manager library from the Mutter window manager",
+          "title": "Mutter (compositor)",
+          "description": "Оконный менеджер и композитор, на котором работает GNOME Shell, auto"
+        },
+        {
+          "id": "1d",
+          "path": "pkg://nautilus",
+          "lineNumber": 0,
+          "lineContent": "nautilus  1:46.4-0ubuntu0.2  1.6MB  [gnome]  file manager and graphical shell for GNOME",
+          "title": "Nautilus",
+          "description": "Файловый менеджер, запускается по требованию через D-Bus, manual"
+        },
+        {
+          "id": "1e",
+          "path": "pkg://gnome-control-center",
+          "lineNumber": 0,
+          "lineContent": "gnome-control-center  1:46.7-0ubuntu0.24.04.4  8.0MB  [gnome]  utilities to configure the GNOME desktop",
+          "title": "GNOME Control Center",
+          "description": "Панель настроек DE, auto"
+        },
+        {
+          "id": "1f",
+          "path": "pkg://gnome-keyring",
+          "lineNumber": 0,
+          "lineContent": "gnome-keyring  46.1-2ubuntu0.2  2.9MB  [gnome]  GNOME keyring services (daemon and tools)",
+          "title": "GNOME Keyring",
+          "description": "Хранилище паролей и ключей, интеграция с PAM и SSH, auto"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Dev toolchain",
+      "description": "Инструменты разработки: компиляторы GCC/Clang, заголовки ядра и библиотек, cmake, ninja, git, Python 3.12 с пакетами. Цепочка сборки C++ проекта.",
+      "locations": [
+        {
+          "id": "2a",
+          "path": "pkg://build-essential",
+          "lineNumber": 0,
+          "lineContent": "build-essential  12.10ubuntu1  0.0MB  [devel]  Informational list of build-essential packages",
+          "title": "build-essential",
+          "description": "Метапакет, устанавливающий gcc, g++, make, dpkg-dev, manual"
+        },
+        {
+          "id": "2b",
+          "path": "pkg://gcc-13-x86-64-linux-gnu",
+          "lineNumber": 0,
+          "lineContent": "gcc-13-x86-64-linux-gnu  13.3.0-6ubuntu2~24.04.1  59.9MB  [devel]  GNU C compiler for the x86_64-linux-gnu architecture",
+          "title": "GCC 13",
+          "description": "Компилятор C, вызывается make/cmake для сборки .c файлов, auto"
+        },
+        {
+          "id": "2c",
+          "path": "pkg://cmake",
+          "lineNumber": 0,
+          "lineContent": "cmake  3.28.3-1build7  35.6MB  [devel]  cross-platform, open-source make system",
+          "title": "CMake",
+          "description": "Генерация Makefile/Ninja из CMakeLists.txt, manual"
+        },
+        {
+          "id": "2d",
+          "path": "pkg://libgtk-3-dev",
+          "lineNumber": 0,
+          "lineContent": "libgtk-3-dev  3.24.41-4ubuntu1.3  13.8MB  [libdevel]  development files for the GTK library",
+          "title": "libgtk-3-dev",
+          "description": "Заголовки и .pc файлы для GTK3, нужны при сборке GTK-приложений, manual"
+        },
+        {
+          "id": "2e",
+          "path": "pkg://python3",
+          "lineNumber": 0,
+          "lineContent": "python3  3.12.3-0ubuntu2.1  0.1MB  [python]  interactive high-level object-oriented language (default python3 version)",
+          "title": "Python 3.12",
+          "description": "Интерпретатор, точка входа для всех Python-скриптов, manual"
+        },
+        {
+          "id": "2f",
+          "path": "pkg://git",
+          "lineNumber": 0,
+          "lineContent": "git  1:2.43.0-1ubuntu7.3  21.2MB  [vcs]  fast, scalable, distributed revision control system",
+          "title": "Git",
+          "description": "Система контроля версий, auto (зависимость многих пакетов)"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Networking",
+      "description": "Сетевой стек: управление соединениями (NetworkManager), Wi-Fi (wpa_supplicant), SSH-клиент, DNS (systemd-resolved, bind9-libs), диагностика (traceroute, iproute2).",
+      "locations": [
+        {
+          "id": "3a",
+          "path": "pkg://network-manager",
+          "lineNumber": 0,
+          "lineContent": "network-manager  1.46.0-1ubuntu2.7  7.4MB  [net]  network management framework (daemon and userspace tools)",
+          "title": "NetworkManager",
+          "description": "Демон управления сетью, запускается systemd, управляет интерфейсами, auto"
+        },
+        {
+          "id": "3b",
+          "path": "pkg://wpasupplicant",
+          "lineNumber": 0,
+          "lineContent": "wpasupplicant  2:2.10-21ubuntu0.4  3.7MB  [net]  client support for WPA and WPA2 (IEEE 802.11i)",
+          "title": "wpa_supplicant",
+          "description": "Аутентификация Wi-Fi, вызывается NetworkManager для подключения к WPA-сетям, manual"
+        },
+        {
+          "id": "3c",
+          "path": "pkg://systemd-resolved",
+          "lineNumber": 0,
+          "lineContent": "systemd-resolved  255.4-1ubuntu8.16  0.9MB  [admin]  systemd DNS resolver",
+          "title": "systemd-resolved",
+          "description": "Стековый DNS-резолвер, обрабатывает запросы от всех приложений через nss-resolve, manual"
+        },
+        {
+          "id": "3d",
+          "path": "pkg://openssh-client",
+          "lineNumber": 0,
+          "lineContent": "openssh-client  1:9.6p1-3ubuntu13.18  3.5MB  [net]  secure shell (SSH) client, for secure access to remote machines",
+          "title": "OpenSSH client",
+          "description": "SSH-клиент, используется для удалённого доступа и git-операций, auto"
+        },
+        {
+          "id": "3e",
+          "path": "pkg://iproute2",
+          "lineNumber": 0,
+          "lineContent": "iproute2  6.1.0-1ubuntu6.4  3.0MB  [net]  networking and traffic control tools",
+          "title": "iproute2",
+          "description": "Утилиты ip, tc, ss — низкоуровневое управление сетью, auto"
+        },
+        {
+          "id": "3f",
+          "path": "pkg://traceroute",
+          "lineNumber": 0,
+          "lineContent": "traceroute  1:2.1.5-1  0.2MB  [net]  Traces the route taken by packets over an IPv4/IPv6 network",
+          "title": "traceroute",
+          "description": "Диагностика сетевого пути, manual"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Multimedia",
+      "description": "Аудио/видео конвейер: PipeWire (звуковая подсистема), GStreamer (фреймворк мультимедиа), FFmpeg (кодеки), mpv (плеер), yt-dlp (загрузка видео).",
+      "locations": [
+        {
+          "id": "4a",
+          "path": "pkg://pipewire",
+          "lineNumber": 0,
+          "lineContent": "libpipewire-0.3-modules  1.0.5-1ubuntu3.3  3.7MB  [libs]  libraries for the PipeWire multimedia server - modules",
+          "title": "PipeWire modules",
+          "description": "Модули звукового сервера PipeWire, заменяет PulseAudio, auto"
+        },
+        {
+          "id": "4b",
+          "path": "pkg://gstreamer1.0-plugins-good",
+          "lineNumber": 0,
+          "lineContent": "gstreamer1.0-plugins-good  1.24.2-1ubuntu1.4  7.2MB  [libs]  GStreamer plugins from the \"good\" set",
+          "title": "GStreamer plugins-good",
+          "description": "Плагины GStreamer (vorbis, wav, flac, videotestsrc и др.), auto"
+        },
+        {
+          "id": "4c",
+          "path": "pkg://libavcodec60",
+          "lineNumber": 0,
+          "lineContent": "libavcodec60  7:6.1.1-3ubuntu5  15.9MB  [libs]  FFmpeg library with de/encoders for audio/video codecs - runtime files",
+          "title": "FFmpeg libavcodec",
+          "description": "Библиотека кодеков, используется mpv и GStreamer для декодирования H.264/H.265, auto"
+        },
+        {
+          "id": "4d",
+          "path": "pkg://mpv",
+          "lineNumber": 0,
+          "lineContent": "mpv  0.37.0-1ubuntu4  3.3MB  [video]  video player based on MPlayer/mplayer2",
+          "title": "mpv",
+          "description": "Видеоплеер, использует FFmpeg и Vulkan/OpenGL для вывода, manual"
+        },
+        {
+          "id": "4e",
+          "path": "pkg://yt-dlp",
+          "lineNumber": 0,
+          "lineContent": "yt-dlp  2024.04.09-1  10.1MB  [web]  downloader of videos from YouTube and other sites",
+          "title": "yt-dlp",
+          "description": "Загрузчик видео, использует ffmpeg для перекодирования, auto"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Kernel & Boot",
+      "description": "Загрузка системы: UEFI (shim-signed, grub-efi-amd64), ядро Linux 6.8.0-136-generic, модули, systemd как init, udev для устройств. Старые ядра 6.8.0-100 помечены на autoremove.",
+      "locations": [
+        {
+          "id": "5a",
+          "path": "pkg://shim-signed",
+          "lineNumber": 0,
+          "lineContent": "shim-signed  1.58+15.8-0ubuntu1  4.6MB  [utils]  Secure Boot chain-loading bootloader (Microsoft-signed binary)",
+          "title": "shim-signed",
+          "description": "Первый загрузчик в цепочке Secure Boot, подписан Microsoft, manual"
+        },
+        {
+          "id": "5b",
+          "path": "pkg://grub-efi-amd64-signed",
+          "lineNumber": 0,
+          "lineContent": "grub-efi-amd64-signed  1.202.5+2.12-1ubuntu7.3  7.0MB  [utils]  GRand Unified Bootloader, version 2 (EFI-AMD64 version, signed)",
+          "title": "GRUB EFI signed",
+          "description": "GRUB 2, загружает ядро из /boot, manual"
+        },
+        {
+          "id": "5c",
+          "path": "pkg://linux-image-6.8.0-136-generic",
+          "lineNumber": 0,
+          "lineContent": "linux-image-6.8.0-136-generic  6.8.0-136.136  14.4MB  [kernel]  Signed kernel image generic",
+          "title": "Ядро 6.8.0-136",
+          "description": "Текущее работающее ядро, auto"
+        },
+        {
+          "id": "5d",
+          "path": "pkg://linux-modules-extra-6.8.0-136-generic",
+          "lineNumber": 0,
+          "lineContent": "linux-modules-extra-6.8.0-136-generic  6.8.0-136.136  107.3MB  [kernel]  Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP",
+          "title": "Модули ядра 6.8.0-136",
+          "description": "Драйверы (ext4, wifi, GPU и т.д.), загружаются udev при обнаружении устройств, auto"
+        },
+        {
+          "id": "5e",
+          "path": "pkg://systemd",
+          "lineNumber": 0,
+          "lineContent": "systemd  255.4-1ubuntu8.16  11.5MB  [admin]  system and service manager",
+          "title": "systemd",
+          "description": "PID 1, запускает все сервисы после загрузки ядра, manual"
+        },
+        {
+          "id": "5f",
+          "path": "pkg://udev",
+          "lineNumber": 0,
+          "lineContent": "udev  255.4-1ubuntu8.16  10.6MB  [admin]  /dev/ and hotplug management daemon",
+          "title": "udev",
+          "description": "Управление устройствами, загружает модули ядра по горячей замене, manual"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "title": "System libs & Admin",
+      "description": "Базовая инфраструктура: glibc, dpkg/apt, sudo, apparmor, cryptsetup, LVM2, Btrfs, multipath. Обеспечивает работу всех остальных доменов.",
+      "locations": [
+        {
+          "id": "6a",
+          "path": "pkg://libc6",
+          "lineNumber": 0,
+          "lineContent": "libc6  2.39-0ubuntu8.7  13.1MB  [libs]  GNU C Library: Shared libraries",
+          "title": "glibc (libc6)",
+          "description": "Базовая библиотека C, от которой зависят все бинарные пакеты, auto"
+        },
+        {
+          "id": "6b",
+          "path": "pkg://apt",
+          "lineNumber": 0,
+          "lineContent": "apt  2.8.3  4.0MB  [admin]  commandline package manager",
+          "title": "APT",
+          "description": "Менеджер пакетов, используется для установки/удаления/обновления, manual"
+        },
+        {
+          "id": "6c",
+          "path": "pkg://dpkg",
+          "lineNumber": 0,
+          "lineContent": "dpkg  1.22.6ubuntu6.6  6.1MB  [admin]  Debian package management system",
+          "title": "dpkg",
+          "description": "Низкоуровневый установщик .deb, вызывается apt, auto"
+        },
+        {
+          "id": "6d",
+          "path": "pkg://sudo",
+          "lineNumber": 0,
+          "lineContent": "sudo  1.9.15p5-3ubuntu5.24.04.2  3.4MB  [admin]  Provide limited super user privileges to specific users",
+          "title": "sudo",
+          "description": "Повышение привилегий, используется при каждом административном действии, manual"
+        },
+        {
+          "id": "6e",
+          "path": "pkg://apparmor",
+          "lineNumber": 0,
+          "lineContent": "apparmor  4.0.1really4.0.1-0ubuntu0.24.04.7  3.1MB  [admin]  user-space parser utility for AppArmor",
+          "title": "AppArmor",
+          "description": "Мандатный контроль доступа, профили для Firefox, snapd и др., manual"
+        },
+        {
+          "id": "6f",
+          "path": "pkg://cryptsetup",
+          "lineNumber": 0,
+          "lineContent": "cryptsetup  2:2.7.0-1ubuntu4.2  0.4MB  [admin]  disk encryption support - startup scripts",
+          "title": "cryptsetup",
+          "description": "Шифрование дисков LUKS, используется при загрузке для открытия корневого раздела, manual"
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "title": "Unused (autoremove)",
+      "description": "Пакеты, которые можно безопасно удалить: старые ядра 6.8.0-100 (заголовки, модули, образ, инструменты), libwoff1 (библиотека шрифтов WOFF), windsurf (переходный пакет на devin-desktop). Экономия ~288 МБ.",
+      "locations": [
+        {
+          "id": "7a",
+          "path": "pkg://linux-image-6.8.0-100-generic",
+          "lineNumber": 0,
+          "lineContent": "linux-image-6.8.0-100-generic  6.8.0-100.100  14.4MB  [kernel]  Signed kernel image generic",
+          "title": "Старое ядро 6.8.0-100",
+          "description": "Образ ядра, не используется (текущее 6.8.0-136), autoremove"
+        },
+        {
+          "id": "7b",
+          "path": "pkg://linux-headers-6.8.0-100",
+          "lineNumber": 0,
+          "lineContent": "linux-headers-6.8.0-100  6.8.0-100.100  82.2MB  [devel]  Header files related to Linux kernel version 6.8.0",
+          "title": "Заголовки ядра 6.8.0-100",
+          "description": "Заголовки для сборки модулей под старую версию, autoremove"
+        },
+        {
+          "id": "7c",
+          "path": "pkg://linux-modules-extra-6.8.0-100-generic",
+          "lineNumber": 0,
+          "lineContent": "linux-modules-extra-6.8.0-100-generic  6.8.0-100.100  107.3MB  [kernel]  Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP",
+          "title": "Модули ядра 6.8.0-100",
+          "description": "Драйверы для старого ядра, самый тяжёлый autoremove-пакет, autoremove"
+        },
+        {
+          "id": "7d",
+          "path": "pkg://linux-tools-6.8.0-100",
+          "lineNumber": 0,
+          "lineContent": "linux-tools-6.8.0-100  6.8.0-100.100  18.3MB  [devel]  Linux kernel version specific tools for version 6.8.0-100",
+          "title": "Инструменты ядра 6.8.0-100",
+          "description": "perf, cpupower и др. для старого ядра, autoremove"
+        },
+        {
+          "id": "7e",
+          "path": "pkg://libwoff1",
+          "lineNumber": 0,
+          "lineContent": "libwoff1  1.0.2-2build1  0.1MB  [libs]  library for converting fonts to WOFF 2.0",
+          "title": "libwoff1",
+          "description": "Библиотека конвертации шрифтов, больше не нужна, autoremove"
+        },
+        {
+          "id": "7f",
+          "path": "pkg://windsurf",
+          "lineNumber": 0,
+          "lineContent": "windsurf  3.4.27-1783378471  0.0MB  [oldlibs]  transitional package for devin-desktop",
+          "title": "windsurf (transitional)",
+          "description": "Пустой переходный пакет, можно удалить после замены на devin-desktop, autoremove"
+        }
+      ]
+    }
+  ]
+}

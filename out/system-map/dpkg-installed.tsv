@@ -1,0 +1,1816 @@
+accountsservice	23.13.9-2ubuntu6	524	optional	admin	query and manipulate user account information
+acl	2.3.2-1build1.1	192	optional	utils	access control list - utilities
+adduser	3.137ubuntu1	452	important	admin	add and remove users and groups
+adwaita-icon-theme	46.0-1	12051	optional	gnome	default icon theme of GNOME
+amd64-microcode	3.20251202.1ubuntu0.24.04.1	885	standard	non-free-firmware/admin	Platform firmware and microcode for AMD CPUs and SoCs
+apache2-bin	2.4.58-1ubuntu8.15	5027	optional	httpd	Apache HTTP Server (modules and other binary files)
+apg	2.2.3.dfsg.1-5build3	116	optional	admin	Automated Password Generator - Standalone version
+app-terminator	0.2.0-1~noble1	463	optional	gnome	Unified manager for installed applications
+apparmor	4.0.1really4.0.1-0ubuntu0.24.04.7	3148	optional	admin	user-space parser utility for AppArmor
+apport	2.28.2-0ubuntu0.1	656	optional	utils	automatically generate crash reports for debugging
+apport-core-dump-handler	2.28.2-0ubuntu0.1	37	optional	utils	Kernel core dump handler for Apport
+apport-symptoms	0.25	60	optional	utils	symptom scripts for apport
+appstream	1.0.2-1build6	332	optional	admin	Software component metadata management
+apt	2.8.3	4108	important	admin	commandline package manager
+apt-config-icons	1.0.2-1build6	23	optional	misc	APT configuration snippet to enable icon downloads
+apt-transport-https	2.8.3	36	optional	oldlibs	transitional package for https support
+apt-utils	2.8.3	660	required	admin	package management related utility programs
+aptdaemon	1.1.1+bzr982-0ubuntu44	156	extra	admin	transaction based package management service
+aptdaemon-data	1.1.1+bzr982-0ubuntu44	228	extra	admin	data files for clients
+at-spi2-common	2.52.0-1build1	52	optional	misc	Assistive Technology Service Provider Interface (common files)
+at-spi2-core	2.52.0-1build1	177	optional	misc	Assistive Technology Service Provider Interface (D-Bus core)
+avahi-daemon	0.8-13ubuntu6.2	268	optional	net	Avahi mDNS/DNS-SD daemon
+base-files	13ubuntu10.4	426	required	admin	Debian base system miscellaneous files
+base-passwd	3.6.3build1	254	required	admin	Debian base system master password and group files
+bash	5.2.21-2ubuntu4	1900	required	shells	GNU Bourne Again SHell
+bash-completion	1:2.11-8	1454	standard	shells	programmable completion for the bash shell
+bc	1.07.1-3ubuntu4	213	standard	math	GNU bc arbitrary precision calculator language
+bcache-tools	1.0.8-5build1	106	optional	utils	bcache userspace tools
+bind9-dnsutils	1:9.18.39-0ubuntu0.24.04.5	510	standard	net	Clients provided with BIND 9
+bind9-host	1:9.18.39-0ubuntu0.24.04.5	157	standard	net	DNS Lookup Utility
+bind9-libs	1:9.18.39-0ubuntu0.24.04.5	3443	standard	libs	Shared Libraries used by BIND 9
+binutils	2.42-4ubuntu2.10	161	optional	devel	GNU assembler, linker and binary utilities
+binutils-common	2.42-4ubuntu2.10	564	optional	devel	Common files for the GNU assembler, linker and binary utilities
+binutils-x86-64-linux-gnu	2.42-4ubuntu2.10	11549	optional	devel	GNU binary utilities, for x86-64-linux-gnu target
+blt	2.5.3+dfsg-7build1	20	optional	libs	graphics extension library for Tcl/Tk - run-time
+bluez	5.72-0ubuntu5.5	4457	optional	admin	Bluetooth tools and daemons
+bluez-obexd	5.72-0ubuntu5.5	687	optional	admin	bluez obex daemon
+bolt	0.9.7-1	457	optional	admin	system daemon to manage thunderbolt 3 devices
+bpfcc-tools	0.29.1+ds-1ubuntu7	2817	optional	misc	tools for BPF Compiler Collection (BCC)
+bpftrace	0.20.2-1ubuntu4.3	3427	optional	utils	high-level tracing language for Linux eBPF
+brasero-common	3.12.3-2build4	10511	optional	gnome	Common files for the Brasero CD burning application and library
+bsdextrautils	2.39.3-9ubuntu6.5	287	optional	utils	extra utilities from 4.4BSD-Lite
+bsdutils	1:2.39.3-9ubuntu6.5	288	required	utils	basic utilities from 4.4BSD-Lite
+btop	1.3.0-1	1582	optional	utils	Modern and colorful command line resource monitor that shows usage and stats
+btrfs-progs	6.6.3-1.1build2	4953	optional	admin	Checksumming Copy on Write Filesystem utilities
+bubblewrap	0.9.0-1ubuntu0.1	130	optional	admin	utility for unprivileged chroot and namespace manipulation
+build-essential	12.10ubuntu1	17	optional	devel	Informational list of build-essential packages
+busybox-initramfs	1:1.36.1-6ubuntu3.1	350	optional	shells	Standalone shell setup for initramfs
+busybox-static	1:1.36.1-6ubuntu3.1	2123	optional	shells	Standalone rescue shell with tons of builtin utilities
+byobu	6.11-0ubuntu1	560	optional	misc	text window manager, shell multiplexer, integrated DevOps environment
+bzip2	1.0.8-5.1build0.1	109	standard	utils	high-quality block-sorting file compressor - utilities
+bzip2-doc	1.0.8-5.1build0.1	597	optional	doc	high-quality block-sorting file compressor - documentation
+ca-certificates	20260601~24.04.1	333	standard	misc	Common CA certificates
+cabextract	1.11-2	82	optional	utils	Microsoft Cabinet file unpacker
+cdrdao	1:1.2.4-3build1	988	optional	otherosfs	records CDs in Disk-At-Once (DAO) mode
+chrome-gnome-shell	42.1-4	8	optional	oldlibs	GNOME Shell integration for browsers - transitional package
+claude-desktop	1.22209.0	522704	optional	utils	Desktop application for Claude.ai
+cloud-guest-utils	0.33-1	67	optional	admin	cloud guest utilities
+cloud-init	26.1-0ubuntu1~24.04.1	3193	optional	admin	initialization and customization tool for cloud instances
+cloud-initramfs-copymods	0.49~24.04.1	25	optional	admin	copy initramfs modules into root filesystem for later use
+cloud-initramfs-dyn-netconf	0.49~24.04.1	28	optional	admin	write a network interface file in /run for BOOTIF
+cmake	3.28.3-1build7	36493	optional	devel	cross-platform, open-source make system
+cmake-data	3.28.3-1build7	10984	optional	devel	CMake data files (modules, templates and documentation)
+code	1.129.1-1784303641	939673	optional	devel	Code editing. Redefined.
+colord	1.4.7-1build2	832	optional	graphics	system service to manage device colour profiles -- system daemon
+colord-data	1.4.7-1build2	2300	optional	graphics	system service to manage device colour profiles -- data files
+command-not-found	23.04.0	29	optional	admin	Suggest installation of packages in interactive bash sessions
+console-setup	1.226ubuntu1	431	optional	utils	console font and keymap setup program
+console-setup-linux	1.226ubuntu1	2202	optional	utils	Linux specific part of console-setup
+coreutils	9.4-3ubuntu6.2	6944	required	utils	GNU core utilities
+cpio	2.15+dfsg-1ubuntu2	328	important	utils	GNU cpio -- a program to manage archives of files
+cpp	4:13.2.0-7ubuntu1	37	optional	interpreters	GNU C preprocessor (cpp)
+cpp-13	13.3.0-6ubuntu2~24.04.1	11	optional	interpreters	GNU C preprocessor
+cpp-13-x86-64-linux-gnu	13.3.0-6ubuntu2~24.04.1	30807	optional	interpreters	GNU C preprocessor for x86_64-linux-gnu
+cpp-x86-64-linux-gnu	4:13.2.0-7ubuntu1	20	optional	interpreters	GNU C preprocessor (cpp) for the amd64 architecture
+cpu-checker	0.7-1.3build2	20	optional	utils	tools to help evaluate certain CPU (or BIOS) features
+cron	3.0pl1-184ubuntu2	230	important	admin	process scheduling daemon
+cron-daemon-common	3.0pl1-184ubuntu2	50	important	admin	process scheduling daemon's configuration files
+cryptsetup	2:2.7.0-1ubuntu4.2	430	optional	admin	disk encryption support - startup scripts
+cryptsetup-bin	2:2.7.0-1ubuntu4.2	604	optional	admin	disk encryption support - command line tools
+cryptsetup-initramfs	2:2.7.0-1ubuntu4.2	110	optional	admin	disk encryption support - initramfs integration
+cups-pk-helper	0.2.6-1ubuntu8	304	extra	gnome	PolicyKit helper to configure cups with fine-grained privileges
+curl	8.5.0-2ubuntu10.11	522	optional	web	command line tool for transferring data with URL syntax
+cursor	3.12.17-1784259156	962018	optional	devel	The AI Code Editor.
+dash	0.5.12-6ubuntu5	187	required	shells	POSIX-compliant shell
+dbus	1.14.10-4ubuntu4.1	167	standard	admin	simple interprocess messaging system (system message bus)
+dbus-bin	1.14.10-4ubuntu4.1	215	optional	admin	simple interprocess messaging system (command line utilities)
+dbus-daemon	1.14.10-4ubuntu4.1	369	optional	admin	simple interprocess messaging system (reference message bus)
+dbus-session-bus-common	1.14.10-4ubuntu4.1	109	optional	admin	simple interprocess messaging system (session bus configuration)
+dbus-system-bus-common	1.14.10-4ubuntu4.1	120	optional	admin	simple interprocess messaging system (system bus configuration)
+dbus-user-session	1.14.10-4ubuntu4.1	113	optional	admin	simple interprocess messaging system (systemd --user integration)
+dconf-cli	0.40.0-4ubuntu0.1	88	optional	utils	simple configuration storage system - utilities
+dconf-gsettings-backend	0.40.0-4ubuntu0.1	74	optional	libs	simple configuration storage system - GSettings back-end
+dconf-service	0.40.0-4ubuntu0.1	97	optional	libs	simple configuration storage system - D-Bus service
+debconf	1.5.86ubuntu1	493	required	admin	Debian configuration management system
+debconf-i18n	1.5.86ubuntu1	794	important	localization	full internationalization support for debconf
+debianutils	5.17build1	224	required	utils	Miscellaneous utilities specific to Debian
+desktop-base	12.0.6+nmu1ubuntu1	19664	optional	x11	common files for the Debian Desktop
+desktop-file-utils	0.27-2build1	243	optional	devel	Utilities for .desktop files
+devin-desktop	3.4.27-1783378423	949727	optional	devel	Tomorrow's Editor, Today.
+dhcpcd-base	1:10.0.6-1ubuntu3.2	514	optional	net	DHCPv4 and DHCPv6 dual-stack client (binaries and exit hooks)
+dictionaries-common	1.29.7	715	optional	text	spelling dictionaries - common utilities
+diffutils	1:3.10-1build1	452	required	utils	File comparison utilities
+dirmngr	2.4.4-2ubuntu17.4	709	optional	utils	GNU privacy guard - network certificate management service
+distro-info	1.7build1	78	optional	devel	provides information about the distributions' releases
+distro-info-data	0.60ubuntu0.6	18	optional	devel	information about the distributions' releases (data files)
+dmeventd	2:1.02.185-3ubuntu3.2	227	optional	admin	Linux Kernel Device Mapper event daemon
+dmidecode	3.5-3ubuntu0.1	228	important	utils	SMBIOS/DMI table decoder
+dmsetup	2:1.02.185-3ubuntu3.2	253	optional	admin	Linux Kernel Device Mapper userspace library
+docbook-xml	4.5-12	2134	optional	text	standard XML documentation system for software and systems
+dosfstools	4.2-1.1build1	232	optional	otherosfs	utilities for making and checking MS-DOS FAT filesystems
+dpkg	1.22.6ubuntu6.6	6238	required	admin	Debian package management system
+dpkg-dev	1.22.6ubuntu6.6	1721	optional	utils	Debian package development tools
+dracut-install	060+5-1ubuntu3.3	87	optional	utils	dracut is an event driven initramfs infrastructure (dracut-install)
+e2fsprogs	1.47.0-2.4~exp1ubuntu4.1	1504	required	admin	ext2/ext3/ext4 file system utilities
+e2fsprogs-l10n	1.47.0-2.4~exp1ubuntu4.1	60	optional	localization	ext2/ext3/ext4 file system utilities - translations
+eatmydata	131-1ubuntu1	21	optional	utils	Library and utilities designed to disable fsync and friends
+ed	1.20.1-1	108	optional	editors	classic UNIX line editor
+efibootmgr	18-1build2	92	optional	admin	Interact with the EFI Boot Manager
+eject	2.39.3-9ubuntu6.5	97	optional	utils	ejects CDs and operates CD-Changers under Linux
+emacsen-common	3.0.5	55	optional	editors	Common facilities for all emacsen
+ethtool	1:6.7-1build1	734	optional	net	display or change Ethernet device settings
+evince	46.3.1-0ubuntu1	945	optional	gnome	Document (PostScript, PDF) viewer
+evolution	3.52.3-0ubuntu1.1	453	optional	gnome	groupware suite with mail client and organizer
+evolution-common	3.52.3-0ubuntu1.1	23828	optional	gnome	architecture independent files for Evolution
+evolution-data-server	3.52.3-0ubuntu1.2	2987	optional	gnome	evolution database backend server
+evolution-data-server-common	3.52.3-0ubuntu1.2	508	optional	gnome	architecture independent files for Evolution Data Server
+evolution-plugins	3.52.3-0ubuntu1.1	455	optional	gnome	standard plugins for Evolution
+fakeroot	1.33-1	220	optional	utils	tool for simulating superuser privileges
+fdisk	2.39.3-9ubuntu6.5	392	important	utils	collection of partitioning utilities
+feh	3.10.1-1ubuntu0.1	322	optional	graphics	imlib2 based image viewer
+ffmpeg	7:6.1.1-3ubuntu5	2468	optional	video	Tools for transcoding, streaming and playing of multimedia files
+file	1:5.45-3build1	63	standard	utils	Recognize the type of data in a file using "magic" numbers
+finalrd	9build1	30	optional	utils	final runtime directory for shutdown
+findutils	4.9.0-5build1	552	required	utils	utilities for finding files--find, xargs
+firefox	152.0.6+build1-0ubuntu0.24.04.1~mt1	298252	optional	web	Safe and easy web browser from Mozilla
+firmware-sof-signed	2023.12.1-1ubuntu1.11	12219	optional	non-free-firmware/kernel	Intel SOF firmware - signed
+fontconfig	2.15.0-1.1ubuntu2	468	optional	fonts	generic font configuration library - support binaries
+fontconfig-config	2.15.0-1.1ubuntu2	239	optional	fonts	generic font configuration library - configuration
+fonts-cantarell	0.303.1-1	572	optional	fonts	sans serif font family designed for on-screen readability
+fonts-dejavu-core	2.37-8	2292	optional	fonts	Vera font family derivate with additional characters
+fonts-dejavu-mono	2.37-8	1281	optional	fonts	Vera font family derivate with additional characters
+fonts-firacode	6.2-2	2935	optional	fonts	Monospaced font with programming ligatures
+fonts-liberation	1:2.1.5-3	4285	optional	fonts	fonts with the same metrics as Times, Arial and Courier
+fonts-liberation-sans-narrow	1:1.07.6-4	494	optional	fonts	Sans-serif Narrow fonts to replace commonly used Arial Narrow
+fonts-liberation2	1:2.1.5-3	13	optional	fonts	transitional dummy package
+fonts-lyx	2.4.0~RC3-1build4	346	optional	fonts	TrueType versions of some TeX fonts used by LyX
+fonts-noto-color-emoji	2.047-0ubuntu0.24.04.1	10552	optional	fonts	color emoji font from Google
+fonts-noto-core	20201225-2	42551	optional	fonts	"No Tofu" font families with large Unicode coverage (core)
+fonts-noto-mono	20201225-2	1156	optional	fonts	"No Tofu" monospaced font family with large Unicode coverage
+fonts-opensymbol	4:102.12+LibO24.2.7-0ubuntu0.24.04.6	284	optional	fonts	OpenSymbol TrueType font
+fonts-quicksand	0.2016-2.1	392	optional	fonts	sans-serif font with round attributes
+fonts-roboto	2:0~20170802-3	17	optional	fonts	metapackage to pull in Roboto fonts
+fonts-roboto-unhinted	2:0~20170802-3	6238	optional	fonts	Google's signature family of fonts (unhinted)
+fonts-ubuntu-console	0.869+git20240321-0ubuntu1	58	optional	fonts	console version of the Ubuntu Mono font
+fonts-urw-base35	20200910-8	15560	optional	fonts	font set metric-compatible with the 35 PostScript Level 2 Base Fonts
+friendly-recovery	0.2.42	45	optional	admin	Make recovery boot mode more user-friendly
+ftp	20230507-2build3	24	optional	oldlibs	dummy transitional package for tnftp
+fuse3	3.14.0-5build1	94	optional	utils	Filesystem in Userspace (3.x version)
+fwupd	2.0.20-1ubuntu2~24.04.2	12767	optional	admin	Firmware update daemon
+fwupd-signed	1.52+1.4-1	76	optional	utils	Linux Firmware Updater EFI signed binary
+g++	4:13.2.0-7ubuntu1	13	optional	devel	GNU C++ compiler
+g++-13	13.3.0-6ubuntu2~24.04.1	29	optional	devel	GNU C++ compiler
+g++-13-x86-64-linux-gnu	13.3.0-6ubuntu2~24.04.1	33545	optional	devel	GNU C++ compiler for x86_64-linux-gnu architecture
+g++-x86-64-linux-gnu	4:13.2.0-7ubuntu1	11	optional	devel	GNU C++ compiler for the amd64 architecture
+gawk	1:5.2.1-2build3	1736	optional	interpreters	GNU awk, a pattern scanning and processing language
+gcc	4:13.2.0-7ubuntu1	37	optional	devel	GNU C compiler
+gcc-13	13.3.0-6ubuntu2~24.04.1	553	optional	devel	GNU C compiler
+gcc-13-base	13.3.0-6ubuntu2~24.04.1	113	optional	libs	GCC, the GNU Compiler Collection (base package)
+gcc-13-x86-64-linux-gnu	13.3.0-6ubuntu2~24.04.1	61333	optional	devel	GNU C compiler for the x86_64-linux-gnu architecture
+gcc-14-base	14.2.0-4ubuntu2~24.04.1	113	required	libs	GCC, the GNU Compiler Collection (base package)
+gcc-x86-64-linux-gnu	4:13.2.0-7ubuntu1	25	optional	devel	GNU C compiler for the amd64 architecture
+gcr	3.41.2-1build3	372	optional	gnome	GNOME crypto services (daemon and tools)
+gcr4	4.2.0-5	204	optional	gnome	GNOME crypto services (daemon and tools)
+gdisk	1.0.10-1build1	784	optional	admin	GPT fdisk text-mode partitioning tool
+gdm3	46.2-1ubuntu1~24.04.9	2028	optional	gnome	GNOME Display Manager
+geoclue-2.0	2.7.0-3ubuntu7	479	optional	utils	geoinformation service
+geocode-glib-common	3.26.3-6build3	78	optional	libs	icons for the geocode-glib library
+gettext-base	0.21-14ubuntu2	268	standard	utils	GNU Internationalization utilities for the base system
+ghostscript	10.02.1~dfsg1-0ubuntu7.8	183	optional	text	interpreter for the PostScript language and for PDF
+gimp	2.10.36-3ubuntu0.24.04.1	19566	optional	graphics	GNU Image Manipulation Program
+gimp-data	2.10.36-3ubuntu0.24.04.1	86962	optional	graphics	Data files for GIMP
+gir1.2-accountsservice-1.0	23.13.9-2ubuntu6	31	optional	introspection	GObject introspection data for AccountService
+gir1.2-adw-1	1.5.0-1ubuntu2	167	optional	introspection	GObject introspection files for libadwaita
+gir1.2-atk-1.0	2.52.0-1build1	100	optional	introspection	ATK accessibility toolkit (GObject introspection)
+gir1.2-atspi-2.0	2.52.0-1build1	82	optional	introspection	Assistive Technology Service Provider (GObject introspection)
+gir1.2-ayatanaappindicator3-0.1	0.5.93-1build3	31	optional	introspection	Typelib files for libayatana-appindicator3-1 (GTK-3+ version)
+gir1.2-ayatanaido3-0.4	0.10.1-1build2	32	optional	introspection	Widgets and other objects used for Ayatana Indicators - Typelib file
+gir1.2-dbusmenu-glib-0.4	18.10.20180917~bzr492+repack1-3.1ubuntu5	32	optional	introspection	typelib file for libdbusmenu-glib4
+gir1.2-freedesktop	1.80.1-1	156	optional	introspection	Introspection data for some FreeDesktop components
+gir1.2-freedesktop-dev	1.80.1-1	173	optional	libdevel	GIR XML for some FreeDesktop components
+gir1.2-gck-2	4.2.0-5	47	optional	introspection	GObject introspection data for the GCK library
+gir1.2-gcr-4	4.2.0-5	49	optional	introspection	GObject introspection data for the GCR library
+gir1.2-gdesktopenums-3.0	46.1-0ubuntu1	26	optional	introspection	GObject introspection for GSettings desktop-wide schemas
+gir1.2-gdkpixbuf-2.0	2.42.10+dfsg-3ubuntu3.3	44	optional	introspection	GDK Pixbuf library - GObject-Introspection
+gir1.2-gdm-1.0	46.2-1ubuntu1~24.04.9	81	optional	introspection	GObject introspection data for the GNOME Display Manager
+gir1.2-geoclue-2.0	2.7.0-3ubuntu7	41	optional	introspection	convenience library to interact with geoinformation service (introspection)
+gir1.2-girepository-2.0	1.80.1-1	102	optional	introspection	Introspection data for GIRepository library
+gir1.2-girepository-2.0-dev	1.80.1-1	376	optional	libdevel	GIR XML for GIRepository library
+gir1.2-glib-2.0	2.80.0-6ubuntu3.8	765	optional	introspection	Introspection data for GLib, GObject, Gio and GModule
+gir1.2-glib-2.0-dev	2.80.0-6ubuntu3.8	11511	optional	libdevel	GIR XML for GLib, GObject, Gio and GModule
+gir1.2-gnomebg-4.0	44.0-5build2	27	optional	introspection	Introspection data for GnomeBG (GTK 4)
+gir1.2-gnomebluetooth-3.0	46.0-1ubuntu1	22	optional	introspection	Introspection data for GnomeBluetooth
+gir1.2-gnomedesktop-4.0	44.0-5build2	32	optional	introspection	Introspection data for GnomeDesktop (GTK 4)
+gir1.2-graphene-1.0	1.10.8-3build2	52	optional	introspection	library of graphic data types (introspection files)
+gir1.2-gstreamer-1.0	1.24.2-1ubuntu0.1	357	optional	introspection	GObject introspection data for the GStreamer library
+gir1.2-gtk-3.0	3.24.41-4ubuntu1.3	994	optional	introspection	GTK graphical user interface library -- gir bindings
+gir1.2-gtk-4.0	4.14.5+ds-0ubuntu0.10	882	optional	introspection	GTK graphical user interface library -- gir bindings
+gir1.2-gweather-4.0	4.4.2-1build1	35	optional	introspection	GObject introspection data for the GWeather library
+gir1.2-handy-1	1.8.3-1build2	74	optional	introspection	GObject introspection files for libhandy
+gir1.2-harfbuzz-0.0	8.3.0-2build2	188	optional	introspection	OpenType text shaping engine (GObject introspection data)
+gir1.2-ibus-1.0	1.5.29-2	348	optional	introspection	Intelligent Input Bus - introspection data
+gir1.2-javascriptcoregtk-4.1	2.52.3-0ubuntu0.24.04.1	310	optional	introspection	JavaScript engine library from WebKitGTK - GObject introspection data
+gir1.2-javascriptcoregtk-6.0	2.52.3-0ubuntu0.24.04.1	309	optional	introspection	JavaScript engine library from WebKitGTK - GObject introspection data
+gir1.2-mutter-14	46.2-1ubuntu0.24.04.16	541	optional	introspection	GObject introspection data for Mutter
+gir1.2-nm-1.0	1.46.0-1ubuntu2.7	359	optional	introspection	GObject introspection data for the libnm library
+gir1.2-nma4-1.0	1.10.6-3build2	30	optional	introspection	GObject introspection data for libnma-gtk4
+gir1.2-notify-0.7	0.8.3-1build2	20	optional	introspection	sends desktop notifications to a notification daemon (Introspection files)
+gir1.2-packagekitglib-1.0	1.2.8-2ubuntu1.5	112	optional	introspection	GObject introspection data for the PackageKit GLib library
+gir1.2-pango-1.0	1.52.1+ds-1build1	136	optional	introspection	Layout and rendering of internationalized text - gir bindings
+gir1.2-polkit-1.0	124-2ubuntu1.24.04.3	48	optional	introspection	GObject introspection data for polkit
+gir1.2-rsvg-2.0	2.58.0+dfsg-1build1	45	optional	introspection	gir files for renderer library for SVG files
+gir1.2-secret-1	0.21.4-1build3	43	optional	introspection	Secret store (GObject-Introspection)
+gir1.2-soup-3.0	3.4.4-5ubuntu0.7	91	optional	introspection	GObject introspection data for the libsoup HTTP library
+gir1.2-upowerglib-1.0	1.90.3-1	25	optional	introspection	GObject introspection data for upower
+gir1.2-vte-2.91	0.76.0-1ubuntu0.1	48	optional	introspection	GObject introspection data for the VTE library
+gir1.2-webkit-6.0	2.52.3-0ubuntu0.24.04.1	442	optional	introspection	Web content engine library for GTK - GObject introspection data
+gir1.2-webkit2-4.1	2.52.3-0ubuntu0.24.04.1	608	optional	introspection	Web content engine library for GTK - GObject introspection data
+gir1.2-wnck-3.0	43.0-3build4	61	optional	introspection	GObject introspection data for the WNCK library
+git	1:2.43.0-1ubuntu7.3	21692	optional	vcs	fast, scalable, distributed revision control system
+git-man	1:2.43.0-1ubuntu7.3	2162	optional	doc	fast, scalable, distributed revision control system (manual pages)
+gjs	1.80.2-1build2	189	optional	interpreters	Mozilla-based javascript bindings for the GNOME platform (cli tool)
+gkbd-capplet	3.28.1-1build3	26	optional	gnome	GNOME control center tools for libgnomekbd
+glib-networking	2.80.0-1build1	201	optional	libs	network-related giomodules for GLib
+glib-networking-common	2.80.0-1build1	44	optional	libs	network-related giomodules for GLib - data files
+glib-networking-services	2.80.0-1build1	45	optional	libs	network-related giomodules for GLib - D-Bus services
+gnome-backgrounds	45.0-1	33407	optional	gnome	Set of backgrounds packaged with the GNOME desktop
+gnome-bluetooth-3-common	46.0-1ubuntu1	52	optional	gnome	GNOME Bluetooth 3 common files
+gnome-bluetooth-sendto	46.0-1ubuntu1	50	optional	gnome	GNOME Bluetooth Send To app
+gnome-browser-connector	42.1-4	83	optional	gnome	GNOME Shell extensions integration for web browsers
+gnome-control-center	1:46.7-0ubuntu0.24.04.4	8146	optional	gnome	utilities to configure the GNOME desktop
+gnome-control-center-data	1:46.7-0ubuntu0.24.04.4	524	optional	gnome	configuration applets for GNOME - data files
+gnome-desktop3-data	44.0-5build2	520	optional	gnome	Common files for GNOME desktop apps
+gnome-disk-utility	46.0-1ubuntu3	1004	optional	admin	manage and configure disk drives and media
+gnome-icon-theme	3.12.0-5	15174	optional	gnome	This package contains the default icon theme used by the GNOME
+gnome-keyring	46.1-2ubuntu0.2	2936	optional	gnome	GNOME keyring services (daemon and tools)
+gnome-menus	3.36.0-1.1ubuntu3	240	optional	gnome	GNOME implementation of the freedesktop menu specification
+gnome-online-accounts	3.50.4-0ubuntu2	284	optional	gnome	service to manage online accounts for the GNOME desktop
+gnome-session	46.0-1ubuntu4	102	optional	gnome	GNOME Session Manager - GNOME 3 session
+gnome-session-bin	46.0-1ubuntu4	452	optional	gnome	GNOME Session Manager - Minimal runtime
+gnome-session-common	46.0-1ubuntu4	208	optional	gnome	GNOME Session Manager - common files
+gnome-settings-daemon	46.0-1ubuntu1.24.04.1	1266	optional	gnome	daemon handling the GNOME session settings
+gnome-settings-daemon-common	46.0-1ubuntu1.24.04.1	340	optional	gnome	daemon handling the GNOME session settings - common files
+gnome-shell	46.0-0ubuntu6~24.04.14	6679	optional	gnome	graphical shell for the GNOME desktop
+gnome-shell-common	46.0-0ubuntu6~24.04.14	3684	optional	gnome	common files for the GNOME graphical shell
+gnome-shell-extension-prefs	46.0-0ubuntu6~24.04.14	73	optional	gnome	tool to enable / disable GNOME Shell extensions
+gnome-software	46.0-1ubuntu2	3131	optional	gnome	Software Center for GNOME
+gnome-software-common	46.0-1ubuntu2	140	optional	gnome	Software Center for GNOME (common files)
+gnome-terminal	3.52.0-1ubuntu2	777	optional	gnome	GNOME terminal emulator application
+gnome-terminal-data	3.52.0-1ubuntu2	1844	optional	gnome	Data files for the GNOME terminal emulator
+gnome-text-editor	46.3-0ubuntu2	1508	optional	gnome	simple text editor for GNOME
+gnome-themes-extra	3.28-2ubuntu5	39	optional	gnome	Adwaita GTK 2 theme — engine
+gnome-themes-extra-data	3.28-2ubuntu5	501	optional	gnome	Adwaita GTK 2 theme and Adwaita-dark GTK 3 theme — common files
+gnome-user-share	43.0-1build2	499	optional	gnome	User level public file sharing via WebDAV
+gnupg	2.4.4-2ubuntu17.4	509	optional	utils	GNU privacy guard - a free PGP replacement
+gnupg-l10n	2.4.4-2ubuntu17.4	400	optional	localization	GNU privacy guard - localization files
+gnupg-utils	2.4.4-2ubuntu17.4	343	optional	utils	GNU privacy guard - utility programs
+gobject-introspection	1.80.1-1	354	optional	devel	Generate interface introspection data for GObject libraries
+gobject-introspection-bin	1.80.1-1	1535	optional	devel	Executables for gobject-introspection
+google-chrome-stable	150.0.7871.128-1	424630	optional	web	The web browser from Google
+gpg	2.4.4-2ubuntu17.4	1206	optional	utils	GNU Privacy Guard -- minimalist public key operations
+gpg-agent	2.4.4-2ubuntu17.4	627	optional	utils	GNU privacy guard - cryptographic agent
+gpg-wks-client	2.4.4-2ubuntu17.4	176	optional	utils	GNU privacy guard - Web Key Service client
+gpgconf	2.4.4-2ubuntu17.4	257	optional	utils	GNU privacy guard - core configuration utilities
+gpgsm	2.4.4-2ubuntu17.4	545	optional	utils	GNU privacy guard - S/MIME version
+gpgv	2.4.4-2ubuntu17.4	337	important	utils	GNU privacy guard - signature verification tool
+graphviz	2.42.2-9ubuntu0.1	2414	optional	graphics	rich set of graph drawing tools
+grep	3.11-4build1	344	required	utils	GNU grep, egrep and fgrep
+groff-base	1.23.0-3build2	3721	important	text	GNU troff text-formatting system (base system components)
+grub-common	2.12-1ubuntu7.3	12512	optional	admin	GRand Unified Bootloader (common files)
+grub-efi-amd64	2.12-1ubuntu7.3	204	optional	admin	GRand Unified Bootloader, version 2 (EFI-AMD64 version)
+grub-efi-amd64-bin	2.12-1ubuntu7.3	10239	optional	admin	GRand Unified Bootloader, version 2 (EFI-AMD64 modules)
+grub-efi-amd64-signed	1.202.5+2.12-1ubuntu7.3	7178	optional	utils	GRand Unified Bootloader, version 2 (EFI-AMD64 version, signed)
+grub2-common	2.12-1ubuntu7.3	1391	optional	admin	GRand Unified Bootloader (common files for version 2)
+gsettings-desktop-schemas	46.1-0ubuntu1	308	optional	gnome	GSettings desktop-wide schemas
+gstreamer1.0-gl	1.24.2-1ubuntu0.4	381	optional	libs	GStreamer plugins for GL
+gstreamer1.0-libav	1.24.1-1build1	276	optional	libs	ffmpeg plugin for GStreamer
+gstreamer1.0-pipewire	1.0.5-1ubuntu3.3	160	optional	libs	GStreamer 1.0 plugin for the PipeWire multimedia server
+gstreamer1.0-plugins-base	1.24.2-1ubuntu0.4	2456	optional	libs	GStreamer plugins from the "base" set
+gstreamer1.0-plugins-good	1.24.2-1ubuntu1.4	7420	optional	libs	GStreamer plugins from the "good" set
+gstreamer1.0-plugins-ugly	1.24.1-1build1	754	optional	libs	GStreamer plugins from the "ugly" set
+gstreamer1.0-x	1.24.2-1ubuntu0.4	306	optional	libs	GStreamer plugins for X11 and Pango
+gthumb	3:3.12.6-1	5237	optional	gnome	image viewer and browser
+gthumb-data	3:3.12.6-1	8142	optional	gnome	image viewer and browser - arch-independent files
+gtk-update-icon-cache	3.24.41-4ubuntu1.3	131	optional	misc	icon theme caching utility
+gtk2-engines-pixbuf	2.24.33-4ubuntu1.1	76	optional	oldlibs	pixbuf-based theme for GTK 2
+gvfs	1.54.4-0ubuntu1~24.04.2	356	optional	libs	userspace virtual filesystem - GIO module
+gvfs-backends	1.54.4-0ubuntu1~24.04.2	1856	optional	gnome	userspace virtual filesystem - backends
+gvfs-common	1.54.4-0ubuntu1~24.04.2	88	optional	libs	userspace virtual filesystem - common data files
+gvfs-daemons	1.54.4-0ubuntu1~24.04.2	520	optional	libs	userspace virtual filesystem - servers
+gvfs-libs	1.54.4-0ubuntu1~24.04.2	432	optional	libs	userspace virtual filesystem - private libraries
+gzip	1.12-1ubuntu3.2	244	required	utils	GNU compression utilities
+hdparm	9.65+ds-1build1	236	optional	admin	tune hard disk parameters for high performance
+heif-gdk-pixbuf	1.17.6-1ubuntu4.6	39	optional	graphics	ISO/IEC 23008-12:2017 HEIF file format decoder - gdk-pixbuf loader
+heif-thumbnailer	1.17.6-1ubuntu4.6	52	optional	graphics	ISO/IEC 23008-12:2017 HEIF file format decoder - thumbnailer
+hicolor-icon-theme	0.17-2	440	optional	misc	default fallback theme for FreeDesktop.org icon themes
+hostname	3.23+nmu2ubuntu2	46	required	admin	utility to set/show the host name or domain name
+htop	3.3.0-4build1	424	optional	utils	interactive processes viewer
+humanity-icon-theme	0.6.16	20660	optional	gnome	Humanity Icon theme
+hunspell-en-us	1:2020.12.07-2	878	standard	text	English_american dictionary for hunspell
+hunspell-ru	1:24.2.1-1	6135	optional	text	Russian dictionary for hunspell
+hwdata	0.379-1	77	optional	misc	hardware identification / configuration data
+hyphen-ru	20030310-1ubuntu3	73	optional	text	Russian hyphenation patterns for LibreOffice/OpenOffice.org
+ibverbs-providers	50.0-2ubuntu0.2	1268	optional	net	User space provider drivers for libibverbs
+icu-devtools	74.2-1ubuntu3.1	708	optional	libdevel	Development utilities for International Components for Unicode
+ieee-data	20220827.1	13386	optional	net	OUI and IAB listings
+inetutils-telnet	2:2.5-3ubuntu4.2	241	standard	net	telnet client
+info	7.1-3build2	436	important	doc	Standalone GNU Info documentation browser
+init	1.66ubuntu1	17	important	metapackages	metapackage ensuring an init system is installed
+init-system-helpers	1.66ubuntu1	130	required	admin	helper tools for all init systems
+initramfs-tools	0.142ubuntu25.8	68	optional	utils	generic modular initramfs generator (automation)
+initramfs-tools-bin	0.142ubuntu25.8	56	optional	utils	binaries used by initramfs-tools
+initramfs-tools-core	0.142ubuntu25.8	207	optional	utils	generic modular initramfs generator (core tools)
+install-info	7.1-3build2	212	important	doc	Manage installed documentation in info format
+intel-microcode	3.20260210.0ubuntu0.24.04.1	20951	standard	non-free-firmware/admin	Processor microcode firmware for Intel CPUs
+iproute2	6.1.0-1ubuntu6.4	3033	important	net	networking and traffic control tools
+iptables	1.8.10-3ubuntu2	2420	optional	net	administration tools for packet filtering and NAT
+iputils-ping	3:20240117-1ubuntu0.1	121	important	net	Tools to test the reachability of network hosts
+iputils-tracepath	3:20240117-1ubuntu0.1	43	optional	net	Tools to trace the network path to a remote host
+ipxe-qemu	1.21.1+git-20220113.fbbdc3926-0ubuntu2	4862	optional	admin	PXE boot firmware - ROM images for qemu
+ipxe-qemu-256k-compat-efi-roms	1.0.0+git-20150424.a25a16d-0ubuntu5	1259	optional	admin	PXE boot firmware - Compat EFI ROM images for qemu
+ipython3	8.20.0-1	46	optional	interpreters	Enhanced interactive Python 3 shell
+iso-codes	4.16.0-1	20418	optional	misc	ISO language, territory, currency, script codes and their translations
+isympy-common	1.12-7	254	optional	python	Python shell for SymPy
+isympy3	1.12-7	18	optional	python	Python3 shell for SymPy
+iucode-tool	2.3.1-3build1	92	optional	utils	Intel processor microcode tool
+javascript-common	11+nmu1	33	optional	web	Base support for JavaScript library packages
+jq	1.7.1-3ubuntu0.24.04.2	113	optional	utils	lightweight and flexible command-line JSON processor
+kbd	2.6.4-2ubuntu2	1300	optional	utils	Linux console font and keytable utilities
+keyboard-configuration	1.226ubuntu1	804	optional	utils	system-wide keyboard preferences
+keyboxd	2.4.4-2ubuntu17.4	206	optional	utils	GNU privacy guard - public key material service
+klibc-utils	2.0.13-4ubuntu0.2	479	optional	libs	small utilities built with klibc for early boot
+kmod	31+20240202-2ubuntu7.2	253	important	admin	tools for managing Linux kernel modules
+kpartx	0.9.4-5ubuntu8.2	77	optional	admin	create device mappings for partitions
+krb5-locales	1.20.1-6ubuntu2.6	104	optional	localization	internationalization support for MIT Kerberos
+landscape-common	24.02-0ubuntu5.7	408	optional	admin	Landscape administration system client - Common files
+language-pack-gnome-ru	1:24.04+20260127	9	optional	translations	GNOME translation updates for language Russian
+language-pack-gnome-ru-base	1:24.04+20260127	10505	optional	translations	GNOME translations for language Russian
+language-pack-ru	1:24.04+20260127	9	optional	translations	translation updates for language Russian
+language-pack-ru-base	1:24.04+20260127	15223	optional	translations	translations for language Russian
+language-selector-common	0.225	1779	optional	admin	Language selector for Ubuntu
+language-selector-gnome	0.225	92	optional	admin	Language selector frontend for Ubuntu
+less	590-2ubuntu2.1	309	important	text	pager program similar to more
+liba52-0.7.4	0.7.4-20build1	89	optional	libs	library for decoding ATSC A/52 streams
+libaa1	1.4p5-51.1	152	optional	libs	ASCII art library
+libabsl20220623t64	20220623.1-3.1ubuntu3.2	1930	optional	libs	extensions to the C++ standard library
+libabw-0.1-1	0.1.3-1build4	287	optional	libs	library for reading and writing AbiWord(tm) documents
+libaccountsservice0	23.13.9-2ubuntu6	253	optional	libs	query and manipulate user account information - shared libraries
+libacl1	2.3.2-1build1.1	74	required	libs	access control list - shared library
+libadwaita-1-0	1.5.0-1ubuntu2	2440	optional	libs	Library with GTK widgets for mobile phones
+libaio1t64	0.3.113-6build1.1	37	optional	libs	Linux kernel AIO access library - shared library
+libalgorithm-diff-perl	1.201-1	127	optional	perl	module to find differences between files
+libalgorithm-diff-xs-perl	0.04-8build3	45	optional	perl	module to find differences between files (XS accelerated)
+libalgorithm-merge-perl	0.08-5	42	optional	perl	Perl module for three-way merge of textual data
+libamd3	1:7.6.1+dfsg-1build1	81	optional	libs	approximate minimum degree ordering library for sparse matrices
+libann0	1.1.2+doc-9build1	73	optional	libs	Approximate Nearest Neighbor Searching library
+libao-common	1.2.2+20180113-1.1ubuntu4	20	optional	libs	Cross Platform Audio Output Library (Common files)
+libao4	1.2.2+20180113-1.1ubuntu4	147	optional	libs	Cross Platform Audio Output Library
+libaom3	3.8.2-2ubuntu0.1	5350	optional	libs	AV1 Video Codec Library
+libapache2-mod-dnssd	0.6-4build3	54	optional	httpd	Zeroconf support for Apache 2 via avahi
+libapparmor1	4.0.1really4.0.1-0ubuntu0.24.04.7	120	optional	libs	changehat AppArmor library
+libappstream5	1.0.2-1build6	738	optional	libs	Library to access AppStream services
+libapr1t64	1.7.2-3.1ubuntu0.1	283	optional	libs	Apache Portable Runtime Library
+libaprutil1-dbd-sqlite3	1.6.3-1.1ubuntu7	47	optional	libs	Apache Portable Runtime Utility Library - SQLite3 Driver
+libaprutil1-ldap	1.6.3-1.1ubuntu7	39	optional	libs	Apache Portable Runtime Utility Library - LDAP Driver
+libaprutil1t64	1.6.3-1.1ubuntu7	278	optional	libs	Apache Portable Runtime Utility Library
+libapt-pkg6.0t64	2.8.3	3249	important	libs	package management runtime library
+libarchive13t64	3.7.2-2ubuntu0.7	905	optional	libs	Multi-format archive and compression library (shared library)
+libargon2-1	0~20190702+dfsg-4build1	56	optional	libs	memory-hard hashing function - runtime library
+libasan8	14.2.0-4ubuntu2~24.04.1	10791	optional	libs	AddressSanitizer -- a fast memory error detector
+libasound2-data	1.2.11-1ubuntu0.3	197	optional	libs	Configuration files and profiles for ALSA drivers
+libasound2t64	1.2.11-1ubuntu0.3	1171	optional	libs	shared library for ALSA applications
+libaspell15	0.60.8.1-1build1	2132	optional	libs	GNU Aspell spell-checker runtime library
+libass9	1:0.17.1-2build1	241	optional	libs	library for SSA/ASS subtitles rendering
+libassuan0	2.5.6-1build1	100	important	libs	IPC library for the GnuPG components
+libasyncns0	0.8-6build4	42	optional	libs	Asynchronous name service query library
+libatasmart4	0.19-5build3	80	optional	libs	ATA S.M.A.R.T. reading and parsing library
+libatk-adaptor	2.52.0-1build1	57	optional	misc	AT-SPI 2 toolkit bridge
+libatk-bridge2.0-0t64	2.52.0-1build1	276	optional	libs	AT-SPI 2 toolkit bridge - shared library
+libatk-bridge2.0-dev	2.52.0-1build1	33	optional	libdevel	Development files for the AT-SPI 2 toolkit bridge
+libatk1.0-0t64	2.52.0-1build1	210	optional	libs	ATK accessibility toolkit
+libatk1.0-dev	2.52.0-1build1	1356	optional	libdevel	Development files for the ATK accessibility toolkit
+libatm1t64	1:2.5.1-5.1build1	113	optional	libs	shared library for ATM (Asynchronous Transfer Mode)
+libatomic1	14.2.0-4ubuntu2~24.04.1	49	optional	libs	support library providing __atomic built-in functions
+libatspi2.0-0t64	2.52.0-1build1	262	optional	libs	Assistive Technology Service Provider Interface - shared library
+libatspi2.0-dev	2.52.0-1build1	827	optional	libdevel	Development files for the assistive technology service provider
+libattr1	1:2.5.2-1build1.1	60	required	libs	extended attribute handling - shared library
+libaudit-common	1:3.1.2-2.1build1.1	17	required	libs	Dynamic library for security auditing - common files
+libaudit1	1:3.1.2-2.1build1.1	151	required	libs	Dynamic library for security auditing
+libavahi-client3	0.8-13ubuntu6.2	116	optional	libs	Avahi client library
+libavahi-common-data	0.8-13ubuntu6.2	96	optional	libs	Avahi common data files
+libavahi-common3	0.8-13ubuntu6.2	97	optional	libs	Avahi common library
+libavahi-core7	0.8-13ubuntu6.2	266	optional	libs	Avahi's embeddable mDNS/DNS-SD library
+libavahi-glib1	0.8-13ubuntu6.2	62	optional	libs	Avahi GLib integration library
+libavc1394-0	0.5.4-5build3	61	optional	libs	control IEEE 1394 audio/video devices
+libavcodec60	7:6.1.1-3ubuntu5	16237	optional	libs	FFmpeg library with de/encoders for audio/video codecs - runtime files
+libavdevice60	7:6.1.1-3ubuntu5	270	optional	libs	FFmpeg library for handling input and output devices - runtime files
+libavfilter9	7:6.1.1-3ubuntu5	13300	optional	libs	FFmpeg library containing media filters - runtime files
+libavformat60	7:6.1.1-3ubuntu5	2848	optional	libs	FFmpeg library with (de)muxers for multimedia containers - runtime files
+libavutil58	7:6.1.1-3ubuntu5	1152	optional	libs	FFmpeg library with functions for simplifying programming - runtime files
+libayatana-appindicator3-1	0.5.93-1build3	87	optional	libs	Ayatana Application Indicators (GTK-3+ version)
+libayatana-appindicator3-dev	0.5.93-1build3	132	optional	libdevel	Ayatana Application Indicators (development files, GTK-3+ version)
+libayatana-ido3-0.4-0	0.10.1-1build2	189	optional	libs	Widgets and other objects used for Ayatana Indicators
+libayatana-ido3-dev	0.10.1-1build2	151	optional	libdevel	Widgets and other objects used for Ayatana Indicators - development files
+libayatana-indicator3-7	0.9.4-1build1	104	optional	libs	panel indicator applet - shared library (GTK-3+ variant)
+libayatana-indicator3-dev	0.9.4-1build1	51	optional	libdevel	panel indicator applet - library development files (GTK-3+)
+libbabl-0.1-0	1:0.1.108-1	1797	optional	libs	Dynamic, any to any, pixel format conversion library
+libbinutils	2.42-4ubuntu2.10	2350	optional	devel	GNU binary utilities (private shared library)
+libblas3	3.12.0-3build1.1	689	optional	libs	Basic Linear Algebra Reference implementations, shared library
+libblkid-dev	2.39.3-9ubuntu6.5	945	optional	libdevel	block device ID library - headers
+libblkid1	2.39.3-9ubuntu6.5	289	required	libs	block device ID library
+libblockdev-crypto3	3.1.1-1ubuntu0.1	81	optional	libs	Crypto plugin for libblockdev
+libblockdev-fs3	3.1.1-1ubuntu0.1	128	optional	libs	file system plugin for libblockdev
+libblockdev-loop3	3.1.1-1ubuntu0.1	39	optional	libs	Loop device plugin for libblockdev
+libblockdev-mdraid3	3.1.1-1ubuntu0.1	55	optional	libs	MD RAID plugin for libblockdev
+libblockdev-nvme3	3.1.1-1ubuntu0.1	69	optional	libs	NVMe plugin for libblockdev
+libblockdev-part3	3.1.1-1ubuntu0.1	64	optional	libs	Partitioning plugin for libblockdev
+libblockdev-swap3	3.1.1-1ubuntu0.1	44	optional	libs	Swap plugin for libblockdev
+libblockdev-utils3	3.1.1-1ubuntu0.1	65	optional	libs	Utility functions for libblockdev
+libblockdev3	3.1.1-1ubuntu0.1	263	optional	libs	Library for manipulating block devices
+libbluetooth3	5.72-0ubuntu5.5	263	optional	libs	Library to use the BlueZ Linux Bluetooth stack
+libbluray2	1:1.3.4-1build1	387	optional	libs	Blu-ray disc playback support library (shared library)
+libboost-iostreams1.83.0	1.83.0-2.1ubuntu3.2	2235	optional	libs	Boost.Iostreams Library
+libboost-locale1.83.0	1.83.0-2.1ubuntu3.2	2739	optional	libs	C++ facilities for localization
+libboost-thread1.83.0	1.83.0-2.1ubuntu3.2	2271	optional	libs	portable C++ multi-threading
+libbpf1	1:1.3.0-2build2	416	optional	libs	eBPF helper library (shared library)
+libbpfcc	0.29.1+ds-1ubuntu7	2520	optional	misc	shared library for BPF Compiler Collection (BCC)
+libbrasero-media3-1	3.12.3-2build4	1270	optional	libs	CD/DVD burning library for GNOME - runtime
+libbrlapi0.8	6.6-4ubuntu5	145	optional	libs	braille display access via BRLTTY - shared library
+libbrotli-dev	1.1.0-2build2	984	optional	libdevel	library implementing brotli encoder and decoder (development files)
+libbrotli1	1.1.0-2build2	843	optional	libs	library implementing brotli encoder and decoder (shared libraries)
+libbs2b0	3.1.0+dfsg-7build1	40	optional	libs	Bauer stereophonic-to-binaural DSP library
+libbsd0	0.12.1-1build1.1	127	optional	libs	utility functions from BSD systems - shared library
+libburn4t64	1.5.6-1.1build1	347	optional	libs	library to provide CD/DVD/BD writing functions
+libbytesize-common	2.10-1ubuntu2	40	optional	libs	library for common operations with sizes in bytes - translations
+libbytesize1	2.10-1ubuntu2	47	optional	libs	library for common operations with sizes in bytes
+libbz2-1.0	1.0.8-5.1build0.1	95	required	libs	high-quality block-sorting file compressor library - runtime
+libbz2-dev	1.0.8-5.1build0.1	98	optional	libdevel	high-quality block-sorting file compressor library - development
+libc-bin	2.39-0ubuntu8.7	2183	required	libs	GNU C Library: Binaries
+libc-dev-bin	2.39-0ubuntu8.7	106	optional	libdevel	GNU C Library: Development binaries
+libc-devtools	2.39-0ubuntu8.7	158	optional	devel	GNU C Library: Development tools
+libc6	2.39-0ubuntu8.7	13431	required	libs	GNU C Library: Shared libraries
+libc6-dev	2.39-0ubuntu8.7	13112	optional	libdevel	GNU C Library: Development Libraries and Header Files
+libcaca0	0.99.beta20-4ubuntu0.2	885	optional	libs	colour ASCII art library
+libcacard0	1:2.8.0-3build4	108	optional	libs	Virtual Common Access Card (CAC) Emulator (runtime library)
+libcairo-gobject-perl	1.005-4build3	58	optional	perl	integrate Cairo into the Glib type system in Perl
+libcairo-gobject2	1.18.0-3build1	195	optional	libs	Cairo 2D vector graphics library (GObject library)
+libcairo-perl	1.109-4build1	390	optional	perl	Perl interface to the Cairo graphics library
+libcairo-script-interpreter2	1.18.0-3build1	200	optional	libs	Cairo 2D vector graphics library (script interpreter)
+libcairo2	1.18.0-3build1	1350	optional	libs	Cairo 2D vector graphics library
+libcairo2-dev	1.18.0-3build1	234	optional	libdevel	Development files for the Cairo 2D graphics library
+libcairomm-1.16-1	1.18.0-1build1	239	optional	libs	C++ wrappers for Cairo (shared libraries)
+libcamd3	1:7.6.1+dfsg-1build1	73	optional	libs	symmetric approximate minimum degree library for sparse matrices
+libcamel-1.2-64t64	3.52.3-0ubuntu1.2	1547	optional	libs	Evolution MIME message handling library
+libcanberra-gtk3-0t64	0.30-10ubuntu10	40	optional	libs	GTK+ 3.0 helper for playing widget event sounds with libcanberra
+libcanberra-pulse	0.30-10ubuntu10	42	optional	libs	PulseAudio backend for libcanberra
+libcanberra0t64	0.30-10ubuntu10	120	optional	libs	simple abstract interface for playing event sounds
+libcap-ng0	0.8.4-2build2	60	required	libs	alternate POSIX capabilities library
+libcap2	1:2.66-5ubuntu2.4	98	optional	libs	POSIX 1003.1e capabilities (library)
+libcap2-bin	1:2.66-5ubuntu2.4	136	important	utils	POSIX 1003.1e capabilities (utilities)
+libcbor0.10	0.10.2-1.2ubuntu2	86	optional	libs	library for parsing and generating CBOR (RFC 7049)
+libcc1-0	14.2.0-4ubuntu2~24.04.1	148	optional	libs	GCC cc1 plugin for GDB
+libccolamd3	1:7.6.1+dfsg-1build1	77	optional	libs	constrained column approximate library for sparse matrices
+libcdio-cdda2t64	10.2+2.0.1-1.1build2	55	optional	libs	library to read and control digital audio CDs
+libcdio-paranoia2t64	10.2+2.0.1-1.1build2	54	optional	libs	library to read digital audio CDs with error correction
+libcdio19t64	2.1.0-4.1ubuntu1.2	181	optional	libs	library to read and control CD-ROM
+libcdparanoia0	3.10.2+debian-14build3	130	optional	libs	audio extraction tool for sampling CDs (library)
+libcdt5	2.42.2-9ubuntu0.1	65	optional	libs	rich set of graph drawing tools - cdt library
+libcgraph6	2.42.2-9ubuntu0.1	122	optional	libs	rich set of graph drawing tools - cgraph library
+libchamplain-0.12-0	0.12.21-1build3	320	optional	libs	C library providing ClutterActor to display maps
+libchamplain-gtk-0.12-0	0.12.21-1build3	34	optional	libs	Gtk+ widget to display maps
+libcholmod5	1:7.6.1+dfsg-1build1	1857	optional	libs	sparse Cholesky factorization library for sparse matrices
+libchromaprint1	1.5.1-5	80	optional	libs	audio fingerprint library
+libcjson1	1.7.17-1	82	optional	libs	Ultralightweight JSON parser in ANSI C
+libclang-cpp18	1:18.1.3-1ubuntu1	63335	optional	libs	C++ interface to the Clang library
+libclang1-18	1:18.1.3-1ubuntu1	33827	optional	libs	C interface to the Clang library
+libclucene-contribs1t64	2.3.3.4+dfsg-1.2ubuntu2	400	optional	libs	language specific text analyzers (runtime)
+libclucene-core1t64	2.3.3.4+dfsg-1.2ubuntu2	1958	optional	libs	core library for full-featured text search engine (runtime)
+libclutter-1.0-0	1.26.4+git2779b932+dfsg-7build3	1591	optional	libs	Open GL based interactive canvas library
+libclutter-gtk-1.0-0	1.8.4-4build5	90	optional	libs	Open GL based interactive canvas library GTK+ widget
+libcmark0.30.2	0.30.2-6build1	334	optional	libs	CommonMark parsing and rendering library
+libcodec2-1.2	1.2.0-2build1	16462	optional	libs	Codec2 runtime library
+libcogl-pango20	1.22.8-4ubuntu4	66	optional	libs	Object oriented GL/GLES Abstraction/Utility Layer
+libcogl-path20	1.22.8-4ubuntu4	100	optional	libs	Object oriented GL/GLES Abstraction/Utility Layer
+libcogl20	1.22.8-4ubuntu4	868	optional	libs	Object oriented GL/GLES Abstraction/Utility Layer
+libcolamd3	1:7.6.1+dfsg-1build1	65	optional	libs	column approximate minimum degree ordering library for sparse matrices
+libcolord-gtk4-1t64	0.3.1-1build2	70	optional	libs	GTK4 convenience library for interacting with colord
+libcolord2	1.4.7-1build2	601	optional	libs	system service to manage device colour profiles -- runtime
+libcolorhug2	1.4.7-1build2	131	optional	libs	library to access the ColorHug colourimeter -- runtime
+libcom-err2	1.47.0-2.4~exp1ubuntu4.1	57	required	libs	common error description library
+libcrack2	2.9.6-5.1build2	144	optional	libs	pro-active password checker library
+libcrypt-dev	1:4.4.36-4build1	344	optional	libdevel	libcrypt development files
+libcrypt1	1:4.4.36-4build1	226	required	libs	libcrypt shared library
+libcryptsetup12	2:2.7.0-1ubuntu4.2	623	optional	libs	disk encryption support - shared library
+libctf-nobfd0	2.42-4ubuntu2.10	308	optional	devel	Compact C Type Format library (runtime, no BFD dependency)
+libctf0	2.42-4ubuntu2.10	232	optional	devel	Compact C Type Format library (runtime, BFD dependency)
+libcue2	2.2.1-4.1build1	57	optional	libs	CUE Sheet Parser Library
+libcups2t64	2.4.7-1.2ubuntu7.14	701	optional	libs	Common UNIX Printing System(tm) - Core library
+libcurl3t64-gnutls	8.5.0-2ubuntu10.11	907	optional	libs	easy-to-use client-side URL transfer library (GnuTLS flavour)
+libcurl4t64	8.5.0-2ubuntu10.11	926	optional	libs	easy-to-use client-side URL transfer library (OpenSSL flavour)
+libdaemon0	0.14-7.1ubuntu4	47	optional	libs	lightweight C library for daemons - runtime library
+libdatrie-dev	0.2.13-3build1	81	optional	libdevel	Development files for double-array trie library
+libdatrie1	0.2.13-3build1	54	optional	libs	Double-array trie library
+libdav1d7	1.4.1-1build1	1702	optional	libs	fast and small AV1 video stream decoder (shared library)
+libdaxctl1	77-2ubuntu2	69	optional	libs	Utility library for managing the device DAX subsystem
+libdb5.3t64	5.3.28+dfsg2-7	1761	optional	libs	Berkeley v5.3 Database Libraries [runtime]
+libdbus-1-3	1.14.10-4ubuntu4.1	442	optional	libs	simple interprocess messaging system (library)
+libdbus-1-dev	1.14.10-4ubuntu4.1	983	optional	libdevel	simple interprocess messaging system (development headers)
+libdbus-glib-1-2	0.112-3build2	203	optional	oldlibs	deprecated library for D-Bus IPC
+libdbusmenu-glib-dev	18.10.20180917~bzr492+repack1-3.1ubuntu5	496	optional	libdevel	library for passing menus over DBus - development files
+libdbusmenu-glib4	18.10.20180917~bzr492+repack1-3.1ubuntu5	132	optional	libs	library for passing menus over DBus
+libdbusmenu-gtk3-4	18.10.20180917~bzr492+repack1-3.1ubuntu5	102	optional	libs	library for passing menus over DBus - GTK-3+ version
+libdc1394-25	2.2.6-4build1	251	optional	libs	high level programming interface for IEEE 1394 digital cameras
+libdconf1	0.40.0-4ubuntu0.1	102	optional	libs	simple configuration storage system - runtime library
+libde265-0	1.0.15-1build3	375	optional	libs	Open H.265 video codec implementation
+libdebconfclient0	0.271ubuntu3	38	required	libs	Debian Configuration Management System (C-implementation library)
+libdecor-0-0	0.2.2-1build2	58	optional	libs	client-side window decoration library
+libdee-1.0-4	1.2.7+17.10.20170616-7build5	293	optional	libs	Model to synchronize multiple instances over DBus - shared lib
+libdeflate-dev	1.19-1build1.1	137	optional	libdevel	headers for whole-buffer compression and decompression library
+libdeflate0	1.19-1build1.1	90	optional	libs	fast, whole-buffer DEFLATE-based compression and decompression
+libdevmapper-event1.02.1	2:1.02.185-3ubuntu3.2	56	optional	libs	Linux Kernel Device Mapper event support library
+libdevmapper1.02.1	2:1.02.185-3ubuntu3.2	472	optional	libs	Linux Kernel Device Mapper userspace library
+libdotconf0	1.3-0.3fakesync1build3	48	optional	libs	Configuration file parser library - runtime files
+libdpkg-perl	1.22.6ubuntu6.6	1612	optional	perl	Dpkg perl modules
+libdrm-amdgpu1	2.4.125-1ubuntu0.1~24.04.2	81	optional	libs	Userspace interface to amdgpu-specific kernel DRM services -- runtime
+libdrm-common	2.4.125-1ubuntu0.1~24.04.2	49	optional	libs	Userspace interface to kernel DRM services -- common files
+libdrm-intel1	2.4.125-1ubuntu0.1~24.04.2	174	optional	libs	Userspace interface to intel-specific kernel DRM services -- runtime
+libdrm2	2.4.125-1ubuntu0.1~24.04.2	128	optional	libs	Userspace interface to kernel DRM services -- runtime
+libduktape207	2.7.0+tests-0ubuntu3	324	optional	libs	embeddable Javascript engine, library
+libdv4t64	1.0.0-17.1build1	160	optional	libs	software library for DV format digital video (runtime lib)
+libdvdnav4	6.1.1-3build1	115	optional	libs	DVD navigation library
+libdvdread8t64	6.1.3-1.1build1	154	optional	libs	library for reading DVDs
+libdw1t64	0.190-1.1ubuntu0.1	766	optional	libs	library that provides access to the DWARF debug information
+libe-book-0.1-1	0.1.3-2build6	465	optional	libs	library for reading and converting various  e-book formats
+libeatmydata1	131-1ubuntu1	35	optional	libs	Library and utilities designed to disable fsync and friends - shared library
+libebackend-1.2-11t64	3.52.3-0ubuntu1.2	392	optional	libs	Utility library for evolution data servers
+libebook-1.2-21t64	3.52.3-0ubuntu1.2	373	optional	libs	Client library for evolution address books
+libebook-contacts-1.2-4t64	3.52.3-0ubuntu1.2	222	optional	libs	Client library for evolution contacts books
+libecal-2.0-3	3.52.3-0ubuntu1.2	621	optional	libs	Client library for evolution calendars
+libedata-book-1.2-27t64	3.52.3-0ubuntu1.2	900	optional	libs	Backend library for evolution address books
+libedata-cal-2.0-2t64	3.52.3-0ubuntu1.2	494	optional	libs	Backend library for evolution calendars
+libedataserver-1.2-27t64	3.52.3-0ubuntu1.2	1003	optional	libs	Utility library for evolution data servers
+libedataserverui-1.2-4t64	3.52.3-0ubuntu1.2	263	optional	libs	Utility library for evolution data servers
+libedit2	3.1-20230828-1build1	258	optional	libs	BSD editline and history libraries
+libeditorconfig0	0.12.7-0.1ubuntu0.1	49	optional	libs	coding style indenter across editors - library
+libefiboot1t64	38-3.1build1	118	optional	libs	Library to manage UEFI variables
+libefivar1t64	38-3.1build1	214	optional	libs	Library to manage UEFI variables
+libegl-dev	1.7.0-1build1	118	optional	libs	Vendor neutral GL dispatch library -- EGL development files
+libegl-mesa0	25.2.8-0ubuntu0.24.04.2	391	optional	libs	free implementation of the EGL API -- Mesa vendor library
+libegl1	1.7.0-1build1	99	optional	libs	Vendor neutral GL dispatch library -- EGL support
+libegl1-mesa-dev	25.2.8-0ubuntu0.24.04.2	69	optional	libdevel	free implementation of the EGL API -- development files
+libeis1	1.2.1-1	123	optional	libs	Emulated Input server library
+libelf1t64	0.190-1.1ubuntu0.1	204	optional	libs	library to read and write ELF files
+libenchant-2-2	2.3.3-2build2	182	optional	libs	Wrapper library for various spell checker engines (runtime libs)
+libeot0	0.01-5build3	82	optional	libs	Library for parsing/converting Embedded OpenType files
+libepoxy-dev	1.5.10-1build1	1648	optional	libdevel	OpenGL function pointer management library- development
+libepoxy0	1.5.10-1build1	1307	optional	libs	OpenGL function pointer management library
+libepubgen-0.1-1	0.1.1-1ubuntu6	384	optional	libs	EPUB generator library
+liberror-perl	0.17029-2	69	optional	perl	Perl module for error/exception handling in an OO-ish way
+libestr0	0.1.11-1build1	33	optional	libs	Helper functions for handling strings (lib)
+libetonyek-0.1-1	0.1.10-5build1	2426	optional	libs	library for reading and converting Apple Keynote presentations
+libevdev2	1.13.1+dfsg-1build1	138	optional	libs	wrapper library for evdev devices
+libevent-2.1-7t64	2.1.12-stable-9ubuntu2	379	optional	libs	Asynchronous event notification library
+libevent-core-2.1-7t64	2.1.12-stable-9ubuntu2	258	optional	libs	Asynchronous event notification library (core)
+libevolution	3.52.3-0ubuntu1.1	9946	optional	libs	evolution libraries
+libexempi8	2.6.5-1build1	1392	optional	libs	library to parse XMP metadata (Library)
+libexif12	0.6.24-1ubuntu0.24.04.1	380	optional	libs	library to parse EXIF files
+libexiv2-27	0.27.6-1ubuntu0.3	3052	optional	libs	EXIF/IPTC/XMP metadata manipulation library
+libexpat1	2.6.1-2ubuntu0.4	388	optional	libs	XML parsing C library - runtime library
+libexpat1-dev	2.6.1-2ubuntu0.4	833	optional	libdevel	XML parsing C library - development kit
+libext2fs2t64	1.47.0-2.4~exp1ubuntu4.1	538	required	libs	ext2/ext3/ext4 file system libraries
+libexttextcat-2.0-0	3.4.7-1build1	44	optional	libs	Language detection library
+libexttextcat-data	3.4.7-1build1	538	optional	text	Language detection library - data files
+libextutils-depends-perl	0.8001-2	36	optional	perl	Perl module for building extensions that depend on other extensions
+libfakeroot	1.33-1	152	optional	utils	tool for simulating superuser privileges - shared libraries
+libfastjson4	1.2304.0-1build1	69	optional	libs	fast json library for C
+libfdisk1	2.39.3-9ubuntu6.5	406	optional	libs	fdisk partitioning library
+libfdt1	1.7.0-2build1	58	optional	libs	Flat Device Trees manipulation library
+libffi-dev	3.4.6-1build1	323	optional	libdevel	Foreign Function Interface library (development files)
+libffi8	3.4.6-1build1	72	important	libs	Foreign Function Interface library runtime
+libfftw3-double3	3.3.10-1ubuntu3	2282	optional	libs	Library for computing Fast Fourier Transforms - Double precision
+libfido2-1	1.14.0-1build3	242	optional	libs	library for generating and verifying FIDO 2.0 objects
+libfile-fcntllock-perl	0.22-4ubuntu5	126	optional	perl	Perl module for file locking with fcntl(2)
+libflac12t64	1.4.3+ds-2.1ubuntu2	440	optional	libs	Free Lossless Audio Codec - runtime C library
+libflashrom1	1.3.0-2.1ubuntu2	1018	optional	libs	Identify, read, write, erase, and verify BIOS/ROM/flash chips - library
+libflite1	2.2-6build3	27522	optional	libs	Small run-time speech synthesis engine - shared libraries
+libfontconfig-dev	2.15.0-1.1ubuntu2	598	optional	libdevel	generic font configuration library - development
+libfontconfig1	2.15.0-1.1ubuntu2	345	optional	libs	generic font configuration library - runtime
+libfontconfig1-dev	2.15.0-1.1ubuntu2	13	optional	oldlibs	generic font configuration library - dummy package
+libfontenc1	1:1.1.8-1build1	52	optional	libs	X11 font encoding library
+libfreeaptx0	0.1.1-2build1	43	optional	libs	Free implementation of aptX
+libfreetype-dev	2.13.2+dfsg-1ubuntu0.1	2066	optional	libdevel	FreeType 2 font engine, development files
+libfreetype6	2.13.2+dfsg-1ubuntu0.1	875	optional	libs	FreeType 2 font engine, shared library files
+libfribidi-dev	1.0.13-3build1	286	optional	libdevel	Development files for FreeBidi library
+libfribidi0	1.0.13-3build1	144	optional	libs	Free Implementation of the Unicode BiDi algorithm
+libftdi1-2	1.5-6build5	81	optional	libs	C Library to control and program the FTDI USB controllers
+libfuse2t64	2.9.9-8.1build1	318	optional	libs	Filesystem in Userspace (library)
+libfuse3-3	3.14.0-5build1	287	optional	libs	Filesystem in Userspace (library) (3.x version)
+libfwupd2	1.9.34-0ubuntu1~24.04.1	495	optional	libs	Firmware update daemon library
+libfwupd3	2.0.20-1ubuntu2~24.04.2	499	optional	libs	Firmware update daemon library
+libgail-3-0t64	3.24.41-4ubuntu1.3	132	optional	libs	GNOME Accessibility Implementation Library -- shared libraries
+libgbm1	25.2.8-0ubuntu0.24.04.2	135	optional	libs	generic buffer management API -- runtime
+libgcc-13-dev	13.3.0-6ubuntu2~24.04.1	16082	optional	libdevel	GCC support library (development files)
+libgcc-s1	14.2.0-4ubuntu2~24.04.1	197	required	libs	GCC support library
+libgck-1-0	3.41.2-1build3	249	optional	libs	Glib wrapper library for PKCS#11 - runtime
+libgck-2-2	4.2.0-5	235	optional	libs	Glib wrapper library for PKCS#11 - runtime
+libgcr-4-4	4.2.0-5	634	optional	libs	Library for Crypto related tasks
+libgcr-base-3-1	3.41.2-1build3	661	optional	libs	Library for Crypto related tasks
+libgcr-ui-3-1	3.41.2-1build3	447	optional	libs	Library for Crypto UI related tasks
+libgcrypt20	1.10.3-2ubuntu0.1	1396	optional	libs	LGPL Crypto library - runtime library
+libgd3	2.3.3-9ubuntu5	437	optional	libs	GD Graphics Library
+libgdata-common	0.18.1-6build2	40	optional	libs	Library for accessing GData webservices - common data files
+libgdata22	0.18.1-6build2	963	optional	libs	Library for accessing GData webservices - shared libraries
+libgdbm-compat4t64	1.23-5.1build1	34	optional	libs	GNU dbm database routines (legacy support runtime version) 
+libgdbm6t64	1.23-5.1build1	93	optional	libs	GNU dbm database routines (runtime version) 
+libgdk-pixbuf-2.0-0	2.42.10+dfsg-3ubuntu3.3	490	optional	libs	GDK Pixbuf library
+libgdk-pixbuf-2.0-dev	2.42.10+dfsg-3ubuntu3.3	473	optional	libdevel	GDK Pixbuf library (development files)
+libgdk-pixbuf2.0-bin	2.42.10+dfsg-3ubuntu3.3	76	optional	libs	GDK Pixbuf library (thumbnailer)
+libgdk-pixbuf2.0-common	2.42.10+dfsg-3ubuntu3.3	48	optional	libs	GDK Pixbuf library - data files
+libgdm1	46.2-1ubuntu1~24.04.9	284	optional	libs	GNOME Display Manager (shared library)
+libgee-0.8-2	0.20.6-1build2	792	optional	libs	GObject based collection and utility library
+libgegl-0.4-0t64	1:0.4.48-2.4build2	7995	optional	libs	Generic Graphics Library
+libgegl-common	1:0.4.48-2.4build2	4855	optional	devel	Generic Graphics Library - common files
+libgeoclue-2-0	2.7.0-3ubuntu7	156	optional	libs	convenience library to interact with geoinformation service
+libgeocode-glib-2-0	3.26.3-6build3	154	optional	libs	geocoding and reverse geocoding GLib library using Nominatim
+libgexiv2-2	0.14.2-2build3	260	optional	libs	GObject-based wrapper around the Exiv2 library
+libgfortran5	14.2.0-4ubuntu2~24.04.1	3256	optional	libs	Runtime library for GNU Fortran applications
+libgif7	5.2.2-1ubuntu1	71	optional	libs	library for GIF images (library)
+libgimp2.0t64	2.10.36-3ubuntu0.24.04.1	4274	optional	libs	Libraries for the GNU Image Manipulation Program
+libgirepository-1.0-1	1.80.1-1	226	optional	libs	Library for handling GObject introspection data (runtime library)
+libgirepository-1.0-dev	1.80.1-1	172	optional	libdevel	Library for handling GObject introspection data (development files)
+libgirepository-2.0-0	2.80.0-6ubuntu3.8	265	optional	libs	GLib runtime library for handling GObject introspection data
+libgirepository1.0-dev	1.80.1-1	75	optional	libdevel	Library for handling GObject introspection data (complete development files)
+libgjs0g	1.80.2-1build2	1329	optional	libs	Mozilla-based javascript bindings for the GNOME platform
+libgl-dev	1.7.0-1build1	1364	optional	libs	Vendor neutral GL dispatch library -- GL development files
+libgl1	1.7.0-1build1	656	optional	libs	Vendor neutral GL dispatch library -- legacy GL support
+libgl1-mesa-dev	25.2.8-0ubuntu0.24.04.2	44	optional	oldlibs	transitional dummy package
+libgl1-mesa-dri	25.2.8-0ubuntu0.24.04.2	286	optional	libs	free implementation of the OpenGL API -- DRI modules
+libgles-dev	1.7.0-1build1	701	optional	libs	Vendor neutral GL dispatch library -- GLES development files
+libgles1	1.7.0-1build1	73	optional	libs	Vendor neutral GL dispatch library -- GLESv1 support
+libgles2	1.7.0-1build1	105	optional	libs	Vendor neutral GL dispatch library -- GLESv2 support
+libglib-object-introspection-perl	0.051-1build3	230	optional	perl	Perl bindings for gobject-introspection libraries
+libglib-perl	3:1.329.3-3build3	889	optional	perl	interface to the GLib and GObject libraries
+libglib2.0-0t64	2.80.0-6ubuntu3.8	4194	optional	libs	GLib library of C routines
+libglib2.0-bin	2.80.0-6ubuntu3.8	362	optional	misc	Programs for the GLib library
+libglib2.0-data	2.80.0-6ubuntu3.8	120	optional	libs	Common files for GLib library
+libglib2.0-dev	2.80.0-6ubuntu3.8	10776	optional	libdevel	Development files for the GLib library
+libglib2.0-dev-bin	2.80.0-6ubuntu3.8	716	optional	libdevel	Development utilities for the GLib library
+libglibmm-2.68-1t64	2.78.1-2.2build2	3474	optional	libs	C++ wrapper for the GLib toolkit (shared libraries)
+libglu1-mesa	9.0.2-1.1build1	370	optional	libs	Mesa OpenGL utility library (GLU)
+libglvnd-core-dev	1.7.0-1build1	63	optional	libdevel	Vendor neutral GL dispatch library -- core development files
+libglvnd-dev	1.7.0-1build1	19	optional	libdevel	Vendor neutral GL dispatch library -- development files
+libglvnd0	1.7.0-1build1	728	optional	libs	Vendor neutral GL dispatch library
+libglx-dev	1.7.0-1build1	87	optional	libs	Vendor neutral GL dispatch library -- GLX development files
+libglx-mesa0	25.2.8-0ubuntu0.24.04.2	352	optional	libs	free implementation of the OpenGL API -- GLX vendor library
+libglx0	1.7.0-1build1	158	optional	libs	Vendor neutral GL dispatch library -- GLX support
+libgme0	0.6.3-7build1	317	optional	libs	Playback library for video game music files - shared library
+libgmp10	2:6.3.0+dfsg-2ubuntu6.1	543	required	libs	Multiprecision arithmetic library
+libgnome-autoar-0-0	0.4.4-2build4	117	optional	libs	Archives integration support for GNOME
+libgnome-autoar-gtk-0-0	0.4.4-2build4	38	optional	libs	GTK+ widgets for the GNOME Autoar library
+libgnome-bg-4-2t64	44.0-5build2	117	optional	libs	Utility library for background images - runtime files
+libgnome-bluetooth-3.0-13	46.0-1ubuntu1	149	optional	libs	GNOME Bluetooth 3 support library
+libgnome-bluetooth-ui-3.0-13	46.0-1ubuntu1	194	optional	libs	GNOME Bluetooth 3 UI support library
+libgnome-desktop-3-20t64	44.0-5build2	268	optional	libs	Utility library for the GNOME desktop - GTK 3 version
+libgnome-desktop-4-2t64	44.0-5build2	188	optional	libs	Utility library for the GNOME desktop - runtime files
+libgnome-rr-4-2t64	44.0-5build2	157	optional	libs	Utility library for display information - runtime files
+libgnomekbd-common	3.28.1-1build3	100	optional	libs	GNOME library to manage keyboard configuration - common files
+libgnomekbd8	3.28.1-1build3	157	optional	libs	GNOME library to manage keyboard configuration - shared library
+libgnutls30t64	3.8.3-1.1ubuntu3.6	2360	optional	libs	GNU TLS library - main runtime library
+libgoa-1.0-0b	3.50.4-0ubuntu2	341	optional	libs	library for GNOME Online Accounts
+libgoa-1.0-common	3.50.4-0ubuntu2	52	optional	libs	library for GNOME Online Accounts - common files
+libgoa-backend-1.0-2	3.50.4-0ubuntu2	323	optional	libs	backend library for GNOME Online Accounts
+libgomp1	14.2.0-4ubuntu2~24.04.1	373	optional	libs	GCC OpenMP (GOMP) support library
+libgpg-error-l10n	1.47-3build2.1	60	optional	localization	library of error values and messages in GnuPG (localization files)
+libgpg-error0	1.47-3build2.1	185	required	libs	GnuPG development runtime library
+libgpgme11t64	1.18.0-4.1ubuntu4	355	optional	libs	GPGME - GnuPG Made Easy (library)
+libgpgmepp6t64	1.18.0-4.1ubuntu4	397	optional	libs	C++ wrapper library for GPGME
+libgphoto2-6t64	2.5.31-2.1ubuntu1	2611	optional	libs	gphoto2 digital camera library
+libgphoto2-port12t64	2.5.31-2.1ubuntu1	312	optional	libs	gphoto2 digital camera port library
+libgpm2	1.20.7-11	44	optional	libs	General Purpose Mouse - shared library
+libgprofng0	2.42-4ubuntu2.10	3833	optional	devel	GNU Next Generation profiler (runtime library)
+libgraphene-1.0-0	1.10.8-3build2	147	optional	libs	library of graphic data types
+libgraphite2-3	1.3.14-2ubuntu0.24.04.1	171	optional	libs	Font rendering engine for Complex Scripts -- library
+libgraphite2-dev	1.3.14-2ubuntu0.24.04.1	71	optional	libdevel	Development files for libgraphite2
+libgs-common	10.02.1~dfsg1-0ubuntu7.8	319	optional	libs	interpreter for the PostScript language and for PDF - ICC profiles
+libgs10	10.02.1~dfsg1-0ubuntu7.8	24588	optional	libs	interpreter for the PostScript language and for PDF - Library
+libgs10-common	10.02.1~dfsg1-0ubuntu7.8	2245	optional	libs	interpreter for the PostScript language and for PDF - common files
+libgsf-1-114	1.14.51-2ubuntu0.1	307	optional	libs	Structured File Library - runtime version
+libgsf-1-common	1.14.51-2ubuntu0.1	52	optional	libs	Structured File Library - common files
+libgsf-bin	1.14.51-2ubuntu0.1	79	optional	gnome	Structured File Library - programs
+libgsm1	1.0.22-1build1	82	optional	libs	Shared libraries for GSM speech compressor
+libgsound0t64	1.0.3-3.2build2	41	optional	libs	small library for playing system sounds
+libgspell-1-2	1.12.2-1build4	172	optional	libs	spell-checking library for GTK+ applications
+libgspell-1-common	1.12.2-1build4	48	optional	libs	libgspell architecture-independent files
+libgssapi-krb5-2	1.20.1-6ubuntu2.6	426	optional	libs	MIT Kerberos runtime libraries - krb5 GSS-API Mechanism
+libgssdp-1.6-0	1.6.3-1build3	114	optional	libs	GObject-based library for SSDP
+libgstreamer-gl1.0-0	1.24.2-1ubuntu0.4	658	optional	libs	GStreamer GL libraries
+libgstreamer-plugins-base1.0-0	1.24.2-1ubuntu0.4	2812	optional	libs	GStreamer libraries from the "base" set
+libgstreamer-plugins-good1.0-0	1.24.2-1ubuntu1.4	142	optional	libs	GStreamer development files for libraries from the "good" set
+libgstreamer1.0-0	1.24.2-1ubuntu0.1	3500	optional	libs	Core GStreamer libraries and elements
+libgtk-3-0t64	3.24.41-4ubuntu1.3	9772	optional	libs	GTK graphical user interface library
+libgtk-3-common	3.24.41-4ubuntu1.3	4324	optional	misc	common files for the GTK graphical user interface library
+libgtk-3-dev	3.24.41-4ubuntu1.3	14094	optional	libdevel	development files for the GTK library
+libgtk-4-1	4.14.5+ds-0ubuntu0.10	11979	optional	libs	GTK graphical user interface library
+libgtk-4-common	4.14.5+ds-0ubuntu0.10	6588	optional	misc	common files for the GTK graphical user interface library
+libgtk-4-media-gstreamer	4.14.5+ds-0ubuntu0.10	250	optional	x11	GStreamer media backend for the GTK graphical user interface library
+libgtk2.0-0t64	2.24.33-4ubuntu1.1	5983	optional	oldlibs	GTK graphical user interface library - old version
+libgtk2.0-common	2.24.33-4ubuntu1.1	232	optional	oldlibs	common files for the GTK graphical user interface library
+libgtk3-perl	0.038-3	105	optional	perl	Perl bindings for the GTK+ graphical user interface library
+libgtkmm-4.0-0	4.10.0-4build3	5857	optional	libs	C++ wrappers for GTK4 (shared libraries)
+libgtksourceview-5-0	5.12.0-1build1	1047	optional	libs	shared libraries for the GTK 4 syntax highlighting widget
+libgtksourceview-5-common	5.12.0-1build1	2976	optional	libs	common files for the GTK 4 syntax highlighting widget
+libgtop-2.0-11	2.41.3-1ubuntu0.24.04.1	111	optional	libs	gtop system monitoring library (shared)
+libgtop2-common	2.41.3-1ubuntu0.24.04.1	40	optional	libs	gtop system monitoring library (common)
+libgts-0.7-5t64	0.7.6+darcs121130-5.2build1	413	optional	devel	library to deal with 3D computational surface meshes
+libgts-bin	0.7.6+darcs121130-5.2build1	227	optional	math	utility binaries for libgts
+libgudev-1.0-0	1:238-5ubuntu1	69	optional	libs	GObject-based wrapper library for libudev
+libgupnp-1.6-0	1.6.6-1build3	276	optional	libs	GObject-based library for UPnP
+libgupnp-av-1.0-3	0.14.1-2build2	302	optional	libs	Audio/Visual utility library for GUPnP
+libgupnp-dlna-2.0-4	0.12.0-4build2	344	optional	libs	DLNA utility library for GUPnP
+libgusb2	0.4.8-1build2	125	optional	libs	GLib wrapper around libusb1
+libgvc6	2.42.2-9ubuntu0.1	1857	optional	libs	rich set of graph drawing tools - gvc library
+libgvpr2	2.42.2-9ubuntu0.1	511	optional	libs	rich set of graph drawing tools - gvpr library
+libgweather-4-0t64	4.4.2-1build1	863	optional	libs	GWeather shared library
+libgweather-4-common	4.4.2-1build1	1724	optional	libs	GWeather common files
+libgxps2t64	0.3.2-4build3	169	optional	libs	handling and rendering XPS documents (library)
+libhandy-1-0	1.8.3-1build2	728	optional	libs	Library with GTK widgets for mobile phones
+libharfbuzz-cairo0	8.3.0-2build2	96	optional	libs	OpenType text shaping engine Cairo backend
+libharfbuzz-dev	8.3.0-2build2	1758	optional	libdevel	Development files for OpenType text shaping engine
+libharfbuzz-gobject0	8.3.0-2build2	175	optional	libs	OpenType text shaping engine ICU backend (GObject library)
+libharfbuzz-icu0	8.3.0-2build2	60	optional	libs	OpenType text shaping engine ICU backend
+libharfbuzz-subset0	8.3.0-2build2	1086	optional	libs	OpenType text shaping engine (subset library)
+libharfbuzz0b	8.3.0-2build2	1140	optional	libs	OpenType text shaping engine (shared library)
+libheif-plugin-aomdec	1.17.6-1ubuntu4.6	38	optional	libs	ISO/IEC 23008-12:2017 HEIF file format decoder - aomdec plugin
+libheif-plugin-aomenc	1.17.6-1ubuntu4.6	58	optional	libs	ISO/IEC 23008-12:2017 HEIF file format decoder - aomenc plugin
+libheif-plugin-libde265	1.17.6-1ubuntu4.6	42	optional	libs	ISO/IEC 23008-12:2017 HEIF file format decoder - libde265 plugin
+libheif1	1.17.6-1ubuntu4.6	804	optional	libs	ISO/IEC 23008-12:2017 HEIF file format decoder - shared library
+libhogweed6t64	3.9.1-2.2build1.1	337	important	libs	low level cryptographic library (public-key cryptos)
+libhunspell-1.7-0	1.7.2+really1.7.2-10build3	766	optional	libs	spell checker and morphological analyzer (shared library)
+libhwasan0	14.2.0-4ubuntu2~24.04.1	4897	optional	libs	AddressSanitizer -- a fast memory error detector
+libhwy1t64	1.0.7-8.1build1	3343	optional	libs	Efficient and performance-portable SIMD wrapper (runtime files)
+libhyphen0	2.8.8-7build3	75	optional	libs	ALTLinux hyphenation library - shared library
+libibus-1.0-5	1.5.29-2	579	optional	libs	Intelligent Input Bus - shared library
+libibverbs1	50.0-2ubuntu0.2	193	optional	libs	Library for direct userspace use of RDMA (InfiniBand/iWARP)
+libical3t64	3.0.17-1.1build3	1437	optional	libs	iCalendar library implementation in C (runtime)
+libice-dev	2:1.0.10-1build3	219	optional	libdevel	X11 Inter-Client Exchange library (development headers)
+libice6	2:1.0.10-1build3	110	optional	libs	X11 Inter-Client Exchange library
+libicu-dev	74.2-1ubuntu3.1	47851	optional	libdevel	Development files for International Components for Unicode
+libicu55	55.1-7	30094	optional	libs	International Components for Unicode
+libicu74	74.2-1ubuntu3.1	35919	optional	libs	International Components for Unicode
+libid3tag0	0.15.1b-14build1	134	optional	libs	ID3 tag reading library from the MAD project
+libidn12	1.42-1ubuntu0.1	228	optional	libs	GNU Libidn library, implementation of IETF IDN specifications
+libidn2-0	2.3.7-2build1.1	224	important	libs	Internationalized domain names (IDNA2008/TR46) library
+libiec61883-0	1.2.0-6build1	78	optional	libs	partial implementation of IEC 61883 (shared lib)
+libieee1284-3t64	0.2.11-14.1build1	68	optional	libs	cross-platform library for parallel port access
+libijs-0.35	0.35-15.1build1	48	optional	libs	IJS raster image transport protocol: shared library
+libimagequant0	2.18.0-1build1	89	optional	libs	palette quantization library
+libimath-3-1-29t64	3.1.9-3.1ubuntu2	324	optional	libs	Utility libraries from ASF used by OpenEXR - runtime
+libimlib2t64	1.12.1-1.1build2	810	optional	libs	image loading, rendering, saving library
+libimobiledevice6	1.3.0-8.1build3	199	optional	libs	Library for communicating with iPhone and other Apple devices
+libinih1	55-1ubuntu2	30	optional	libs	simple .INI file parser
+libinput-bin	1.25.0-1ubuntu3.5	147	optional	libs	input device management and event handling library - udev quirks
+libinput10	1.25.0-1ubuntu3.5	371	optional	libs	input device management and event handling library - shared library
+libintl-perl	1.33-1build3	4290	optional	perl	Uniforum message translations system compatible i18n library
+libintl-xs-perl	1.33-1build3	54	optional	perl	XS Uniforum message translations system compatible i18n library
+libip4tc2	1.8.10-3ubuntu2	67	optional	libs	netfilter libip4tc library
+libip6tc2	1.8.10-3ubuntu2	67	optional	libs	netfilter libip6tc library
+libiscsi7	1.19.0-3build4	204	optional	libs	iSCSI client shared library
+libisl23	0.26-3build1.1	2032	optional	libs	manipulating sets and relations of integer points bounded by linear constraints
+libisns0t64	0.101-0.3build3	495	optional	libs	Internet Storage Name Service - shared libraries
+libisofs6t64	1.5.6.pl01-1.1ubuntu2	513	optional	libs	library to create ISO 9660 images
+libitm1	14.2.0-4ubuntu2~24.04.1	115	optional	libs	GNU Transactional Memory Library
+libjack-jackd2-0	1.9.21~dfsg-3ubuntu3	1131	optional	libs	JACK Audio Connection Kit (libraries)
+libjansson4	2.14-2build2	95	optional	libs	C library for encoding, decoding and manipulating JSON data
+libjavascriptcoregtk-4.1-0	2.52.3-0ubuntu0.24.04.1	31504	optional	libs	JavaScript engine library from WebKitGTK
+libjavascriptcoregtk-4.1-dev	2.52.3-0ubuntu0.24.04.1	746	optional	libdevel	JavaScript engine library from WebKitGTK - development files
+libjavascriptcoregtk-6.0-1	2.52.3-0ubuntu0.24.04.1	31504	optional	libs	JavaScript engine library from WebKitGTK
+libjbig-dev	2.1-6.1ubuntu2	90	optional	libdevel	JBIGkit development files
+libjbig0	2.1-6.1ubuntu2	81	optional	libs	JBIGkit libraries
+libjbig2dec0	0.20-1build3	174	optional	libs	JBIG2 decoder library - shared libraries
+libjcat1	0.2.3-1~ubuntu0.24.04.1	119	optional	libs	JSON catalog library
+libjpeg-dev	8c-2ubuntu11	9	optional	libdevel	Independent JPEG Group's JPEG runtime library (dependency package)
+libjpeg-progs	1:9e-1build1	232	optional	graphics	Programs for manipulating JPEG files
+libjpeg-turbo8	2.1.5-2ubuntu2	587	optional	libs	libjpeg-turbo JPEG runtime library
+libjpeg-turbo8-dev	2.1.5-2ubuntu2	1105	optional	libdevel	Development files for the libjpeg-turbo JPEG library
+libjpeg8	8c-2ubuntu11	9	optional	libs	Independent JPEG Group's JPEG runtime library (dependency package)
+libjpeg8-dev	8c-2ubuntu11	9	optional	libdevel	Independent JPEG Group's JPEG runtime library (dependency package)
+libjpeg9	1:9e-1build1	284	optional	libs	Independent JPEG Group's JPEG runtime library
+libjq1	1.7.1-3ubuntu0.24.04.2	359	optional	utils	lightweight and flexible command-line JSON processor - shared library
+libjs-jquery	3.6.1+dfsg+~3.5.14-1	705	optional	javascript	JavaScript library for dynamic web applications
+libjs-jquery-ui	1.13.2+dfsg-1	2398	optional	javascript	JavaScript UI library for dynamic web applications
+libjs-sphinxdoc	7.2.6-6	200	optional	javascript	JavaScript support for Sphinx documentation
+libjs-underscore	1.13.4~dfsg+~1.11.4-3	349	optional	javascript	JavaScript's functional programming helper library
+libjson-c5	0.17-1build1	101	optional	libs	JSON manipulation library - shared library
+libjson-glib-1.0-0	1.8.0-2build2	207	optional	libs	GLib JSON manipulation library
+libjson-glib-1.0-common	1.8.0-2build2	40	optional	libs	GLib JSON manipulation library (common files)
+libjsoncpp25	1.9.5-6build1	237	optional	libs	library for reading and writing JSON for C++
+libjxl0.7	0.7.0-10.2ubuntu6.1	3596	optional	libs	JPEG XL Image Coding System - "JXL" (shared libraries)
+libk5crypto3	1.20.1-6ubuntu2.6	258	optional	libs	MIT Kerberos runtime libraries - Crypto Library
+libkeyutils1	1.6.3-3build1	41	optional	libs	Linux Key Management Utilities (library)
+libklibc	2.0.13-4ubuntu0.2	102	optional	libs	minimal libc subset for use with initramfs
+libkmod2	31+20240202-2ubuntu7.2	144	optional	libs	libkmod shared library
+libkrb5-3	1.20.1-6ubuntu2.6	1015	optional	libs	MIT Kerberos runtime libraries
+libkrb5support0	1.20.1-6ubuntu2.6	133	optional	libs	MIT Kerberos runtime libraries - Support library
+libksba8	1.6.6-1build1	303	optional	libs	X.509 and CMS support library
+liblab-gamut1	2.42.2-9ubuntu0.1	2464	optional	libs	rich set of graph drawing tools - liblab_gamut library
+liblangtag-common	0.6.7-1build2	2177	optional	libs	library to access tags for identifying languages -- data
+liblangtag1	0.6.7-1build2	167	optional	libs	library to access tags for identifying languages
+liblapack3	3.12.0-3build1.1	7126	optional	libs	Library of linear algebra routines 3 - shared version
+liblbfgsb0	3.0+dfsg.4-1build1	77	optional	libs	Limited-memory quasi-Newton bound-constrained optimization
+liblc3-1	1.0.4-3build1	138	optional	libs	Low Complexity Communication Codec (shared library)
+liblcms2-2	2.14-2ubuntu0.1	420	optional	libs	Little CMS 2 color management library
+libldacbt-abr2	2.0.2.3+git20200429+ed310a0-4ubuntu2	29	optional	libs	LDAC Bluetooth ABR library (shared library)
+libldacbt-enc2	2.0.2.3+git20200429+ed310a0-4ubuntu2	67	optional	libs	LDAC Bluetooth encoder library (shared library)
+libldap-common	2.6.10+dfsg-0ubuntu0.24.04.1	95	optional	libs	OpenLDAP common files for libraries
+libldap2	2.6.10+dfsg-0ubuntu0.24.04.1	541	optional	libs	OpenLDAP libraries
+libldb2	2:2.8.0+samba4.19.5+dfsg-4ubuntu9.6	623	optional	libs	LDAP-like embedded database - shared library
+liblerc-dev	4.0.0+ds-4ubuntu2	972	optional	libdevel	Limited Error Raster Compression library (Development files)
+liblerc4	4.0.0+ds-4ubuntu2	568	optional	libs	Limited Error Raster Compression library
+liblilv-0-0	0.24.22-1build1	121	optional	libs	library for simple use of LV2 plugins
+libllvm18	1:18.1.3-1ubuntu1	120389	optional	libs	Modular compiler and toolchain technologies, runtime library
+libllvm20	1:20.1.2-0ubuntu1~24.04.3	140245	optional	libs	Modular compiler and toolchain technologies, runtime library
+liblmdb0	0.9.31-1build1	108	optional	libs	Lightning Memory-Mapped Database shared library
+liblocale-gettext-perl	1.07-6ubuntu5	52	required	perl	module using libc functions for internationalization in Perl
+liblouis-data	3.29.0-1build1	12499	optional	text	Braille translation library - data
+liblouis20	3.29.0-1build1	202	optional	libs	Braille translation library - shared libs
+liblsan0	14.2.0-4ubuntu2~24.04.1	3828	optional	libs	LeakSanitizer -- a memory leak detector (runtime)
+libltdl7	2.4.7-7build1	421	optional	libs	System independent dlopen wrapper for GNU libtool
+liblua5.2-0	5.2.4-3build2	439	optional	libs	Shared library for the Lua interpreter version 5.2
+liblua5.4-0	5.4.6-3build2	558	optional	libs	Shared library for the Lua interpreter version 5.4
+liblvm2cmd2.03	2.03.16-3ubuntu3.2	3045	optional	libs	LVM2 command library
+liblz4-1	1.9.4-1build1.1	155	required	libs	Fast LZ compression algorithm library - runtime
+liblzma-dev	5.6.1+really5.4.5-1ubuntu0.3	783	optional	libdevel	XZ-format compression library - development files
+liblzma5	5.6.1+really5.4.5-1ubuntu0.3	379	optional	libs	XZ-format compression library
+liblzo2-2	2.10-2build4	157	optional	libs	data compression library
+libmagic-mgc	1:5.45-3build1	8335	optional	libs	File type determination library using "magic" numbers (compiled magic file)
+libmagic1t64	1:5.45-3build1	211	optional	libs	Recognize the type of data in a file using "magic" numbers - library
+libmalcontent-0-0	0.11.1-1ubuntu1.3	83	optional	libs	library for parental control of applications
+libmanette-0.2-0	0.2.7-1build2	208	optional	libs	Simple GObject game controller library
+libmaxminddb0	1.9.1-1build1	76	optional	libs	IP geolocation database library
+libmbedcrypto7t64	2.28.8-1	528	optional	libs	lightweight crypto and SSL/TLS library - crypto library
+libmbim-glib4	1.31.2-0ubuntu3.1	884	optional	libs	Support library to use the MBIM protocol
+libmbim-proxy	1.31.2-0ubuntu3.1	32	optional	net	Proxy to communicate with MBIM ports
+libmbim-utils	1.31.2-0ubuntu3.1	255	optional	net	Utilities to use the MBIM protocol from the command line
+libmd0	1.1.0-2build1.1	79	required	libs	message digest functions from BSD systems - shared library
+libmediaart-2.0-0	1.9.6-1build2	62	optional	libs	media art extraction and cache management library
+libmhash2	0.9.9.9-9build3	204	optional	libs	Library for cryptographic hashing and message authentication
+libminiupnpc17	2.2.6-1build2	75	optional	libs	UPnP IGD client lightweight library
+libmm-glib0	1.23.4-0ubuntu2	1239	optional	libs	D-Bus service for managing modems - shared libraries
+libmng2	2.0.3+dfsg-4build1	559	optional	libs	Multiple-image Network Graphics library
+libmnl0	1.0.5-2build1	46	optional	libs	minimalistic Netlink communication library
+libmodule-find-perl	0.16-2	29	optional	perl	module to find and use installed Perl modules
+libmodule-scandeps-perl	1.35-1ubuntu0.24.04.1	95	optional	perl	module to recursively scan Perl code for dependencies
+libmount-dev	2.39.3-9ubuntu6.5	87	optional	libdevel	device mounting library - headers
+libmount1	2.39.3-9ubuntu6.5	367	required	libs	device mounting library
+libmozjs-115-0t64	115.10.0-1	30744	optional	libs	SpiderMonkey JavaScript library
+libmp3lame0	3.100-6build1	318	optional	libs	MP3 encoding library
+libmpc3	1.3.1-1build1.1	149	optional	libs	multiple precision complex floating-point library
+libmpeg2-4	0.5.1-9build1	169	optional	libs	MPEG1 and MPEG2 video decoder library
+libmpfr6	4.2.1-1build1.1	1186	optional	libs	multiple precision floating-point computation
+libmpg123-0t64	1.32.5-1ubuntu1.1	391	optional	libs	MPEG layer 1/2/3 audio decoder (shared library)
+libmsgraph-0-1	0.2.1-0ubuntu3	111	optional	libs	library for accessing the Microsoft Graph API
+libmspack0t64	0.11-1.1build1	98	optional	libs	library for Microsoft compression formats (shared library)
+libmtdev1t64	1.1.6-1.1build1	58	optional	libs	Multitouch Protocol Translation Library - shared library
+libmtp-common	1.1.21-3.1ubuntu1	134	optional	libs	Media Transfer Protocol (MTP) common files
+libmtp9t64	1.1.21-3.1ubuntu1	502	optional	libs	Media Transfer Protocol (MTP) library
+libmujs3	1.3.3-3build2	367	optional	libs	Lightweight JavaScript interpreter library
+libmutter-14-0	46.2-1ubuntu0.24.04.16	4176	optional	libs	window manager library from the Mutter window manager
+libmwaw-0.3-3	0.3.22-1build1	6469	optional	libs	import library for some old Mac text documents
+libmypaint-1.5-1	1.6.0-2build2	149	optional	libs	brush library for mypaint
+libmypaint-common	1.6.0-2build2	969	optional	libs	brush library for mypaint - common files
+libmysofa1	1.3.2+dfsg-2ubuntu2	1267	optional	libs	library to read HRTFs stored in the AES69-2015 SOFA format
+libmythes-1.2-0	2:1.2.5-1build1	31	optional	libs	simple thesaurus library
+libnatpmp1t64	20230423-1.2build1	31	optional	libs	portable and fully compliant implementation of NAT-PMP
+libnautilus-extension4	1:46.4-0ubuntu0.2	68	optional	libs	libraries for nautilus components - runtime version
+libncurses6	6.4+20240113-1ubuntu2.1	336	optional	libs	shared libraries for terminal handling
+libncursesw6	6.4+20240113-1ubuntu2.1	422	optional	libs	shared libraries for terminal handling (wide character support)
+libndctl6	77-2ubuntu2	202	optional	libs	Utility library for managing the libnvdimm subsystem
+libndp0	1.8-1fakesync1ubuntu0.24.04.1	49	optional	libs	Library for Neighbor Discovery Protocol
+libnetfilter-conntrack3	1.0.9-6build1	143	optional	libs	Netfilter netlink-conntrack library
+libnetplan1	1.1.2-8ubuntu1~24.04.2	377	optional	libs	Declarative network configuration runtime library
+libnettle8t64	3.9.1-2.2build1.1	424	important	libs	low level cryptographic library (symmetric and one-way cryptos)
+libnewt0.52	0.52.24-2ubuntu2	180	optional	libs	Not Erik's Windowing Toolkit - text mode windowing with slang
+libnfnetlink0	1.0.2-2build1	51	optional	libs	Netfilter netlink library
+libnfs14	5.0.2-1ubuntu0.24.04.1	378	optional	libs	NFS client library (shared library)
+libnftables1	1.0.9-1ubuntu0.1	1015	optional	libs	Netfilter nftables high level userspace API library
+libnftnl11	1.2.6-2build1	230	optional	libs	Netfilter nftables userspace API library
+libnghttp2-14	1.59.0-1ubuntu0.4	200	optional	libs	library implementing HTTP/2 protocol (shared library)
+libnghttp2-dev	1.59.0-1ubuntu0.4	554	optional	libdevel	library implementing HTTP/2 protocol (development files)
+libnl-3-200	3.7.0-0.3build1.1	172	optional	libs	library for dealing with netlink sockets
+libnl-genl-3-200	3.7.0-0.3build1.1	53	optional	libs	library for dealing with netlink sockets - generic netlink
+libnl-route-3-200	3.7.0-0.3build1.1	632	optional	libs	library for dealing with netlink sockets - route interface
+libnm0	1.46.0-1ubuntu2.7	1516	optional	libs	GObject-based client library for NetworkManager
+libnma-common	1.10.6-3build2	52	optional	libs	NetworkManager GUI library - translations
+libnma-gtk4-0	1.10.6-3build2	351	optional	libs	NetworkManager GUI GTK4 library
+libnma0	1.10.6-3build2	379	optional	libs	NetworkManager GUI library
+libnorm1t64	1.5.9+dfsg-3.1build1	388	optional	libs	NACK-Oriented Reliable Multicast (NORM) library
+libnotify4	0.8.3-1build2	79	optional	libs	sends desktop notifications to a notification daemon
+libnpth0t64	1.6-3.1build1	42	important	libs	replacement for GNU Pth using system threads
+libnspr4	2:4.35-1.1build1	309	optional	libs	NetScape Portable Runtime Library
+libnss-systemd	255.4-1ubuntu8.16	485	standard	admin	nss module providing dynamic user and group name resolution
+libnss3	2:3.98-1ubuntu0.2	3964	optional	libs	Network Security Service libraries
+libntfs-3g89t64	1:2022.10.3-1.2ubuntu3.2	358	optional	libs	read/write NTFS driver for FUSE (runtime library)
+libnuma1	2.0.18-1ubuntu0.24.04.1	72	optional	libs	Libraries for controlling NUMA policy
+libnvme1t64	1.8-3ubuntu1	249	optional	libs	NVMe management library (library)
+libodfgen-0.1-1	0.1.8-2build3	738	optional	libs	library to generate ODF documents
+libogg0	1.3.5-3build1	55	optional	libs	Ogg bitstream library
+libonig5	6.9.9-1build1	629	optional	libs	regular expressions library
+libopenal-data	1:1.23.1-4build1	256	optional	libs	Software implementation of the OpenAL audio API (data files)
+libopenal1	1:1.23.1-4build1	1196	optional	libs	Software implementation of the OpenAL audio API (shared library)
+libopenexr-3-1-30	3.1.5-5.1build3	4363	optional	libs	runtime files for the OpenEXR image library
+libopengl-dev	1.7.0-1build1	21	optional	libs	Vendor neutral GL dispatch library -- OpenGL development files
+libopengl0	1.7.0-1build1	219	optional	libs	Vendor neutral GL dispatch library -- OpenGL support
+libopeniscsiusr	2.1.9-3ubuntu5.4	157	optional	net	iSCSI userspace library
+libopenjp2-7	2.5.0-2ubuntu0.5	441	optional	libs	JPEG 2000 image compression/decompression library
+libopenmpt0t64	0.7.3-1.1build3	1596	optional	libs	module music library based on OpenMPT -- shared library
+libopus0	1.4-1build1	405	optional	libs	Opus codec runtime library
+liborc-0.4-0t64	1:0.4.38-1ubuntu0.1	787	optional	libs	Library of Optimized Inner Loops Runtime Compiler
+liborcus-0.18-0	0.19.2-3build3	1374	optional	libs	library for processing spreadsheet documents
+liborcus-parser-0.18-0	0.19.2-3build3	341	optional	libs	library for processing spreadsheet documents - parser library
+libp11-kit0	0.25.3-4ubuntu2.1	1712	important	libs	library for loading and coordinating access to PKCS#11 modules - runtime
+libpackagekit-glib2-18	1.2.8-2ubuntu1.5	440	optional	libs	Library for accessing PackageKit using GLib
+libpam-cap	1:2.66-5ubuntu2.4	57	optional	admin	POSIX 1003.1e capabilities (PAM module)
+libpam-gnome-keyring	46.1-2ubuntu0.2	59	optional	admin	PAM module to unlock the GNOME keyring upon login
+libpam-modules	1.5.3-5ubuntu5.5	1150	required	admin	Pluggable Authentication Modules for PAM
+libpam-modules-bin	1.5.3-5ubuntu5.5	270	required	admin	Pluggable Authentication Modules for PAM - helper binaries
+libpam-runtime	1.5.3-5ubuntu5.5	276	required	admin	Runtime support for the PAM library
+libpam-systemd	255.4-1ubuntu8.16	678	standard	admin	system and service manager - PAM module
+libpam0g	1.5.3-5ubuntu5.5	209	required	libs	Pluggable Authentication Modules library
+libpango-1.0-0	1.52.1+ds-1build1	530	optional	libs	Layout and rendering of internationalized text
+libpango1.0-dev	1.52.1+ds-1build1	1592	optional	libdevel	Development files for the Pango
+libpangocairo-1.0-0	1.52.1+ds-1build1	108	optional	libs	Layout and rendering of internationalized text
+libpangoft2-1.0-0	1.52.1+ds-1build1	150	optional	libs	Layout and rendering of internationalized text
+libpangomm-2.48-1t64	2.52.0-1build1	335	optional	libs	C++ Wrapper for pango (shared libraries)
+libpangoxft-1.0-0	1.52.1+ds-1build1	78	optional	libs	Layout and rendering of internationalized text
+libpaper1	1.1.29build1	56	optional	libs	library for handling paper characteristics
+libparted2t64	3.6-4build1	382	optional	libs	disk partition manipulator - shared library
+libpathplan4	2.42.2-9ubuntu0.1	65	optional	libs	rich set of graph drawing tools - pathplan library
+libpcap0.8t64	1.10.4-4.1ubuntu3	363	optional	libs	system interface for user-level packet capture
+libpci3	1:3.10.0-2build1	112	optional	libs	PCI utilities (shared library)
+libpciaccess0	0.17-3ubuntu0.24.04.2	60	optional	libs	Generic PCI access library for X
+libpcre2-16-0	10.42-4ubuntu2.1	582	optional	libs	New Perl Compatible Regular Expression Library - 16 bit runtime files
+libpcre2-32-0	10.42-4ubuntu2.1	554	optional	libs	New Perl Compatible Regular Expression Library - 32 bit runtime files
+libpcre2-8-0	10.42-4ubuntu2.1	635	required	libs	New Perl Compatible Regular Expression Library- 8 bit runtime files
+libpcre2-dev	10.42-4ubuntu2.1	2541	optional	libdevel	New Perl Compatible Regular Expression Library - development files
+libpcre2-posix3	10.42-4ubuntu2.1	36	optional	libs	New Perl Compatible Regular Expression Library - posix-compatible runtime files
+libpcsclite1	2.0.3-1build1	61	optional	libs	Middleware to access a smart card using PC/SC (library)
+libperl4-corelibs-perl	0.005-1	140	optional	perl	libraries historically supplied with Perl 4
+libperl5.38t64	5.38.2-3.2ubuntu0.3	29335	optional	libs	shared Perl library
+libpgm-5.3-0t64	5.3.128~dfsg-2.1build1	303	optional	libs	OpenPGM shared library
+libphonenumber8	8.12.57+ds-4.2build3	728	optional	libs	parsing/formatting/validating phone numbers
+libpipeline1	1.5.7-2	67	optional	libs	Unix process pipeline manipulation library
+libpipewire-0.3-0t64	1.0.5-1ubuntu3.3	942	optional	libs	libraries for the PipeWire multimedia server
+libpipewire-0.3-modules	1.0.5-1ubuntu3.3	3829	optional	libs	libraries for the PipeWire multimedia server - modules
+libpixman-1-0	0.42.2-1build1	719	optional	libs	pixel-manipulation library for X and cairo
+libpixman-1-dev	0.42.2-1build1	971	optional	libdevel	pixel-manipulation library for X and cairo (development files)
+libpkgconf3	1.8.1-2build1	101	optional	libs	shared library for pkgconf
+libplacebo338	6.338.2-2build1	8660	optional	libs	GPU-accelerated video/image rendering primitives (shared library)
+libplist-2.0-4	2.3.0-1~exp2build2	121	optional	libs	Library for handling Apple binary and XML property lists
+libplymouth5	24.004.60-1ubuntu7.2	473	optional	libs	graphical boot animation and logger - shared libraries
+libpmem1	1.13.1-1.1ubuntu2	377	optional	libs	Persistent Memory low level support library, v1 runtime
+libpmemobj1	1.13.1-1.1ubuntu2	309	optional	libs	Persistent Memory object store support library
+libpng-dev	1.6.43-5ubuntu0.6	759	optional	libdevel	PNG library - development (version 1.6)
+libpng-tools	1.6.43-5ubuntu0.6	97	optional	libdevel	PNG library - tools (version 1.6)
+libpng16-16t64	1.6.43-5ubuntu0.6	331	optional	libs	PNG library - runtime (version 1.6)
+libpocketsphinx3	0.8.0+real5prealpha+1-15ubuntu5	306	optional	libs	Speech recognition tool - front-end library
+libpolkit-agent-1-0	124-2ubuntu1.24.04.3	77	optional	libs	polkit Authentication Agent API
+libpolkit-gobject-1-0	124-2ubuntu1.24.04.3	156	optional	libs	polkit Authorization API
+libpoppler-glib8t64	24.02.0-1ubuntu9.9	540	optional	libs	PDF rendering library (GLib-based shared library)
+libpoppler134	24.02.0-1ubuntu9.9	3618	optional	libs	PDF rendering library
+libpopt0	1.19+dfsg-1build1	120	optional	libs	lib for parsing cmdline parameters
+libportal-gtk4-1	0.7.1-5build5	56	optional	libs	Flatpak portal library for GTK 4 GUIs
+libportal1	0.7.1-5build5	158	optional	libs	Flatpak portal library - non-GUI part
+libpostproc57	7:6.1.1-3ubuntu5	149	optional	libs	FFmpeg library for post processing - runtime files
+libpq5	16.14-0ubuntu0.24.04.1	436	optional	libs	PostgreSQL C client library
+libproc-processtable-perl	0.636-1build3	107	optional	perl	Perl library for accessing process table information
+libproc2-0	2:4.0.4-4ubuntu3.2	235	required	libs	library for accessing process information from /proc
+libprotobuf-c1	1.4.1-1ubuntu4	57	optional	libs	Protocol Buffers C shared library (protobuf-c)
+libprotobuf32t64	3.21.12-8.2ubuntu0.3	3011	optional	libs	protocol buffers C++ library
+libproxy1v5	0.5.4-4build1	104	optional	libs	automatic proxy configuration management library (shared)
+libpsl-dev	0.21.2-1.1build1	210	optional	libdevel	Library for Public Suffix List (development headers)
+libpsl5t64	0.21.2-1.1build1	99	optional	libs	Library for Public Suffix List (shared libraries)
+libpthread-stubs0-dev	0.4-1build3	17	optional	libdevel	pthread stubs not provided by native libc, development files
+libpulse-mainloop-glib0	1:16.1+dfsg1-2ubuntu10.1	73	optional	libs	PulseAudio client libraries (glib support)
+libpulse0	1:16.1+dfsg1-2ubuntu10.1	923	optional	libs	PulseAudio client libraries
+libpwquality-common	1.4.5-3build1	68	optional	libs	library for password quality checking and generation (data files)
+libpwquality1	1.4.5-3build1	48	optional	libs	library for password quality checking and generation
+libpython3-dev	3.12.3-0ubuntu2.1	37	optional	libdevel	header files and a static library for Python (default)
+libpython3-stdlib	3.12.3-0ubuntu2.1	27	optional	python	interactive high-level object-oriented language (default python3 version)
+libpython3.12-dev	3.12.3-1ubuntu0.15	29036	optional	libdevel	Header files and a static library for Python (v3.12)
+libpython3.12-minimal	3.12.3-1ubuntu0.15	5184	optional	python	Minimal subset of the Python language (version 3.12)
+libpython3.12-stdlib	3.12.3-1ubuntu0.15	9033	optional	python	Interactive high-level object-oriented language (standard library, version 3.12)
+libpython3.12t64	3.12.3-1ubuntu0.15	8923	optional	libs	Shared Python runtime library (version 3.12)
+libqhull-r8.0	2020.2-6build1	528	optional	libs	calculate convex hulls and related structures (reentrant shared library)
+libqmi-glib5	1.35.2-0ubuntu2	4340	optional	libs	Support library to use the Qualcomm MSM Interface (QMI) protocol
+libqmi-proxy	1.35.2-0ubuntu2	33	optional	net	Proxy to communicate with QMI ports
+libqmi-utils	1.35.2-0ubuntu2	807	optional	net	Utilities to use the QMI protocol from the command line
+libqrencode4	4.1.1-1build2	73	optional	libs	QR Code encoding library
+libqrtr-glib0	1.2.2-1ubuntu4	60	optional	libs	Support library to use the QRTR protocol
+libquadmath0	14.2.0-4ubuntu2~24.04.1	300	optional	libs	GCC Quad-Precision Math Library
+librabbitmq4	0.11.0-1ubuntu0.1	111	optional	libs	AMQP client library written in C
+librados2	19.2.3-0ubuntu0.24.04.3	15658	optional	libs	RADOS distributed object store client library
+libraptor2-0	2.0.16-3ubuntu0.1	445	optional	libs	Raptor 2 RDF syntax library
+libraqm0	0.10.1-1build1	47	optional	libs	Library for complex text layout
+librasqal3t64	0.9.33-2.1build1	511	optional	libs	Rasqal RDF query library
+librav1e0	0.7.1-2	3237	optional	libs	Fastest and safest AV1 encoder - shared library
+libraw1394-11	2.1.2-2build3	83	optional	libs	library for direct access to IEEE 1394 bus (aka FireWire)
+libraw23t64	0.21.2-2.1ubuntu0.24.04.2	2370	optional	libs	raw image decoder library
+librbd1	19.2.3-0ubuntu0.24.04.3	14793	optional	libs	RADOS block device client library
+librdf0t64	1.0.17-3.1ubuntu3	281	optional	libs	Redland Resource Description Framework (RDF) library
+librdmacm1t64	50.0-2ubuntu0.2	208	optional	libs	Library for managing RDMA connections
+libreadline8t64	8.2-4build1	467	optional	libs	GNU readline and history libraries, run-time libraries
+libreiserfscore0t64	1:3.6.27-7.1build1	184	optional	libs	ReiserFS core library
+libreoffice-base-core	4:24.2.7-0ubuntu0.24.04.6	3486	optional	editors	office productivity suite -- shared library
+libreoffice-calc	4:24.2.7-0ubuntu0.24.04.4	29151	optional	editors	office productivity suite -- spreadsheet
+libreoffice-common	4:24.2.7-0ubuntu0.24.04.6	47287	optional	editors	office productivity suite -- arch-independent files
+libreoffice-core	4:24.2.7-0ubuntu0.24.04.6	147834	optional	editors	office productivity suite -- arch-dependent files
+libreoffice-draw	4:24.2.7-0ubuntu0.24.04.4	12356	optional	editors	office productivity suite -- drawing
+libreoffice-gnome	4:24.2.7-0ubuntu0.24.04.4	307	optional	gnome	office productivity suite -- GNOME integration
+libreoffice-help-common	4:24.2.7-0ubuntu0.24.04.6	14873	optional	editors	office productivity suite -- common files for LibreOffice help
+libreoffice-help-ru	4:24.2.7-0ubuntu0.24.04.6	30884	optional	doc	office productivity suite -- Russian help
+libreoffice-impress	4:24.2.7-0ubuntu0.24.04.4	3284	optional	editors	office productivity suite -- presentation
+libreoffice-l10n-ru	4:24.2.7-0ubuntu0.24.04.6	5460	optional	localization	office productivity suite -- Russian language package
+libreoffice-style-colibre	4:24.2.7-0ubuntu0.24.04.6	11718	optional	editors	office productivity suite -- colibre symbol style
+libreoffice-uiconfig-common	4:24.2.7-0ubuntu0.24.04.6	8319	optional	misc	UI data ("config") for LibreOffice ("common" set)
+libreoffice-uiconfig-writer	4:24.2.7-0ubuntu0.24.04.6	9067	optional	misc	UI data ("config") for LibreOffice Writer
+libreoffice-writer	4:24.2.7-0ubuntu0.24.04.6	34916	optional	editors	office productivity suite -- word processor
+librest-1.0-0	0.9.1-6build3	122	optional	libs	REST service access library
+librevenge-0.0-0	0.0.5-3build1	735	optional	libs	Base Library for writing document interface filters
+librhash0	1.4.3-3build1	230	optional	libs	shared library for hash functions computing
+librist4	0.2.10+dfsg-2	187	optional	libs	Reliable Internet Stream Transport -- shared library
+libroc0.3	0.3.0+dfsg-7ubuntu2	1202	optional	libs	real-time audio streaming over the network (shared library)
+librsvg2-2	2.58.0+dfsg-1build1	6707	optional	libs	SAX-based renderer library for SVG files (runtime)
+librsvg2-common	2.58.0+dfsg-1build1	59	optional	libs	SAX-based renderer library for SVG files (extra runtime)
+librsvg2-dev	2.58.0+dfsg-1build1	271	optional	libdevel	SAX-based renderer library for SVG files (development)
+librtmp1	2.4+20151223.gitfa8646d.1-2build7	137	optional	libs	toolkit for RTMP streams (shared library)
+librubberband2	3.3.0+dfsg-2build1	335	optional	libs	audio time-stretching and pitch-shifting library
+librygel-core-2.8-0	0.42.5-1ubuntu3	365	optional	libs	GNOME UPnP/DLNA services - core library
+librygel-db-2.8-0	0.42.5-1ubuntu3	89	optional	libs	GNOME UPnP/DLNA services - db library
+librygel-renderer-2.8-0	0.42.5-1ubuntu3	177	optional	libs	GNOME UPnP/DLNA services - renderer library
+librygel-renderer-gst-2.8-0	0.42.5-1ubuntu3	89	optional	libs	GNOME UPnP/DLNA services - renderer library
+librygel-server-2.8-0	0.42.5-1ubuntu3	697	optional	libs	GNOME UPnP/DLNA services - server library
+libsamplerate0	0.2.2-4build1	1483	optional	libs	Audio sample rate conversion library
+libsane-common	1.2.1-7build4	4772	optional	libs	API library for scanners -- documentation and support files
+libsane1	1.2.1-7build4	12439	optional	libs	API library for scanners
+libsasl2-2	2.1.28+dfsg1-5ubuntu3.1	148	optional	libs	Cyrus SASL - authentication abstraction library
+libsasl2-modules	2.1.28+dfsg1-5ubuntu3.1	294	optional	libs	Cyrus SASL - pluggable authentication modules
+libsasl2-modules-db	2.1.28+dfsg1-5ubuntu3.1	75	optional	libs	Cyrus SASL - pluggable authentication modules (DB)
+libsbc1	2.0-1build1	88	optional	libs	Sub Band CODEC library - runtime
+libsdl2-2.0-0	2.30.0+dfsg-1ubuntu3.1	1983	optional	libs	Simple DirectMedia Layer
+libseccomp2	2.5.5-1ubuntu3.1	143	important	libs	high level interface to Linux seccomp filter
+libsecret-1-0	0.21.4-1build3	415	optional	libs	Secret store
+libsecret-common	0.21.4-1build3	44	optional	libs	Secret store (common files)
+libsecret-tools	0.21.4-1build3	42	optional	admin	tool for storing and retrieving GObject passwords
+libselinux1	3.5-2ubuntu2.1	200	required	libs	SELinux runtime shared libraries
+libselinux1-dev	3.5-2ubuntu2.1	717	optional	libdevel	SELinux development headers
+libsemanage-common	3.5-1build5	26	required	libs	Common files for SELinux policy management libraries
+libsemanage2	3.5-1build5	288	required	libs	SELinux policy management library
+libsensors-config	1:3.6.0-9build1	25	optional	utils	lm-sensors configuration files
+libsensors5	1:3.6.0-9build1	79	optional	libs	library to read temperature/voltage/fan sensors
+libsepol-dev	3.5-2build1	1678	optional	libdevel	SELinux binary policy manipulation library and development files
+libsepol2	3.5-2build1	751	required	libs	SELinux library for manipulating binary security policies
+libserd-0-0	0.32.2-1	115	optional	libs	lightweight RDF syntax library
+libsframe1	2.42-4ubuntu2.10	128	optional	devel	Library to handle the SFrame format (runtime library)
+libsgutils2-1.46-2	1.46-3ubuntu4	287	optional	libs	utilities for devices using the SCSI command set (shared libraries)
+libsharpyuv-dev	1.3.2-0.4build3	60	optional	libdevel	Library for sharp RGB to YUV conversion (development files)
+libsharpyuv0	1.3.2-0.4build3	44	optional	libs	Library for sharp RGB to YUV conversion
+libshine3	3.1.1-2build1	59	optional	libs	Fixed-point MP3 encoding library - runtime files
+libshout3	2.4.6-1build2	147	optional	libs	MP3/Ogg Vorbis broadcast streaming library
+libsidplay1v5	1.36.60-1build1	233	optional	libs	SID (MOS 6581) emulation library
+libsigc++-3.0-0	3.6.0-2	68	optional	libs	type-safe Signal Framework for C++ - runtime
+libsigsegv2	2.14-1ubuntu2	47	optional	libs	Library for handling page faults in a portable way
+libsixel1	1.10.3-3build1	433	optional	libs	DEC SIXEL graphics codec implementation (runtime)
+libslang2	2.3.3-3build2	2376	optional	libs	S-Lang programming library - runtime version
+libslirp0	4.7.0-1ubuntu3.1	157	optional	libs	General purpose TCP-IP emulator library
+libsm-dev	2:1.2.3-1build3	84	optional	libdevel	X11 Session Management library (development headers)
+libsm6	2:1.2.3-1build3	53	optional	libs	X11 Session Management library
+libsmartcols1	2.39.3-9ubuntu6.5	171	required	libs	smart column output alignment library
+libsmbclient0	2:4.19.5+dfsg-4ubuntu9.6	241	optional	libs	shared library for communication with SMB/CIFS servers
+libsnapd-glib-2-1	1.64-0ubuntu5	391	optional	libs	GLib snapd library
+libsnappy1v5	1.1.10-1build1	89	optional	libs	fast compression/decompression library
+libsndfile1	1.2.2-1ubuntu5.24.04.1	566	optional	libs	Library for reading/writing audio files
+libsndio7.0	1.9.0-0.3build3	88	optional	libs	Small audio and MIDI framework from OpenBSD, runtime libraries
+libsnmp-base	5.9.4+dfsg-1.1ubuntu3.2	654	optional	libs	SNMP configuration script, MIBs and documentation
+libsnmp40t64	5.9.4+dfsg-1.1ubuntu3.2	3733	optional	libs	SNMP (Simple Network Management Protocol) library
+libsodium23	1.0.18-1ubuntu0.24.04.1	401	optional	libs	Network communication, cryptography and signaturing library
+libsord-0-0	0.16.16-2build1	54	optional	libs	library for storing RDF data in memory
+libsort-naturally-perl	1.03-4	40	optional	perl	Sort naturally - sort lexically except for numerical parts
+libsoup-2.4-1	2.74.3-6ubuntu1.7	710	optional	oldlibs	HTTP library implementation in C -- Shared library
+libsoup-3.0-0	3.4.4-5ubuntu0.7	710	optional	libs	HTTP library implementation in C -- Shared library
+libsoup-3.0-common	3.4.4-5ubuntu0.7	48	optional	devel	HTTP library implementation in C -- Common files
+libsoup-3.0-dev	3.4.4-5ubuntu0.7	1089	optional	libdevel	HTTP library implementation in C -- Development files
+libsoup2.4-common	2.74.3-6ubuntu1.7	44	optional	oldlibs	HTTP library implementation in C -- Common files
+libsoxr0	0.1.3-4build3	209	optional	libs	High quality 1D sample-rate conversion library
+libspa-0.2-bluetooth	1.0.5-1ubuntu3.3	1075	optional	libs	libraries for the PipeWire multimedia server - bluetooth plugins
+libspa-0.2-modules	1.0.5-1ubuntu3.3	2360	optional	libs	libraries for the PipeWire multimedia server Simple Plugin API - modules
+libspectre1	0.2.12-1build2	84	optional	libs	Library for rendering PostScript documents
+libspeechd2	0.12.0~rc2-2build3	66	optional	libs	Speech Dispatcher: Shared libraries
+libspeex1	1.2.1-2ubuntu2.24.04.1	134	optional	libs	The Speex codec runtime library
+libspeexdsp1	1.2.1-1ubuntu3	98	optional	libs	DSP library derived from speex
+libsphinxbase3t64	0.8+5prealpha+1-17build2	318	optional	libs	Speech recognition tool - shared library
+libspice-server1	0.15.1-1build2	1122	optional	libs	Implements the server side of the SPICE protocol
+libsqlite3-0	3.45.1-1ubuntu2.6	1731	optional	libs	SQLite 3 shared library
+libsqlite3-dev	3.45.1-1ubuntu2.6	3324	optional	libdevel	SQLite 3 development files
+libsratom-0-0	0.6.16-1build1	60	optional	libs	library for serialising LV2 atoms to/from Turtle
+libsrt1.5-gnutls	1.5.3-1build2	820	optional	libs	Secure Reliable Transport UDP streaming library (GnuTLS flavour)
+libss2	1.47.0-2.4~exp1ubuntu4.1	69	required	libs	command-line interface parsing library
+libssh-4	0.10.6-2ubuntu0.4	502	optional	libs	tiny C SSH library (OpenSSL flavor)
+libssh-gcrypt-4	0.10.6-2ubuntu0.4	609	optional	libs	tiny C SSH library (gcrypt flavor)
+libssl-dev	3.0.13-0ubuntu3.11	13005	optional	libdevel	Secure Sockets Layer toolkit - development files
+libssl1.0.0	1.0.2n-1ubuntu5.13	3419	important	libs	Secure Sockets Layer toolkit - shared libraries
+libssl3t64	3.0.13-0ubuntu3.11	6614	optional	libs	Secure Sockets Layer toolkit - shared libraries
+libstartup-notification0	0.12-6build3	62	optional	libs	library for program launch feedback (shared library)
+libstdc++-13-dev	13.3.0-6ubuntu2~24.04.1	21662	optional	libdevel	GNU Standard C++ Library v3 (development files)
+libstdc++6	14.2.0-4ubuntu2~24.04.1	3110	important	libs	GNU Standard C++ Library v3
+libstemmer0d	2.2.0-4build1	842	optional	libs	Snowball stemming algorithms for use in Information Retrieval
+libsuitesparseconfig7	1:7.6.1+dfsg-1build1	53	optional	libs	configuration routines for all SuiteSparse modules
+libsvtav1enc1d1	1.7.0+dfsg-2build1	7049	optional	libs	Scalable Video Technology for AV1 (libsvtav1enc shared library)
+libswresample4	7:6.1.1-3ubuntu5	197	optional	libs	FFmpeg library for audio resampling, rematrixing etc. - runtime files
+libswscale7	7:6.1.1-3ubuntu5	689	optional	libs	FFmpeg library for image scaling and various conversions - runtime files
+libsysprof-capture-4-dev	46.0-1build1	275	optional	libdevel	capture library for system-wide Linux profiler
+libsystemd-shared	255.4-1ubuntu8.16	5868	optional	libs	systemd shared private library
+libsystemd0	255.4-1ubuntu8.16	1027	optional	libs	systemd utility library
+libtag1v5	1.13.1-1build1	46	optional	libs	audio meta-data library
+libtag1v5-vanilla	1.13.1-1build1	1151	optional	libs	audio meta-data library - vanilla flavour
+libtalloc2	2.4.2-1build2	83	optional	libs	hierarchical pool based memory allocator
+libtasn1-6	4.19.0-3ubuntu0.24.04.2	122	important	libs	Manage ASN.1 structures (runtime)
+libtcl8.6	8.6.14+dfsg-1build1	4085	optional	libs	Tcl (the Tool Command Language) v8.6 - run-time library files
+libtdb1	1.4.10-1build1	131	optional	libs	Trivial Database - shared library
+libteamdctl0	1.31-1build3	44	optional	net	library for communication with `teamd` process
+libterm-readkey-perl	2.38-2build4	70	optional	perl	perl module for simple terminal control
+libtevent0t64	0.16.1-2build1	131	optional	libs	talloc-based event loop library - shared library
+libtext-charwidth-perl	0.04-11build3	41	required	perl	get display widths of characters on the terminal
+libtext-iconv-perl	1.7-8build3	47	required	perl	module to convert between character sets in Perl
+libtext-wrapi18n-perl	0.06-10	24	required	perl	internationalized substitute of Text::Wrap
+libthai-data	0.1.29-2build1	587	optional	libs	Data files for Thai language support library
+libthai-dev	0.1.29-2build1	136	optional	libdevel	Development files for Thai language support library
+libthai0	0.1.29-2build1	91	optional	libs	Thai language support library
+libtheora0	1.1.1+dfsg.1-16.1build3	656	optional	libs	Theora Video Compression Codec
+libtiff-dev	4.5.1+git230720-4ubuntu2.5	1153	optional	libdevel	Tag Image File Format library (TIFF), development files
+libtiff6	4.5.1+git230720-4ubuntu2.5	590	optional	libs	Tag Image File Format (TIFF) library
+libtiffxx6	4.5.1+git230720-4ubuntu2.5	35	optional	libs	Tag Image File Format (TIFF) library -- C++ interface
+libtinfo6	6.4+20240113-1ubuntu2.1	556	optional	libs	shared low-level terminfo library for terminal handling
+libtirpc-common	1.3.4+ds-1.1build1	29	optional	libs	transport-independent RPC library - common files
+libtirpc3t64	1.3.4+ds-1.1build1	217	optional	libs	transport-independent RPC library
+libtk8.6	8.6.14-1build1	2365	optional	libs	Tk toolkit for Tcl and X11 v8.6 - run-time files
+libtotem-plparser-common	3.26.6-1build5	40	optional	libs	Totem Playlist Parser library - common files
+libtotem-plparser18	3.26.6-1build5	183	optional	libs	Totem Playlist Parser library - runtime files
+libtraceevent1	1:1.8.2-1ubuntu2.1	179	optional	libs	Linux kernel trace event library (shared library)
+libtraceevent1-plugin	1:1.8.2-1ubuntu2.1	198	optional	libs	Linux kernel trace event library (plugins)
+libtracefs1	1.8.0-1ubuntu1	173	optional	libs	API to access the kernel tracefs directory (shared library)
+libtracker-sparql-3.0-0	3.7.1-1build1	1002	optional	libs	metadata database, indexer and search tool - library
+libts0t64	1.22-1.1build1	307	optional	libs	touch screen library
+libtsan2	14.2.0-4ubuntu2~24.04.1	8902	optional	libs	ThreadSanitizer -- a Valgrind-based detector of data races (runtime)
+libtss2-esys-3.0.2-0t64	4.0.1-7.1ubuntu5.1	579	optional	libs	TPM2 Software stack library - TSS and TCTI libraries
+libtss2-mu-4.0.1-0t64	4.0.1-7.1ubuntu5.1	307	optional	libs	TPM2 Software stack library - TSS and TCTI libraries
+libtss2-sys1t64	4.0.1-7.1ubuntu5.1	165	optional	libs	TPM2 Software stack library - TSS and TCTI libraries
+libtss2-tcti-cmd0t64	4.0.1-7.1ubuntu5.1	60	optional	libs	TPM2 Software stack library - TSS and TCTI libraries
+libtss2-tcti-device0t64	4.0.1-7.1ubuntu5.1	55	optional	libs	TPM2 Software stack library - TSS and TCTI libraries
+libtss2-tcti-mssim0t64	4.0.1-7.1ubuntu5.1	59	optional	libs	TPM2 Software stack library - TSS and TCTI libraries
+libtss2-tcti-swtpm0t64	4.0.1-7.1ubuntu5.1	59	optional	libs	TPM2 Software stack library - TSS and TCTI libraries
+libtwolame0	0.4.0-2build3	151	optional	libs	MPEG Audio Layer 2 encoding library
+libubsan1	14.2.0-4ubuntu2~24.04.1	3364	optional	libs	UBSan -- undefined behaviour sanitizer (runtime)
+libuchardet0	0.0.8-1build1	207	optional	libs	universal charset detection library - shared library
+libudev1	255.4-1ubuntu8.16	316	optional	libs	libudev shared library
+libudfread0	1.1.2-1build1	59	optional	libs	UDF reader library
+libudisks2-0	2.10.1-6ubuntu1.3	890	optional	libs	GObject based library to access udisks2
+libumfpack6	1:7.6.1+dfsg-1build1	768	optional	libs	sparse LU factorization library
+libunibreak5	5.1-2build1	150	optional	libs	line breaking library for Unicode (shared library)
+libunistring5	1.1-2build1.1	1757	important	libs	Unicode string library for C
+libunity-protocol-private0	7.1.4+19.04.20190319-6build4	317	optional	libs	binding to get places into the launcher - private library
+libunity-scopes-json-def-desktop	7.1.4+19.04.20190319-6build4	13	optional	gnome	binding to get places into the launcher - desktop def file
+libunity9	7.1.4+19.04.20190319-6build4	777	optional	libs	binding to get places into the launcher - shared library
+libuno-cppu3t64	4:24.2.7-0ubuntu0.24.04.6	282	optional	libs	LibreOffice UNO runtime environment -- CPPU public library
+libuno-cppuhelpergcc3-3t64	4:24.2.7-0ubuntu0.24.04.6	1286	optional	libs	LibreOffice UNO runtime environment -- CPPU helper library
+libuno-purpenvhelpergcc3-3t64	4:24.2.7-0ubuntu0.24.04.6	108	optional	libs	LibreOffice UNO runtime environment -- "purpose environment" helper
+libuno-sal3t64	4:24.2.7-0ubuntu0.24.04.6	523	optional	libs	LibreOffice UNO runtime environment -- SAL public library
+libuno-salhelpergcc3-3t64	4:24.2.7-0ubuntu0.24.04.6	120	optional	libs	LibreOffice UNO runtime environment -- SAL helpers for C++ library
+libunwind8	1.6.2-3build1.1	187	optional	libs	library to determine the call-chain of a program - runtime
+libupower-glib3	1.90.3-1	150	optional	libs	abstraction for power management - shared library
+liburcu8t64	0.14.0-3.1build1	341	optional	libs	userspace RCU (read-copy-update) library
+liburing2	2.5-1build1	96	optional	libs	Linux kernel io_uring access library - shared library
+libusb-1.0-0	2:1.0.27-1	137	optional	libs	userspace USB programming library
+libusbmuxd6	2.0.2-4build3	66	optional	libs	USB multiplexor daemon for iPhone and iPod Touch devices - library
+libusbredirparser1t64	0.13.0-2.1build1	58	optional	libs	Parser for the usbredir protocol (runtime)
+libutempter0	1.2.1-3build1	51	optional	libs	privileged helper for utmp/wtmp updates (runtime)
+libuuid1	2.39.3-9ubuntu6.5	84	required	libs	Universally Unique ID library
+libuv1t64	1.48.0-1.1build1	264	optional	libs	asynchronous event notification library - runtime library
+libv4l-0t64	1.26.1-4build3	260	optional	libs	Collection of video4linux support libraries
+libv4lconvert0t64	1.26.1-4build3	320	optional	libs	Video4linux frame format conversion library
+libva-drm2	2.20.0-2ubuntu0.2	45	optional	libs	Video Acceleration (VA) API for Linux -- DRM runtime
+libva-wayland2	2.20.0-2ubuntu0.2	57	optional	libs	Video Acceleration (VA) API for Linux -- Wayland runtime
+libva-x11-2	2.20.0-2ubuntu0.2	57	optional	libs	Video Acceleration (VA) API for Linux -- X11 runtime
+libva2	2.20.0-2ubuntu0.2	219	optional	libs	Video Acceleration (VA) API for Linux -- runtime
+libvdpau1	1.5-2build1	107	optional	libs	Video Decode and Presentation API for Unix (libraries)
+libvidstab1.1	1.1.0-2build1	92	optional	libs	video stabilization library (shared library)
+libvirglrenderer1	1.0.0-1ubuntu2	581	optional	libs	virtual GPU for KVM virtualization
+libvisual-0.4-0	0.4.2-2build1	408	optional	libs	audio visualization framework
+libvolume-key1	0.3.12-7build2	172	optional	libs	Library for manipulating storage encryption keys and passphrases
+libvorbis0a	1.3.7-1build3	204	optional	libs	decoder library for Vorbis General Audio Compression Codec
+libvorbisenc2	1.3.7-1build3	698	optional	libs	encoder library for Vorbis General Audio Compression Codec
+libvorbisfile3	1.3.7-1build3	53	optional	libs	high-level API for Vorbis General Audio Compression Codec
+libvpl2	2023.3.0-1build1	288	optional	libs	oneAPI Video Processing Library -- shared library
+libvpx9	1.14.0-1ubuntu2.3	3349	optional	libs	VP8 and VP9 video codec (shared library)
+libvte-2.91-0	0.76.0-1ubuntu0.1	608	optional	libs	Terminal emulator widget for GTK+ 3.0 - runtime files
+libvte-2.91-common	0.76.0-1ubuntu0.1	144	optional	libs	Terminal emulator widget for GTK+ 3.0 - common files
+libvulkan1	1.3.275.0-1build1	530	optional	libs	Vulkan loader library
+libwacom-common	2.10.0-2	920	optional	libs	Wacom model feature query library (common files)
+libwacom9	2.10.0-2	73	optional	libs	Wacom model feature query library
+libwavpack1	5.6.0-1build1	203	optional	libs	audio codec (lossy and lossless) - library
+libwayland-bin	1.22.0-2.1build1	64	optional	libdevel	wayland compositor infrastructure - binary utilities
+libwayland-client0	1.22.0-2.1build1	82	optional	libs	wayland compositor infrastructure - client library
+libwayland-cursor0	1.22.0-2.1build1	51	optional	libs	wayland compositor infrastructure - cursor library
+libwayland-dev	1.22.0-2.1build1	587	optional	libdevel	wayland compositor infrastructure - development files
+libwayland-egl1	1.22.0-2.1build1	31	optional	libs	wayland compositor infrastructure - EGL library
+libwayland-server0	1.22.0-2.1build1	104	optional	libs	wayland compositor infrastructure - server library
+libwbclient0	2:4.19.5+dfsg-4ubuntu9.6	148	optional	libs	Samba winbind client library
+libwebkit2gtk-4.1-0	2.52.3-0ubuntu0.24.04.1	92888	optional	libs	Web content engine library for GTK
+libwebkit2gtk-4.1-dev	2.52.3-0ubuntu0.24.04.1	5637	optional	libdevel	Web content engine library for GTK - development files
+libwebkitgtk-6.0-4	2.52.3-0ubuntu0.24.04.1	91816	optional	libs	Web content engine library for GTK
+libwebp-dev	1.3.2-0.4build3	1589	optional	libdevel	Lossy compression of digital photographic images
+libwebp7	1.3.2-0.4build3	504	optional	libs	Lossy compression of digital photographic images
+libwebpdecoder3	1.3.2-0.4build3	268	optional	libs	Library for the WebP graphics format (decode only)
+libwebpdemux2	1.3.2-0.4build3	44	optional	libs	Lossy compression of digital photographic images.
+libwebpmux3	1.3.2-0.4build3	72	optional	libs	Lossy compression of digital photographic images
+libwebrtc-audio-processing1	0.3.1-0ubuntu6	679	optional	libs	AudioProcessing module from the WebRTC project.
+libwhoopsie-preferences0	23build3	59	optional	libs	Ubuntu error tracker submission settings - shared library
+libwhoopsie0	0.2.77ubuntu0.1	39	optional	libs	Ubuntu error tracker submission - shared library
+libwireplumber-0.4-0	0.4.17-1ubuntu4.1	1029	optional	libs	Shared libraries for WirePlumber
+libwmf-0.2-7	0.2.13-1.1build3	352	optional	libs	Windows metafile conversion library
+libwmflite-0.2-7	0.2.13-1.1build3	190	optional	libs	Windows metafile conversion lite library
+libwnck-3-0	43.0-3build4	306	optional	libs	Window Navigator Construction Kit - runtime files
+libwnck-3-common	43.0-3build4	60	optional	libs	Window Navigator Construction Kit - common files
+libwoff1	1.0.2-2build1	129	optional	libs	library for converting fonts to WOFF 2.0
+libwpd-0.10-10	0.10.3-2build2	747	optional	libs	Library for handling WordPerfect documents (shared library)
+libwpg-0.3-3	0.3.4-3build1	180	optional	libs	WordPerfect graphics import/convert library (shared library)
+libwps-0.4-4	0.4.14-2build1	1975	optional	libs	Works text file format import filter library (shared library)
+libwrap0	7.6.q-33	107	optional	libs	Wietse Venema's TCP wrappers library
+libx11-6	2:1.8.7-1build1	1362	optional	libs	X11 client-side library
+libx11-data	2:1.8.7-1build1	1342	optional	x11	X11 client-side library
+libx11-dev	2:1.8.7-1build1	2479	optional	libdevel	X11 client-side library (development headers)
+libx11-xcb-dev	2:1.8.7-1build1	70	optional	libdevel	Xlib/XCB interface library (development headers)
+libx11-xcb1	2:1.8.7-1build1	73	optional	libs	Xlib/XCB interface library
+libx264-164	2:0.164.3108+git31e19f9-1	1860	optional	libs	x264 video coding library
+libx265-199	3.5-2build1	16098	optional	libs	H.265/HEVC video stream encoder (shared library)
+libxau-dev	1:1.0.9-1build6	51	optional	libdevel	X11 authorisation library (development headers)
+libxau6	1:1.0.9-1build6	33	optional	libs	X11 authorisation library
+libxaw7	2:1.0.14-1build2	491	optional	libs	X11 Athena Widget library
+libxcb-cursor-dev	0.1.4-1build1	53	optional	libdevel	utility libraries for X C Binding -- cursor, development files
+libxcb-cursor0	0.1.4-1build1	39	optional	libs	utility libraries for X C Binding -- cursor
+libxcb-dri3-0	1.15-1ubuntu2	40	optional	libs	X C Binding, dri3 extension
+libxcb-glx0	1.15-1ubuntu2	148	optional	libs	X C Binding, glx extension
+libxcb-glx0-dev	1.15-1ubuntu2	411	optional	libdevel	X C Binding, glx extension, development files
+libxcb-icccm4	0.4.1-1.1build3	57	optional	libs	utility libraries for X C Binding -- icccm
+libxcb-icccm4-dev	0.4.1-1.1build3	97	optional	libdevel	utility libraries for X C Binding -- icccm, development files
+libxcb-image0	0.4.0-2build1	36	optional	libs	utility libraries for X C Binding -- image
+libxcb-image0-dev	0.4.0-2build1	68	optional	libdevel	utility libraries for X C Binding -- image, development files
+libxcb-keysyms1	0.4.0-1build4	41	extra	libs	utility libraries for X C Binding -- keysyms
+libxcb-keysyms1-dev	0.4.0-1build4	45	extra	libdevel	utility libraries for X C Binding -- keysyms, development files
+libxcb-present0	1.15-1ubuntu2	30	optional	libs	X C Binding, present extension
+libxcb-randr0	1.15-1ubuntu2	96	optional	libs	X C Binding, randr extension
+libxcb-randr0-dev	1.15-1ubuntu2	235	optional	libdevel	X C Binding, randr extension, development files
+libxcb-render-util0	0.3.9-1build4	50	extra	libs	utility libraries for X C Binding -- render-util
+libxcb-render-util0-dev	0.3.9-1build4	173	extra	libdevel	utility libraries for X C Binding -- render-util
+libxcb-render0	1.15-1ubuntu2	80	optional	libs	X C Binding, render extension
+libxcb-render0-dev	1.15-1ubuntu2	183	optional	libdevel	X C Binding, render extension, development files
+libxcb-res0	1.15-1ubuntu2	36	optional	libs	X C Binding, res extension
+libxcb-shape0	1.15-1ubuntu2	31	optional	libs	X C Binding, shape extension
+libxcb-shape0-dev	1.15-1ubuntu2	49	optional	libdevel	X C Binding, shape extension, development files
+libxcb-shm0	1.15-1ubuntu2	30	optional	libs	X C Binding, shm extension
+libxcb-shm0-dev	1.15-1ubuntu2	54	optional	libdevel	X C Binding, shm extension, development files
+libxcb-sync-dev	1.15-1ubuntu2	89	optional	libdevel	X C Binding, sync extension, development files
+libxcb-sync1	1.15-1ubuntu2	53	optional	libs	X C Binding, sync extension
+libxcb-util-dev	0.4.0-1build3	54	optional	libdevel	utility libraries for X C Binding -- atom, aux and event
+libxcb-util1	0.4.0-1build3	47	optional	libs	utility libraries for X C Binding -- atom, aux and event
+libxcb-xfixes0	1.15-1ubuntu2	55	optional	libs	X C Binding, xfixes extension
+libxcb-xfixes0-dev	1.15-1ubuntu2	118	optional	libdevel	X C Binding, xfixes extension, development files
+libxcb-xinerama0	1.15-1ubuntu2	31	optional	libs	X C Binding, xinerama extension
+libxcb-xinerama0-dev	1.15-1ubuntu2	40	optional	libdevel	X C Binding, xinerama extension, development files
+libxcb-xkb-dev	1.15-1ubuntu2	392	optional	libdevel	X C Binding, XKEYBOARD extension, development files
+libxcb-xkb1	1.15-1ubuntu2	151	optional	libs	X C Binding, XKEYBOARD extension
+libxcb1	1.15-1ubuntu2	196	optional	libs	X C Binding
+libxcb1-dev	1.15-1ubuntu2	677	optional	libdevel	X C Binding, development files
+libxcomposite-dev	1:0.4.5-1build3	47	optional	libdevel	X11 Composite extension library (development headers)
+libxcomposite1	1:0.4.5-1build3	30	optional	libs	X11 Composite extension library
+libxcursor-dev	1:1.2.1-1build1	156	optional	libdevel	X cursor management library (development files)
+libxcursor1	1:1.2.1-1build1	58	optional	libs	X cursor management library
+libxcvt0	0.1.2-1build1	31	optional	libs	VESA CVT standard timing modelines generator -- shared library
+libxdamage-dev	1:1.1.6-1build1	27	optional	libdevel	X11 damaged region extension library (development headers)
+libxdamage1	1:1.1.6-1build1	29	optional	libs	X11 damaged region extension library
+libxdmcp-dev	1:1.1.3-0ubuntu6	65	optional	libdevel	X11 authorisation library (development headers)
+libxdmcp6	1:1.1.3-0ubuntu6	41	optional	libs	X11 Display Manager Control Protocol library
+libxext-dev	2:1.3.4-1build2	306	optional	libdevel	X11 miscellaneous extensions library (development headers)
+libxext6	2:1.3.4-1build2	103	optional	libs	X11 miscellaneous extension library
+libxfixes-dev	1:6.0.0-2build1	59	optional	libdevel	X11 miscellaneous 'fixes' extension library (development headers)
+libxfixes3	1:6.0.0-2build1	44	optional	libs	X11 miscellaneous 'fixes' extension library
+libxfont2	1:2.0.6-1build1	204	optional	libs	X11 font rasterisation library
+libxft-dev	2.3.6-1build1	274	optional	libdevel	FreeType-based font drawing library for X (development files)
+libxft2	2.3.6-1build1	118	optional	libs	FreeType-based font drawing library for X
+libxi-dev	2:1.8.1-1build1	693	optional	libdevel	X11 Input extension library (development headers)
+libxi6	2:1.8.1-1build1	95	optional	libs	X11 Input extension library
+libxinerama-dev	2:1.1.4-3build1	40	optional	libdevel	X11 Xinerama extension library (development headers)
+libxinerama1	2:1.1.4-3build1	31	optional	libs	X11 Xinerama extension library
+libxkbcommon-dev	1.6.0-1build1	353	optional	libdevel	library interface to the XKB compiler - development files
+libxkbcommon-x11-0	1.6.0-1build1	57	optional	libs	library to create keymaps with the XKB X11 protocol
+libxkbcommon-x11-dev	1.6.0-1build1	28	optional	libdevel	library to create keymaps with the XKB X11 protocol - development files
+libxkbcommon0	1.6.0-1build1	309	optional	libs	library interface to the XKB compiler - shared library
+libxkbfile1	1:1.1.0-1build4	172	optional	libs	X11 keyboard file manipulation library
+libxkbregistry0	1.6.0-1build1	55	optional	libs	library to query available RMLVO
+libxklavier16	5.4-5build2	131	optional	libs	X Keyboard Extension high-level API
+libxml2	2.9.14+dfsg-1.3ubuntu3.8	2080	optional	libs	GNOME XML library
+libxmlb2	0.3.24-1~ubuntu0.24.04.1	192	optional	libs	Binary XML library
+libxmlsec1t64	1.2.39-5build2	483	optional	libs	XML security library
+libxmlsec1t64-nss	1.2.39-5build2	228	optional	libs	Nss engine for the XML security library
+libxmlsec1t64-openssl	1.2.39-5build2	310	optional	libs	Openssl engine for the XML security library
+libxmu6	2:1.1.3-3build2	125	optional	libs	X11 miscellaneous utility library
+libxmuu1	2:1.1.3-3build2	39	optional	libs	X11 miscellaneous micro-utility library
+libxpm4	1:3.5.17-1build2	91	optional	libs	X11 pixmap library
+libxpresent1	1.0.0-2build2	34	optional	libs	X11 Present extension library
+libxrandr-dev	2:1.5.2-2build1	126	optional	libdevel	X11 RandR extension library (development headers)
+libxrandr2	2:1.5.2-2build1	66	optional	libs	X11 RandR extension library
+libxrender-dev	1:0.9.10-1.1build1	96	optional	libdevel	X Rendering Extension client library (development files)
+libxrender1	1:0.9.10-1.1build1	58	optional	libs	X Rendering Extension client library
+libxres1	2:1.2.1-1build1	33	optional	libs	X11 Resource extension library
+libxshmfence1	1.3-1build5	30	optional	libs	X shared memory fences - shared library
+libxslt1.1	1.1.39-0exp1ubuntu0.24.04.3	417	optional	libs	XSLT 1.0 processing library - runtime library
+libxss1	1:1.2.3-1build3	31	optional	libs	X11 Screen Saver extension library
+libxt6t64	1:1.2.1-1.2build1	459	optional	libs	X11 toolkit intrinsics library
+libxtables12	1.8.10-3ubuntu2	103	optional	libs	netfilter xtables library
+libxtst-dev	2:1.2.3-1.1build1	72	optional	libdevel	X11 Record extension library (development headers)
+libxtst6	2:1.2.3-1.1build1	45	optional	libs	X11 Testing -- Record extension library
+libxv1	2:1.0.11-1.1build1	38	optional	libs	X11 Video extension library
+libxvidcore4	2:1.3.7-1build1	673	optional	libs	Open source MPEG-4 video codec (library)
+libxxf86dga1	2:1.1.5-1build1	41	optional	libs	X11 Direct Graphics Access extension library
+libxxf86vm1	1:1.1.4-1build4	37	optional	libs	X11 XFree86 video mode extension library
+libxxhash0	0.8.2-2build1	90	important	libs	shared library for xxhash
+libyajl2	2.1.0-5build1	62	optional	libs	Yet Another JSON Library
+libyaml-0-2	0.2.5-1build1	143	optional	libs	Fast YAML 1.1 parser and emitter library
+libyelp0	42.2-1ubuntu0.24.04.1	324	optional	libs	Library for the GNOME help browser
+libytnef0	2.1.2-1build1	113	optional	libs	improved decoder for application/ms-tnef attachments
+libzimg2	3.0.5+ds1-1build1	827	optional	libs	scaling, colorspace, depth conversion library (shared library)
+libzix-0-0	0.4.2-2build1	71	optional	libs	library of portability wrappers and data structures (shared library)
+libzmq5	4.3.5-1build2	698	optional	libs	lightweight messaging kernel (shared library)
+libzstd-dev	1.5.5+dfsg2-2build1.1	1237	optional	libdevel	fast lossless compression algorithm -- development files
+libzstd1	1.5.5+dfsg2-2build1.1	761	required	libs	fast lossless compression algorithm
+libzvbi-common	0.2.42-2	161	optional	devel	Vertical Blanking Interval decoder (VBI) - common files
+libzvbi0t64	0.2.42-2	689	optional	libs	Vertical Blanking Interval decoder (VBI) - runtime files
+linux-base	4.5ubuntu9+24.04.2	345	optional	kernel	Linux image base package
+linux-firmware	20240318.git3b128b60-0ubuntu2.27	626006	optional	misc	Firmware for Linux kernel drivers
+linux-generic	6.8.0-136.136	18	optional	kernel	Complete Generic Linux kernel and headers
+linux-headers-6.8.0-100	6.8.0-100.100	84155	optional	devel	Header files related to Linux kernel version 6.8.0
+linux-headers-6.8.0-100-generic	6.8.0-100.100	28744	optional	devel	Linux kernel headers for version 6.8.0 on 64 bit x86 SMP
+linux-headers-6.8.0-107	6.8.0-107.107	84248	optional	devel	Header files related to Linux kernel version 6.8.0
+linux-headers-6.8.0-107-generic	6.8.0-107.107	28819	optional	devel	Linux kernel headers for version 6.8.0 on 64 bit x86 SMP
+linux-headers-6.8.0-136	6.8.0-136.136	84242	optional	devel	Header files related to Linux kernel version 6.8.0
+linux-headers-6.8.0-136-generic	6.8.0-136.136	28734	optional	devel	Linux kernel headers for version 6.8.0 on 64 bit x86 SMP
+linux-headers-generic	6.8.0-136.136	18	optional	kernel	Generic Linux kernel headers
+linux-image-6.8.0-100-generic	6.8.0-100.100	14705	optional	kernel	Signed kernel image generic
+linux-image-6.8.0-107-generic	6.8.0-107.107	14717	optional	kernel	Signed kernel image generic
+linux-image-6.8.0-136-generic	6.8.0-136.136	14737	optional	kernel	Signed kernel image generic
+linux-image-generic	6.8.0-136.136	18	optional	kernel	Generic Linux kernel image
+linux-libc-dev	6.8.0-136.136	7586	optional	devel	Linux Kernel Headers for development
+linux-modules-6.8.0-100-generic	6.8.0-100.100	38424	optional	kernel	Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+linux-modules-6.8.0-107-generic	6.8.0-107.107	38477	optional	kernel	Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+linux-modules-6.8.0-136-generic	6.8.0-136.136	38473	optional	kernel	Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+linux-modules-extra-6.8.0-100-generic	6.8.0-100.100	109825	optional	kernel	Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+linux-modules-extra-6.8.0-107-generic	6.8.0-107.107	109917	optional	kernel	Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+linux-modules-extra-6.8.0-136-generic	6.8.0-136.136	109921	optional	kernel	Linux kernel extra modules for version 6.8.0 on 64 bit x86 SMP
+linux-tools-6.8.0-100	6.8.0-100.100	18788	optional	devel	Linux kernel version specific tools for version 6.8.0-100
+linux-tools-6.8.0-100-generic	6.8.0-100.100	647	optional	devel	Linux kernel version specific tools for version 6.8.0-100
+linux-tools-6.8.0-107	6.8.0-107.107	18846	optional	devel	Linux kernel version specific tools for version 6.8.0-107
+linux-tools-6.8.0-107-generic	6.8.0-107.107	700	optional	devel	Linux kernel version specific tools for version 6.8.0-107
+linux-tools-6.8.0-136	6.8.0-136.136	19342	optional	devel	Linux kernel version specific tools for version 6.8.0-136
+linux-tools-6.8.0-136-generic	6.8.0-136.136	630	optional	devel	Linux kernel version specific tools for version 6.8.0-136
+linux-tools-common	6.8.0-136.136	945	optional	kernel	Linux kernel version specific tools for version 6.8.0
+locales	2.39-0ubuntu8.7	16712	standard	localization	GNU C Library: National Language (locale) data [support]
+login	1:4.13+dfsg1-4ubuntu3.2	884	required	admin	system login tools
+logrotate	3.21.0-2build1	145	important	admin	Log rotation utility
+logsave	1.47.0-2.4~exp1ubuntu4.1	51	required	admin	save the output of a command in a log file
+lsb-base	11.6	12	optional	oldlibs	transitional package for Linux Standard Base init script functionality
+lsb-release	12.0-2	17	optional	misc	Linux Standard Base version reporting utility (minimal implementation)
+lshw	02.19.git.2021.06.19.996aaad9c7-2ubuntu0.24.04.1	974	optional	utils	information about hardware configuration
+lsof	4.95.0-1build3	475	standard	utils	utility to list open files
+lto-disabled-list	47	41	optional	devel	list of packages not to build with LTO
+lvm2	2.03.16-3ubuntu3.2	4005	optional	admin	Linux Logical Volume Manager
+lxd-agent-loader	0.7ubuntu0.1	25	optional	misc	LXD - VM agent loader
+lxd-installer	4ubuntu0.1	22	optional	admin	Wrapper to install lxd snap on demand
+make	4.3-4.1build2	404	optional	devel	utility for directing compilation
+man-db	2.12.0-4build2	2928	important	doc	tools for reading manual pages
+manpages	6.7-2	1672	standard	doc	Manual pages about using a GNU/Linux system
+manpages-dev	6.7-2	3724	optional	doc	Manual pages about using GNU/Linux for development
+mawk	1.3.4.20240123-1build1	273	required	utils	Pattern scanning and text processing language
+mdadm	4.3-1ubuntu2.1	1130	optional	admin	tool for managing Linux MD devices (software RAID)
+media-types	10.1.0	93	standard	net	List of standard media types and their usual file extension
+mesa-libgallium	25.2.8-0ubuntu0.24.04.2	42454	optional	libs	shared infrastructure for Mesa drivers
+modemmanager	1.23.4-0ubuntu2	4640	optional	net	D-Bus service for managing modems
+mokutil	0.6.0-2build3	78	optional	admin	tools for manipulating machine owner keys
+motd-news-config	13ubuntu10.4	49	optional	admin	Configuration for motd-news shipped in base-files
+mount	2.39.3-9ubuntu6.5	348	required	admin	tools for mounting and manipulating filesystems
+mpv	0.37.0-1ubuntu4	3427	optional	video	video player based on MPlayer/mplayer2
+msr-tools	1.3-5build1	44	optional	admin	Utilities for modifying MSRs from userspace
+mtr-tiny	0.95-1.1ubuntu0.1	153	optional	net	Full screen ncurses traceroute tool
+multipath-tools	0.9.4-5ubuntu8.2	1147	optional	admin	maintain multipath block device access
+mutter-common	46.2-1ubuntu0.24.04.16	196	optional	misc	shared files for the Mutter window manager
+mutter-common-bin	46.2-1ubuntu0.24.04.16	109	optional	misc	shared programs for the Mutter window manager
+mythes-ru	1:24.2.1-1	3483	optional	text	Russian Thesaurus for LibreOffice
+nano	7.2-2ubuntu0.2	836	important	editors	small, friendly text editor inspired by Pico
+nautilus	1:46.4-0ubuntu0.2	1605	optional	gnome	file manager and graphical shell for GNOME
+nautilus-data	1:46.4-0ubuntu0.2	148	optional	gnome	data files for nautilus
+ncurses-base	6.4+20240113-1ubuntu2.1	384	required	misc	basic terminal type definitions
+ncurses-bin	6.4+20240113-1ubuntu2.1	647	required	utils	terminal-related programs and man pages
+needrestart	3.6-7ubuntu4.5	508	optional	admin	check which daemons need to be restarted after library upgrades
+net-tools	2.10-0.1ubuntu4.4	792	important	net	NET-3 networking toolkit
+netbase	6.4	36	important	admin	Basic TCP/IP networking system
+netcat-openbsd	1.226-1ubuntu2	106	important	net	TCP/IP swiss army knife
+netplan-generator	1.1.2-8ubuntu1~24.04.2	291	optional	net	Declarative network configuration for various backends at boot
+netplan.io	1.1.2-8ubuntu1~24.04.2	342	optional	net	Declarative network configuration for various backends at runtime
+network-manager	1.46.0-1ubuntu2.7	7600	optional	net	network management framework (daemon and userspace tools)
+network-manager-gnome	1.34.0-1ubuntu3	2076	optional	gnome	network management framework (GNOME frontend)
+networkd-dispatcher	2.2.4-1	68	optional	utils	Dispatcher service for systemd-networkd connection status changes
+nftables	1.0.9-1ubuntu0.1	181	important	net	Program to control packet filtering rules by Netfilter project
+ninja-build	1.11.1-2	355	optional	devel	small build system closest in spirit to Make
+ntfs-3g	1:2022.10.3-1.2ubuntu3.2	1288	optional	otherosfs	read/write NTFS driver for FUSE
+numactl	2.0.18-1ubuntu0.24.04.1	142	optional	admin	NUMA scheduling and memory placement tool
+obsidian	1.12.7	313931	optional	default	
+ocl-icd-libopencl1	2.3.2-1build1	140	optional	libs	Generic OpenCL ICD Loader
+open-iscsi	2.1.9-3ubuntu5.4	1172	optional	net	iSCSI initiator tools
+open-vm-tools	2:13.0.0-2~ubuntu0.24.04.1	3014	optional	admin	Open VMware Tools for virtual machines hosted on VMware (CLI)
+opencode	1.4.3	376244	optional	default	
+openssh-client	1:9.6p1-3ubuntu13.18	3538	standard	net	secure shell (SSH) client, for secure access to remote machines
+openssl	3.0.13-0ubuntu3.11	1885	optional	utils	Secure Sockets Layer toolkit - cryptographic utility
+orca	46.1-1ubuntu1	5600	optional	gnome	Scriptable screen reader
+os-prober	1.81ubuntu4	84	optional	utils	utility to detect other OSes on a set of drives
+overlayroot	0.49~24.04.1	63	optional	admin	use an overlayfs on top of a read-only root filesystem
+ovmf	2024.02-2ubuntu0.9	16971	optional	misc	UEFI firmware for 64-bit x86 virtual machines
+p11-kit	0.25.3-4ubuntu2.1	632	optional	misc	p11-glue utilities
+p11-kit-modules	0.25.3-4ubuntu2.1	1860	optional	misc	p11-glue proxy and trust modules
+packagekit	1.2.8-2ubuntu1.5	1556	optional	admin	Provides a package management service
+packagekit-tools	1.2.8-2ubuntu1.5	107	optional	admin	Provides PackageKit command-line tools
+pango1.0-tools	1.52.1+ds-1build1	140	optional	libs	Development utilities for Pango
+parted	3.6-4build1	130	optional	admin	disk partition manipulator
+passwd	1:4.13+dfsg1-4ubuntu3.2	2419	required	admin	change and administer password and group data
+pastebinit	1.6.2-1	140	optional	misc	command-line pastebin client
+patch	2.7.6-7build3	218	optional	vcs	Apply a diff file to an original
+patchelf	0.18.0-1.1build1	273	optional	utils	modify properties of ELF executables
+pci.ids	0.0~2024.03.31-1ubuntu0.1	1424	optional	admin	PCI ID Repository
+pciutils	1:3.10.0-2build1	182	standard	admin	PCI utilities
+perl	5.38.2-3.2ubuntu0.3	673	standard	perl	Larry Wall's Practical Extraction and Report Language
+perl-base	5.38.2-3.2ubuntu0.3	7914	required	perl	minimal Perl system
+perl-modules-5.38	5.38.2-3.2ubuntu0.3	19161	optional	libs	Core Perl modules
+pgadmin3	1.18.1-2	8711	optional	database	graphical administration tool for PostgreSQL
+pinentry-curses	1.2.1-3ubuntu5	89	optional	utils	curses-based PIN or pass-phrase entry dialog for GnuPG
+pinentry-gnome3	1.2.1-3ubuntu5	102	optional	utils	GNOME 3 PIN or pass-phrase entry dialog for GnuPG
+pipewire	1.0.5-1ubuntu3.3	124	optional	video	audio and video processing engine multimedia server
+pipewire-alsa	1.0.5-1ubuntu3.3	215	optional	sound	PipeWire ALSA plugin, for ALSA applications to output via PipeWire
+pipewire-audio	1.0.5-1ubuntu3.3	30	optional	sound	recommended set of PipeWire packages for a standard audio desktop use
+pipewire-bin	1.0.5-1ubuntu3.3	1645	optional	video	PipeWire multimedia server - programs
+pipewire-pulse	1.0.5-1ubuntu3.3	51	optional	sound	PipeWire PulseAudio daemon
+pkexec	124-2ubuntu1.24.04.3	62	optional	admin	run commands as another user with polkit authorization
+pkg-config	1.8.1-2build1	29	optional	oldlibs	manage compile and link flags for libraries (transitional package)
+pkgconf	1.8.1-2build1	65	optional	devel	manage compile and link flags for libraries
+pkgconf-bin	1.8.1-2build1	81	optional	devel	manage compile and link flags for libraries (binaries)
+plymouth	24.004.60-1ubuntu7.2	892	optional	misc	boot animation, logger and I/O multiplexer
+plymouth-theme-ubuntu-text	24.004.60-1ubuntu7.2	53	optional	misc	boot animation, logger and I/O multiplexer - ubuntu text theme
+policykit-1	124-2ubuntu1.24.04.3	34	optional	oldlibs	transitional package for polkitd and pkexec
+polkitd	124-2ubuntu1.24.04.3	528	optional	admin	framework for managing administrative policies and privileges
+pollinate	4.33-3.1ubuntu1.3	43	optional	admin	seed the pseudo random number generator
+poppler-data	0.4.12-1	13086	optional	misc	encoding data for the poppler PDF rendering library
+postgrespro-1c-16	16.14-1.noble	16	optional	database	Easy configuration for Postgres Pro 1c 16
+postgrespro-1c-16-client	16.14-1.noble	9553	optional	database	front-end programs for Postgres Pro 1c 16
+postgrespro-1c-16-contrib	16.14-1.noble	2910	optional	database	additional facilities for Postgres Pro 1c 16
+postgrespro-1c-16-libs	16.14-1.noble	1323	optional	libs	PostgresPro C client and ECPG libraries
+postgrespro-1c-16-server	16.14-1.noble	31173	optional	database	object-relational SQL database, version 16 server
+power-profiles-daemon	0.21-1ubuntu1	161	optional	admin	Makes power profiles handling available over D-Bus.
+powermgmt-base	1.37ubuntu0.1	25	optional	utils	common utils for power management
+procps	2:4.0.4-4ubuntu3.2	1800	required	admin	/proc file system utilities
+psmisc	23.7-1build1	596	optional	admin	utilities that use the proc file system
+publicsuffix	20231001.0357-0.1	375	optional	net	accurate, machine-readable list of domain name suffixes
+python-apt-common	2.7.7ubuntu5.2	156	optional	python	Python interface to libapt-pkg (locales)
+python-babel-localedata	2.10.3-3build1	29201	optional	python	tools for internationalizing Python applications - locale data files
+python-matplotlib-data	3.6.3-1ubuntu5	9067	optional	python	Python based plotting system (data package)
+python3	3.12.3-0ubuntu2.1	81	optional	python	interactive high-level object-oriented language (default python3 version)
+python3-aiofiles	23.2.1-2	60	optional	python	support for Python asyncio file operations
+python3-anyio	4.2.0-1	358	optional	python	Asynchronous compatibility layer (Python 3)
+python3-appdirs	1.4.4-4	57	optional	python	determining appropriate platform-specific directories (Python 3)
+python3-apport	2.28.2-0ubuntu0.1	486	optional	python	Python 3 library for Apport crash report handling
+python3-apt	2.7.7ubuntu5.2	694	optional	python	Python 3 interface to libapt-pkg
+python3-aptdaemon	1.1.1+bzr982-0ubuntu44	480	extra	python	Python 3 module for the server and client of aptdaemon
+python3-aptdaemon.gtk3widgets	1.1.1+bzr982-0ubuntu44	72	extra	python	Python 3 GTK+ 3 widgets to run an aptdaemon client
+python3-asttokens	2.4.1-1	91	optional	python	annotate Python asbtract syntax trees with code references (Python 3)
+python3-attr	23.2.0-2	236	optional	python	Attributes without boilerplate (Python 3)
+python3-automat	22.10.0-2	124	optional	python	Self-service finite-state machines for the programmer on the go
+python3-babel	2.10.3-3build1	419	optional	python	tools for internationalizing Python applications - Python 3.x
+python3-bcrypt	3.2.2-1build1	94	optional	python	password hashing library for Python 3
+python3-blinker	1.7.0-1	57	optional	python	Fast, simple object-to-object and broadcast signaling (Python3)
+python3-boto3	1.34.46+dfsg-1ubuntu1	1037	optional	python	Python interface to Amazon's Web Services - Python 3.x
+python3-botocore	1.34.46+repack-1ubuntu1	91883	optional	python	Low-level, data-driven core of boto 3 (Python 3)
+python3-bpfcc	0.29.1+ds-1ubuntu7	220	optional	python	Python 3 wrappers for BPF Compiler Collection (BCC)
+python3-brlapi	6.6-4ubuntu5	395	optional	python	Braille display access via BRLTTY - Python3 bindings
+python3-brotli	1.1.0-2build2	833	optional	python	lossless compression algorithm and format (Python 3 version)
+python3-bs4	4.12.3-1	679	optional	python	error-tolerant HTML parser for Python 3
+python3-cairo	1.25.1-2build2	503	optional	python	Python3 bindings for the Cairo vector graphics library
+python3-certifi	2023.11.17-1	325	optional	python	root certificates for validating SSL certs and verifying TLS hosts (python3)
+python3-cffi-backend	1.16.0-2build1	216	optional	python	Foreign Function Interface for Python 3 calling C code - runtime
+python3-chardet	5.2.0+dfsg-1	1141	optional	python	Universal Character Encoding Detector (Python3)
+python3-click	8.1.6-2	371	optional	python	Wrapper around optparse for command line utilities - Python 3.x
+python3-colorama	0.4.6-4	127	optional	python	Cross-platform colored terminal text in Python - Python 3.x
+python3-commandnotfound	23.04.0	51	optional	python	Python 3 bindings for command-not-found.
+python3-configobj	5.0.8-3	162	optional	python	simple but powerful config file reader and writer for Python 3
+python3-constantly	23.10.4-1	78	optional	python	Symbolic constants in Python
+python3-contourpy	1.0.7-2build1	568	optional	python	Python library for calculating contours of 2D quadrilateral grids
+python3-cryptography	41.0.7-4ubuntu0.4	3244	optional	python	Python library exposing cryptographic recipes and primitives (Python 3)
+python3-cssselect	1.2.0-2	93	optional	python	cssselect parses CSS3 Selectors and translates them to XPath 1.0
+python3-cups	2.0.1-5build6	223	optional	python	Python3 bindings for CUPS
+python3-cupshelpers	1.5.18-1ubuntu9	161	optional	python	Python utility modules around the CUPS printing system
+python3-cycler	0.11.0-2	34	optional	python	composable kwarg iterator (Python 3)
+python3-dateutil	2.8.2-3ubuntu1	320	optional	python	powerful extensions to the standard Python 3 datetime module
+python3-dbus	1.3.2-5build3	408	optional	python	simple interprocess messaging system (Python 3 interface)
+python3-debconf	1.5.86ubuntu1	19	optional	python	interact with debconf from Python 3
+python3-debian	0.1.49ubuntu2	591	optional	python	Python 3 modules to work with Debian-related data formats
+python3-decorator	5.1.1-5	40	optional	python	simplify usage of Python decorators by programmers
+python3-defer	1.0.6-2.1ubuntu1	50	extra	python	Small framework for asynchronous programming (Python 3)
+python3-dev	3.12.3-0ubuntu2.1	151	optional	python	header files and a static library for Python (default)
+python3-distro	1.9.0-1	79	optional	python	Linux OS platform information API
+python3-distro-info	1.7build1	35	optional	python	information about distributions' releases (Python 3 module)
+python3-distupgrade	1:24.04.28	610	optional	python	manage release upgrades
+python3-executing	2.0.1-0.1	102	optional	python	Inspect Python AST node being executed
+python3-fastapi	0.101.0-3	366	optional	python	modern, fast, web framework for building APIs, based on type hints
+python3-fonttools	4.46.0-1build2	10727	optional	python	Converts OpenType and TrueType fonts to and from XML (Python 3 Library)
+python3-fs	2.4.16-3	549	optional	python	Python filesystem abstraction
+python3-gdbm	3.12.3-0ubuntu1	55	optional	python	GNU dbm database support for Python 3.x
+python3-gi	3.48.2-1	742	optional	python	Python 3 bindings for gobject-introspection libraries
+python3-gi-cairo	3.48.2-1	41	optional	python	Python 3 Cairo bindings for the GObject library
+python3-h11	0.14.0-1ubuntu0.24.04.1	238	optional	python	Pure-Python, bring-your-own-I/O implementation of HTTP/1.1 (Python 3)
+python3-hamcrest	2.1.0-1	174	optional	python	Hamcrest framework for matcher objects (Python 3)
+python3-html5lib	1.1-6	538	optional	python	HTML parser/tokenizer based on the WHATWG HTML5 specification
+python3-httpcore	1.0.2-2	310	optional	python	minimal low-level HTTP client
+python3-httplib2	0.20.4-3ubuntu0.1	135	optional	python	comprehensive HTTP client library written for Python3
+python3-httpx	0.26.0-2	335	optional	python	next generation HTTP client
+python3-hyperlink	21.0.0-5	229	optional	python	Immutable, Pythonic, correct URLs.
+python3-idna	3.6-2ubuntu0.2	336	optional	python	Python IDNA2008 (RFC 5891) handling (Python 3)
+python3-incremental	22.10.0-1	103	optional	python	Library for versioning Python projects
+python3-ipython	8.20.0-1	2662	optional	python	Enhanced interactive Python shell (Python 3 version)
+python3-itsdangerous	2.1.2-4	66	optional	python	Various helpers to pass trusted data to untrusted environment - Python 3.x
+python3-jedi	0.19.1+ds1-1	5504	optional	python	autocompletion tool for Python 3
+python3-jinja2	3.1.2-1ubuntu1.3	539	optional	python	small but fast and easy to use stand-alone template engine
+python3-jmespath	1.0.1-1	95	optional	python	JSON Matching Expressions (Python 3)
+python3-json-pointer	2.0-0ubuntu1	44	optional	python	resolve JSON pointers - Python 3.x
+python3-jsonpatch	1.32-3	58	optional	python	library to apply JSON patches - Python 3.x
+python3-jsonschema	4.10.3-2ubuntu1	483	optional	python	An(other) implementation of JSON Schema (Draft 3, 4, 6, 7)
+python3-jwt	2.7.0-1ubuntu0.1	105	optional	python	Python 3 implementation of JSON Web Token
+python3-kiwisolver	1.4.4-2build1	159	optional	python	fast implementation of the Cassowary constraint solver - Python 3.X
+python3-launchpadlib	1.11.0-6	1770	optional	python	Launchpad web services client library (Python 3)
+python3-lazr.restfulclient	0.14.6-1	177	optional	python	client for lazr.restful-based web services (Python 3)
+python3-lazr.uri	1.0.6-3	73	optional	python	library for parsing, manipulating, and generating URIs
+python3-louis	3.29.0-1build1	45	optional	python	Python bindings for liblouis
+python3-lxml	5.2.1-1	4787	optional	python	pythonic binding for the libxml2 and libxslt libraries
+python3-lz4	4.0.2+dfsg-1build4	138	optional	python	Python interface to the lz4 compression library (Python 3)
+python3-magic	2:0.4.27-3	54	optional	python	python3 interface to the libmagic file type identification library
+python3-mako	1.3.2-1ubuntu0.1	336	optional	python	fast and lightweight templating for the Python 3 platform
+python3-markdown	3.5.2-1	352	optional	python	text-to-HTML conversion library/tool (Python 3 version)
+python3-markdown-it	3.0.0-2	287	optional	python	Python port of markdown-it and some its associated plugins
+python3-markupsafe	2.1.5-1build2	51	optional	python	HTML/XHTML/XML string library
+python3-matplotlib	3.6.3-1ubuntu5	19249	optional	python	Python based plotting system in a style similar to Matlab (Python 3)
+python3-matplotlib-inline	0.1.6-2	38	optional	python	Matplotlib backend for inline use in IPython and Jupyter
+python3-mdurl	0.1.2-1	42	optional	python	Python port of the JavaScript mdurl package
+python3-minimal	3.12.3-0ubuntu2.1	112	optional	python	minimal subset of the Python language (default python3 version)
+python3-mpmath	1.2.1-3	1962	optional	python	library for arbitrary-precision floating-point arithmetic (Python3)
+python3-multipart	0.0.9-1	102	optional	python	streaming multipart parser for Python
+python3-mutagen	1.46.0-2	663	optional	python	audio metadata editing library (Python 3)
+python3-netaddr	0.8.0-2ubuntu1	1208	optional	python	manipulation of various common network address notations (Python 3)
+python3-netifaces	0.11.0-2build3	57	optional	python	portable network interface information - Python 3.x
+python3-netplan	1.1.2-8ubuntu1~24.04.2	149	optional	python	Declarative network configuration Python bindings
+python3-newt	0.52.24-2ubuntu2	95	optional	python	NEWT module for Python3
+python3-numpy	1:1.26.4+ds-6ubuntu1	23316	optional	python	Fast array facility to the Python language (Python 3)
+python3-oauthlib	3.2.2-1	555	optional	python	generic, spec-compliant implementation of OAuth for Python3
+python3-olefile	0.46-3	140	optional	python	Python module to read/write MS OLE2 files
+python3-openssl	23.2.0-1ubuntu0.1	253	optional	python	Python 3 wrapper around the OpenSSL library
+python3-packaging	24.0-1	185	optional	python	core utilities for python3 packages
+python3-parso	0.8.3-1	359	optional	python	Python parser that supports error recovery - Python 3.X
+python3-pexpect	4.9-2	212	optional	python	Python 3 module for automating interactive applications
+python3-pil	10.2.0-1ubuntu1.2	1773	optional	python	Python Imaging Library (Python3)
+python3-pil.imagetk	10.2.0-1ubuntu1.2	106	optional	python	Python Imaging Library - ImageTk Module (Python3)
+python3-pip	24.0+dfsg-1ubuntu1.3	6862	optional	python	Python package installer
+python3-pip-whl	24.0+dfsg-1ubuntu1.3	1809	optional	python	Python package installer (pip wheel)
+python3-pkg-resources	68.1.2-2ubuntu1.2	742	optional	python	Package Discovery and Resource Access using pkg_resources
+python3-problem-report	2.28.2-0ubuntu0.1	61	optional	python	Python 3 library to handle problem reports
+python3-prompt-toolkit	3.0.43-1	1440	optional	python	library for building interactive command lines (Python 3)
+python3-ptyprocess	0.7.0-5	58	optional	python	Run a subprocess in a pseudo terminal from Python 3
+python3-pure-eval	0.2.2-1	52	optional	python	Safely evaluate Python AST nodes without side effects
+python3-pyasn1	0.4.8-4ubuntu0.2	390	optional	python	ASN.1 library for Python (Python 3 module)
+python3-pyasn1-modules	0.2.8-1	693	optional	python	Collection of protocols modules written in ASN.1 language (Python 3)
+python3-pycryptodome	3.20.0+dfsg-1	3956	optional	python	cryptographic Python library (Python 3)
+python3-pydantic	1.10.14-1	7456	optional	python	Data validation and settings management using Python type hinting
+python3-pygments	2.17.2+dfsg-1	4418	optional	python	syntax highlighting package written in Python 3
+python3-pyparsing	3.1.1-1	415	optional	python	alternative to creating and executing simple grammars - Python 3.x
+python3-pyrsistent	0.20.0-1build2	256	optional	python	persistent/functional/immutable data structures for Python
+python3-requests	2.31.0+dfsg-1ubuntu1.1	233	optional	python	elegant and simple HTTP library for Python3, built for human beings
+python3-rich	13.7.1-1	1044	optional	python	render rich text, tables, progress bars, syntax highlighting, markdown and more
+python3-s3transfer	0.10.1-1ubuntu2	313	optional	python	Amazon S3 Transfer Manager for Python3
+python3-scapy	2.5.0+dfsg-2ubuntu1	6613	optional	python	Packet generator/sniffer and network scanner/discovery (Python 3)
+python3-scipy	1.11.4-6build1	60287	optional	python	scientific tools for Python 3
+python3-serial	3.5-2	458	optional	python	pyserial - module encapsulating access for the serial port
+python3-service-identity	24.1.0-1	52	optional	python	Service identity verification for pyOpenSSL (Python 3 module)
+python3-setuptools	68.1.2-2ubuntu1.2	2232	optional	python	Python3 Distutils Enhancements
+python3-setuptools-whl	68.1.2-2ubuntu1.2	875	optional	python	Python Distutils Enhancements (wheel package)
+python3-simplejson	3.19.2-1build2	259	optional	python	simple, fast, extensible JSON encoder/decoder for Python 3.x
+python3-six	1.16.0-4	59	optional	python	Python 2 and 3 compatibility library
+python3-sniffio	1.3.0-2	34	optional	python	detect which async Python library is in use (Python3 version)
+python3-software-properties	0.99.49.4	130	optional	python	manage the repositories that you install software from
+python3-soupsieve	2.5-1	163	optional	python	modern CSS selector implementation for BeautifulSoup (Python 3)
+python3-speechd	0.12.0~rc2-2build3	140	optional	python	Python interface to Speech Dispatcher
+python3-stack-data	0.6.3-1	96	optional	python	Better tracebacks for Python
+python3-starlette	0.31.1-1	283	optional	python	ASGI library ideal for building high performance asyncio services
+python3-sympy	1.12-7	24386	optional	python	Computer Algebra System (CAS) in Python (Python 3)
+python3-systemd	235-1build4	211	optional	python	Python 3 bindings for systemd
+python3-tk	3.12.3-0ubuntu1	463	optional	python	Tkinter - Writing Tk applications with Python 3.x
+python3-traitlets	5.5.0-2	467	optional	python	Lightweight Traits-like package for Python 3
+python3-twisted	24.3.0-1ubuntu0.2	12959	optional	python	Event-based framework for internet applications
+python3-typeshed	0.0~git20231111.6764465-3	10582	optional	python	collection of library stubs for Python, with static types
+python3-typing-extensions	4.10.0-1	361	optional	python	Backported and Experimental Type Hints for Python
+python3-tz	2024.1-2	103	optional	python	Python3 version of the Olson timezone database
+python3-ufolib2	0.16.0+dfsg1-1	185	optional	python	Unified Font Object (UFO) fonts library
+python3-unicodedata2	15.1.0+ds-1build1	1244	optional	python	Python unicodedata backport/updates
+python3-update-manager	1:24.04.12	189	optional	python	Python 3.x module for update-manager
+python3-urllib3	2.0.7-1ubuntu0.7	460	optional	python	HTTP library with thread-safe connection pooling for Python3
+python3-uvicorn	0.27.1-1	237	optional	python	ASGI server implementation, using uvloop and httptools (Python3 version)
+python3-uvloop	0.19.0+ds1-2.1	1854	optional	python	fast implementation of asyncio event loop on top of libuv
+python3-wadllib	1.3.6-5	331	optional	python	Python 3 library for navigating WADL files
+python3-wcwidth	0.2.5+dfsg1-1.1ubuntu1	698	optional	python	determine printable width of a string on a terminal
+python3-webencodings	0.5.1-5	56	optional	python	Python implementation of the WHATWG Encoding standard
+python3-websockets	10.4-1	370	optional	python	implementation of the WebSocket Protocol (RFC 6455)
+python3-wheel	0.42.0-2	238	optional	python	built-package format for Python
+python3-wsproto	1.2.0-1	102	optional	python	WebSockets state-machine based protocol implementation (Python3)
+python3-xdg	0.28-2	186	optional	python	Python 3 library to access freedesktop.org standards
+python3-xkit	0.5.0ubuntu6	110	optional	python	library for the manipulation of xorg.conf files (Python 3)
+python3-yaml	6.0.1-2build2	512	optional	python	YAML parser and emitter for Python3
+python3-zope.interface	6.1-1build1	923	optional	zope	Interfaces for Python3
+python3.12	3.12.3-1ubuntu0.15	739	optional	python	Interactive high-level object-oriented language (version 3.12)
+python3.12-dev	3.12.3-1ubuntu0.15	502	optional	python	Header files and a static library for Python (v3.12)
+python3.12-minimal	3.12.3-1ubuntu0.15	7928	optional	python	Minimal subset of the Python language (version 3.12)
+python3.12-venv	3.12.3-1ubuntu0.15	28	optional	python	Interactive high-level object-oriented language (pyvenv binary, version 3.12)
+qemu-block-extra	1:8.2.2+ds-0ubuntu1.17	310	optional	otherosfs	extra block backend modules for qemu-system and qemu-utils
+qemu-system-common	1:8.2.2+ds-0ubuntu1.17	7089	optional	otherosfs	QEMU full system emulation binaries (common files)
+qemu-system-data	1:8.2.2+ds-0ubuntu1.17	9081	optional	otherosfs	QEMU full system emulation (data files)
+qemu-system-gui	1:8.2.2+ds-0ubuntu1.17	1164	optional	otherosfs	QEMU full system emulation binaries (graphical display and audio modules)
+qemu-system-modules-opengl	1:8.2.2+ds-0ubuntu1.17	782	optional	otherosfs	QEMU full system emulation binaries (OpenGL display modules)
+qemu-system-modules-spice	1:8.2.2+ds-0ubuntu1.17	314	optional	otherosfs	QEMU full system emulation binaries (spice display modules)
+qemu-system-x86	1:8.2.2+ds-0ubuntu1.17	58554	optional	otherosfs	QEMU full system emulation binaries (x86)
+qemu-utils	1:8.2.2+ds-0ubuntu1.17	11053	optional	otherosfs	QEMU utilities
+readline-common	8.2-4build1	77	optional	utils	GNU readline and history libraries, common files
+rpcsvc-proto	1.4.2-0ubuntu7	245	optional	libs	RPC protocol compiler and definitions
+rsync	3.2.7-1ubuntu1.5	801	optional	net	fast, versatile, remote (and local) file-copying tool
+rsyslog	8.2312.0-3ubuntu9.2	1775	optional	admin	reliable system and kernel logging daemon
+run-one	1.17-0ubuntu2	29	optional	admin	run just one instance of a command and its args at a time
+rygel	0.42.5-1ubuntu3	1436	optional	net	GNOME UPnP/DLNA services
+rygel-playbin	0.42.5-1ubuntu3	53	optional	net	GNOME UPnP/DLNA services - GStreamer Media Renderer plugin
+rygel-tracker	0.42.5-1ubuntu3	225	optional	net	GNOME UPnP/DLNA services - Tracker plugin
+samba-libs	2:4.19.5+dfsg-4ubuntu9.6	23718	optional	libs	Samba core libraries
+sbsigntool	0.9.4-3.1ubuntu7	215	optional	utils	Tools to manipulate signatures on UEFI binaries and drivers
+screen	4.9.1-1ubuntu1	996	standard	misc	terminal multiplexer with VT100/ANSI terminal emulation
+seabios	1.16.3-2	859	optional	misc	Legacy BIOS implementation
+secureboot-db	1.9build1	42	optional	utils	Secure Boot updates for DB and DBX
+sed	4.9-2ubuntu0.24.04.1	340	required	utils	GNU stream editor for filtering/transforming text
+sensible-utils	0.0.22	63	required	utils	Utilities for sensible alternative selection
+session-migration	0.3.9build1	49	optional	misc	Tool to migrate in user session settings
+sg3-utils	1.46-3ubuntu4	2799	optional	admin	utilities for devices using the SCSI command set
+sg3-utils-udev	1.46-3ubuntu4	31	optional	admin	utilities for devices using the SCSI command set (udev rules)
+sgml-base	1.31	66	optional	text	SGML infrastructure and SGML catalog file support
+sgml-data	2.0.11+nmu1	1354	optional	text	common SGML and XML data
+shared-mime-info	2.4-4	2852	optional	misc	FreeDesktop.org shared MIME database and spec
+shim-signed	1.58+15.8-0ubuntu1	4740	optional	utils	Secure Boot chain-loading bootloader (Microsoft-signed binary)
+shotwell-common	0.32.6-1ubuntu3	776	optional	gnome	digital photo organizer - common files
+software-properties-common	0.99.49.4	192	optional	admin	manage the repositories that you install software from (common)
+software-properties-gtk	0.99.49.4	512	optional	admin	manage the repositories that you install software from (gtk)
+sosreport	4.10.2-0ubuntu0~24.04.1	2231	optional	admin	Set of tools to gather troubleshooting data from a system
+sound-theme-freedesktop	0.8-2ubuntu1	537	optional	sound	freedesktop.org sound theme
+speech-dispatcher	0.12.0~rc2-2build3	28808	optional	sound	Common interface to speech synthesizers
+speech-dispatcher-audio-plugins	0.12.0~rc2-2build3	111	optional	sound	Speech Dispatcher: Audio output plugins
+ssl-cert	1.1.2ubuntu1	66	optional	utils	simple debconf wrapper for OpenSSL
+strace	6.8-0ubuntu2	2103	optional	utils	System call tracer
+sudo	1.9.15p5-3ubuntu5.24.04.2	3468	optional	admin	Provide limited super user privileges to specific users
+sysstat	12.6.1-2	1452	optional	admin	system performance tools for Linux
+system-config-printer-common	1.5.18-1ubuntu9	872	optional	gnome	backend and the translation files for system-config-printer
+system-config-printer-udev	1.5.18-1ubuntu9	70	optional	gnome	Utilities to detect and configure printers automatically
+systemd	255.4-1ubuntu8.16	11748	important	admin	system and service manager
+systemd-dev	255.4-1ubuntu8.16	722	optional	devel	systemd development files
+systemd-hwe-hwdb	255.1.7	19	optional	admin	udev rules for hardware enablement (HWE)
+systemd-resolved	255.4-1ubuntu8.16	886	important	admin	systemd DNS resolver
+systemd-sysv	255.4-1ubuntu8.16	126	important	admin	system and service manager - SysV compatibility symlinks
+systemd-timesyncd	255.4-1ubuntu8.16	203	standard	admin	minimalistic service to synchronize local time with NTP servers
+sysvinit-utils	3.08-6ubuntu3	107	required	admin	System-V-like utilities
+tar	1.35+dfsg-3ubuntu0.3	716	required	utils	GNU version of the tar archiving utility
+tcl	8.6.14build1	20	optional	interpreters	Tool Command Language (default version) - shell
+tcl8.6	8.6.14+dfsg-1build1	42	optional	interpreters	Tcl (the Tool Command Language) v8.6 - shell
+tcpdump	4.99.4-3ubuntu4.24.04.1	1313	optional	net	command-line network traffic analyzer
+tecla	46.0-1ubuntu0.1	188	optional	gnome	keyboard layout viewer for the GNOME desktop
+telnet	0.17+2.5-3ubuntu4.2	47	optional	oldlibs	transitional dummy package for inetutils-telnet default switch
+terminator	2.1.3-1	2222	optional	misc	multiple GNOME terminals in one window
+thermald	2.5.6-2ubuntu0.24.04.5	575	optional	admin	Thermal monitoring and controlling daemon
+thin-provisioning-tools	0.9.0-2ubuntu5.1	1461	optional	admin	Tools for handling thinly provisioned device-mapper meta-data
+time	1.9-0.2build1	126	standard	utils	GNU time program for measuring CPU resource usage
+tk8.6-blt2.5	2.5.3+dfsg-7build1	1965	optional	libs	graphics extension library for Tcl/Tk - library
+tmux	3.4-1ubuntu0.1	1160	optional	admin	terminal multiplexer
+tnftp	20230507-2build3	233	optional	net	enhanced ftp client
+tpm-udev	0.6ubuntu1	28	optional	admin	udev rules for TPM modules
+trace-cmd	3.2-1ubuntu2	1419	optional	devel	Utility for retrieving and analyzing function tracing in the kernel
+traceroute	1:2.1.5-1	158	important	net	Traces the route taken by packets over an IPv4/IPv6 network
+tracker	3.7.1-1build1	1284	optional	utils	metadata database, indexer and search tool
+tracker-extract	3.7.1-1ubuntu0.1	2056	optional	utils	metadata database, indexer and search tool - metadata extractors
+tracker-miner-fs	3.7.1-1ubuntu0.1	430	optional	utils	metadata database, indexer and search tool - filesystem indexer
+trae	1.107.1-1783236609	1089837	optional	devel	TRAE, The Real AI Engine.
+transmission	4.0.5-1ubuntu0.1	9	optional	net	lightweight BitTorrent client
+transmission-common	4.0.5-1ubuntu0.1	377	optional	net	lightweight BitTorrent client (common files)
+transmission-gtk	4.0.5-1ubuntu0.1	2908	optional	net	lightweight BitTorrent client (GTK+ interface)
+tree	2.1.1-2ubuntu3.24.04.2	108	optional	utils	displays an indented directory tree, in color
+ttf-mscorefonts-installer	3.8.1ubuntu1	83	optional	contrib/fonts	Installer for Microsoft TrueType core fonts
+tzdata	2026b-0ubuntu0.24.04.1	1391	required	localization	time zone and daylight-saving time data
+ubuntu-advantage-desktop-daemon	1.11ubuntu0.1	93	optional	misc	Daemon to allow access to ubuntu-advantage via D-Bus
+ubuntu-drivers-common	1:0.9.7.6ubuntu3.7	285	optional	admin	Detect and install additional Ubuntu driver packages
+ubuntu-kernel-accessories	1.539.2	17	optional	metapackages	packages useful to install by default on systems with kernels
+ubuntu-keyring	2023.11.28.1	29	important	misc	GnuPG keys of the Ubuntu archive
+ubuntu-minimal	1.539.2	17	optional	metapackages	Minimal core of Ubuntu
+ubuntu-mono	24.04-0ubuntu1	5567	optional	gnome	Ubuntu Mono Icon theme
+ubuntu-pro-client	37.2ubuntu~24.04.1	1372	important	misc	Management tools for Ubuntu Pro
+ubuntu-pro-client-l10n	37.2ubuntu~24.04.1	97	important	misc	Translations for Ubuntu Pro Client
+ubuntu-release-upgrader-core	1:24.04.28	268	optional	admin	manage release upgrades
+ubuntu-server	1.539.2	17	optional	metapackages	Ubuntu Server system
+ubuntu-session	46.0-1ubuntu4	46	optional	gnome	Ubuntu session with GNOME Shell
+ubuntu-standard	1.539.2	17	optional	metapackages	Ubuntu standard system
+ubuntu-wallpapers	24.04.2	11112	optional	metapackages	Ubuntu Wallpapers
+ubuntu-wallpapers-noble	24.04.2	47827	optional	x11	Ubuntu 24.04 Wallpapers
+ucf	3.0043+nmu1	214	standard	utils	Update Configuration File(s): preserve user changes to config files
+udev	255.4-1ubuntu8.16	10853	important	admin	/dev/ and hotplug management daemon
+udisks2	2.10.1-6ubuntu1.3	1260	optional	admin	D-Bus service to access and manipulate storage devices
+ufw	0.36.2-6	849	optional	admin	program for managing a Netfilter firewall
+unattended-upgrades	2.9.1+nmu4ubuntu1	412	optional	admin	automatic installation of security upgrades
+unicode-data	15.1.0-1	39485	optional	misc	Property data for the Unicode character set
+unminimize	0.2.1	16	optional	devel	Un-minimize your minimial images or setup
+uno-libs-private	4:24.2.7-0ubuntu0.24.04.6	752	optional	libs	LibreOffice UNO runtime environment -- private libraries used by public ones
+unzip	6.0-28ubuntu4.1	375	optional	utils	De-archiver for .zip files
+update-manager-core	1:24.04.12	124	optional	admin	manage release upgrades
+update-notifier-common	3.192.68.2	1515	optional	gnome	Files shared between update-notifier and other packages
+upower	1.90.3-1	408	optional	admin	abstraction for power management
+ure	4:24.2.7-0ubuntu0.24.04.6	4560	optional	libs	LibreOffice UNO runtime environment
+usb-modeswitch	2.6.1-3ubuntu3	130	optional	comm	mode switching tool for controlling "flip flop" USB devices
+usb-modeswitch-data	20191128-6	84	optional	comm	mode switching data for usb-modeswitch
+usb.ids	2024.03.18-1	724	optional	admin	USB ID Repository
+usbmuxd	1.1.1-5~exp3ubuntu2.1	125	optional	utils	USB multiplexor daemon for iPhone and iPod Touch devices
+usbutils	1:017-3build1	321	optional	utils	Linux USB utilities
+user-session-migration	0.4.1ubuntu3	44	optional	misc	Tool to migrate in-session user data
+util-linux	2.39.3-9ubuntu6.5	3438	required	utils	miscellaneous system utilities
+uuid-dev	2.39.3-9ubuntu6.5	122	optional	libdevel	Universally Unique ID library - headers and static libraries
+uuid-runtime	2.39.3-9ubuntu6.5	151	optional	utils	runtime components for the Universally Unique ID library
+vim	2:9.1.0016-1ubuntu7.18	4133	optional	editors	Vi IMproved - enhanced vi editor
+vim-common	2:9.1.0016-1ubuntu7.18	1855	important	editors	Vi IMproved - Common files
+vim-runtime	2:9.1.0016-1ubuntu7.18	36538	optional	editors	Vi IMproved - Runtime files
+vim-tiny	2:9.1.0016-1ubuntu7.18	1809	important	editors	Vi IMproved - enhanced vi editor - compact version
+virtiofsd	1.10.0-1	2740	optional	otherosfs	Virtio-fs vhost-user device daemon
+wayland-protocols	1.45-1~ubuntu0.24.04.2	925	optional	libdevel	wayland compositor protocols
+webp-pixbuf-loader	0.2.4-2build2	43	optional	gnome	WebP Image format GdkPixbuf loader
+wget	1.21.4-1ubuntu4.3	916	standard	web	retrieves files from the web
+whiptail	0.52.24-2ubuntu2	56	optional	utils	Displays user-friendly dialog boxes from shell scripts
+whoopsie-preferences	23build3	43	optional	utils	System preferences for error reporting
+windsurf	3.4.27-1783378471	0	optional	oldlibs	transitional package for devin-desktop
+wireless-regdb	2025.10.07-0ubuntu1~24.04.1	25	optional	net	wireless regulatory database
+wireplumber	0.4.17-1ubuntu4.1	572	optional	video	modular session / policy manager for PipeWire
+wpasupplicant	2:2.10-21ubuntu0.4	3767	optional	net	client support for WPA and WPA2 (IEEE 802.11i)
+x11-common	1:7.7+23ubuntu3	277	optional	x11	X Window System (X.Org) infrastructure
+x11-utils	7.7+6build2	651	optional	x11	X11 utilities
+x11-xkb-utils	7.7+8build2	488	optional	x11	X11 XKB utilities
+x11-xserver-utils	7.7+10build2	560	optional	x11	X server utilities
+x11proto-dev	2023.2-1	1685	optional	x11	X11 extension protocols and auxiliary headers
+xauth	1:1.1.2-1build1	72	optional	x11	X authentication utility
+xdg-dbus-proxy	0.1.5-1ubuntu0.2	76	optional	admin	filtering D-Bus proxy
+xdg-desktop-portal	1.18.4-1ubuntu2.24.04.2	1328	optional	admin	desktop integration portal for Flatpak and Snap
+xdg-desktop-portal-gnome	46.2-0ubuntu1	672	optional	gnome	GNOME portal backend for xdg-desktop-portal
+xdg-desktop-portal-gtk	1.15.1-1build2	404	optional	gnome	GTK+/GNOME portal backend for xdg-desktop-portal
+xdg-user-dirs	0.18-1build1	152	optional	utils	tool to manage well known user directories
+xdg-user-dirs-gtk	0.11-1build2	96	optional	utils	tool to manage well known user directories (Gtk extension)
+xdg-utils	1.1.3-4.1ubuntu3	323	optional	utils	desktop integration utilities from freedesktop.org
+xfonts-encodings	1:1.0.5-0ubuntu2	664	optional	x11	Encodings for X.Org fonts
+xfonts-utils	1:7.7+6build3	431	optional	x11	X Window System font utility programs
+xfsprogs	6.6.0-1ubuntu2.1	2996	optional	admin	Utilities for managing the XFS filesystem
+xkb-data	2.41-2ubuntu1.1	4156	optional	x11	X Keyboard Extension (XKB) configuration data
+xml-core	0.19	114	optional	text	XML infrastructure and XML catalog file support
+xorg-sgml-doctools	1:1.11-1.1	78	optional	x11	Common tools for building X.Org SGML documentation
+xserver-common	2:21.1.12-1ubuntu1.6	151	optional	x11	common files used by various X servers
+xtrans-dev	1.4.0-1	302	optional	x11	X transport library (development files)
+xul-ext-ubufox	3.4-0ubuntu1.17.10.4	15	optional	web	Ubuntu modifications for Firefox
+xwayland	2:23.2.6-1ubuntu0.8	2304	optional	x11	X server for running X clients under Wayland
+xxd	2:9.1.0016-1ubuntu7.18	155	optional	editors	tool to make (or reverse) a hex dump
+xz-utils	5.6.1+really5.4.5-1ubuntu0.3	732	standard	utils	XZ-format compression utilities
+yaru-theme-gnome-shell	24.04.2-0ubuntu1	15476	optional	misc	Yaru GNOME Shell desktop theme from the Ubuntu Community
+yelp	42.2-1ubuntu0.24.04.1	2108	optional	gnome	Help browser for GNOME
+yelp-xsl	42.1-2ubuntu0.24.04.1	1439	optional	gnome	XSL stylesheets for the yelp help browser
+yt-dlp	2024.04.09-1	10294	optional	web	downloader of videos from YouTube and other sites
+yudit-common	3.1.0-1	9968	optional	editors	Unicode text editor (arch-independent files)
+zcode	3.2.5-2316	463557	optional	default	
+zenity	4.0.1-1build3	176	optional	gnome	Display graphical dialog boxes from shell scripts
+zenity-common	4.0.1-1build3	1536	optional	gnome	Display graphical dialog boxes from shell scripts (common files)
+zerofree	1.1.1-1build5	29	optional	admin	zero free blocks from ext2, ext3 and ext4 file-systems
+zip	3.0-13ubuntu0.2	536	optional	utils	Archiver for .zip files
+zlib1g	1:1.3.dfsg-3.1ubuntu2.1	163	required	libs	compression library - runtime
+zlib1g-dev	1:1.3.dfsg-3.1ubuntu2.1	1322	optional	libdevel	compression library - development
+zstd	1.5.5+dfsg2-2build1.1	1802	optional	utils	fast lossless compression algorithm -- CLI tool
