@@ -861,6 +861,26 @@ function applyNodeInspector() {
   scheduleAutoSave();
 }
 
+/**
+ * Update only the DOM position of a single node/group without rebuilding the
+ * whole canvas. Used during drag so we don't recreate every node element on
+ * each mousemove (which is both slow and breaks in-flight interactions).
+ */
+function updateNodePosition(node) {
+  const el = contentLayer.querySelector(`[data-node-id="${cssEscape(node.id)}"]`);
+  if (!el) return;
+  el.style.left = `${node.x}px`;
+  el.style.top = `${node.y}px`;
+}
+
+/** Update only the DOM size of a single node without a full re-render. */
+function updateNodeSize(node) {
+  const el = contentLayer.querySelector(`[data-node-id="${cssEscape(node.id)}"]`);
+  if (!el) return;
+  el.style.setProperty('--node-width', `${node.width || 300}px`);
+  el.style.height = `${node.height || 180}px`;
+}
+
 function renderEdges() {
   edgesLayer.innerHTML = '';
 
@@ -1398,22 +1418,13 @@ function initChatResize() {
   if (!editorChatResize || editorChatResize._initialized) return;
   editorChatResize._initialized = true;
 
-  let dragging = false;
   let startY = 0;
   let startEditorH = 0;
-  let startChatH = 0;
 
-  editorChatResize.addEventListener('mousedown', (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    dragging = true;
-    startY = e.clientY;
-    startEditorH = editorPanelMount.offsetHeight;
-    editorChatResize.style.background = 'rgba(89, 164, 255, 0.4)';
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    if (!dragging) return;
+  // Document-level listeners are attached only while a resize drag is active
+  // and removed on mouseup, so they don't run globally on every mousemove for
+  // the whole app lifetime (previously they leaked as always-on listeners).
+  const onMove = (e) => {
     const dy = e.clientY - startY;
     const newEditorH = Math.max(120, startEditorH + dy);
     const panelH = editorPanel.clientHeight;
@@ -1422,13 +1433,22 @@ function initChatResize() {
     editorPanelMount.style.height = `${clampedEditorH}px`;
     editorPanelMount.style.flex = 'none';
     chatPanelMount.style.flex = '1';
-  });
+  };
 
-  document.addEventListener('mouseup', () => {
-    if (dragging) {
-      dragging = false;
-      editorChatResize.style.background = '';
-    }
+  const onUp = () => {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    editorChatResize.style.background = '';
+  };
+
+  editorChatResize.addEventListener('mousedown', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    startY = e.clientY;
+    startEditorH = editorPanelMount.offsetHeight;
+    editorChatResize.style.background = 'rgba(89, 164, 255, 0.4)';
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
   });
 }
 
@@ -2446,6 +2466,7 @@ window.addEventListener('mousemove', (event) => {
     const dy = nextY - node.y;
     node.x = nextX;
     node.y = nextY;
+    updateNodePosition(node);
     // Moving a group area moves all nodes of that mermaid/trace area together
     if (state.interaction.drag.isGroup && node.type === 'group') {
       const key = state.interaction.drag.areaKey || nodeAreaKey(node);
@@ -2454,9 +2475,10 @@ window.addEventListener('mousemove', (event) => {
         if (nodeAreaKey(child) !== key) continue;
         child.x += dx;
         child.y += dy;
+        updateNodePosition(child);
       }
     }
-    render();
+    renderEdges();
     return;
   }
 
@@ -2476,7 +2498,8 @@ window.addEventListener('mousemove', (event) => {
     const world = worldFromClient(event.clientX, event.clientY);
     node.width = Math.max(220, Math.round(state.interaction.resize.startWidth + (world.x - state.interaction.resize.startX)));
     node.height = Math.max(140, Math.round(state.interaction.resize.startHeight + (world.y - state.interaction.resize.startY)));
-    render();
+    updateNodeSize(node);
+    renderEdges();
     return;
   }
 
