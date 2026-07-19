@@ -155,6 +155,192 @@ async function processMermaidDiagram(systemPrompt, baseMessages, currentDate, la
  * @param {'smart'|'fast'} mode
  * @param {object} callbacks
  */
+/**
+ * Stage 1 — Research. ONE multi-step generateText with maxSteps.
+ * Bug before: outer while() never appended tool results → model re-researched
+ * from the same user prompt every iteration (20× API "DDoS").
+ * Mutates `messages` with the full tool transcript for later stages.
+ */
+async function runResearchStage({ client, systemPrompt, messages, query, currentDate, language, callbacks }) {
+  callbacks.onPhaseChange?.('Research', 1);
+  messages.push({
+    role: 'user',
+    content: loadStagePrompt(1, { query, current_date: currentDate, language })
+  });
+
+  const RESEARCH_MAX_STEPS = 12;
+  let researchStep = 0;
+  let researchStoppedEarly = false;
+
+  log(`Research start (maxSteps=${RESEARCH_MAX_STEPS})`);
+  const researchResult = await generateText({
+    model: client(getModelName()),
+    system: systemPrompt,
+    messages,
+    tools: allTools,
+    // Multi-step agentic loop: tool calls + results stay in one trajectory.
+    maxSteps: RESEARCH_MAX_STEPS,
+    onStepFinish: (step) => {
+      researchStep += 1;
+      const nTools = step.toolCalls?.length || 0;
+      log(
+        `Research step ${researchStep}/${RESEARCH_MAX_STEPS}` +
+          ` tools=${nTools}` +
+          (step.text ? ` text=${String(step.text).slice(0, 80).replace(/\s+/g, ' ')}` : '')
+      );
+
+      if (step.text) {
+        callbacks.onMessage?.('assistant', step.text);
+        if (isResearchComplete(step.text)) {
+          researchStoppedEarly = true;
+          log('Research complete phrase detected');
+        }
+      }
+      if (step.toolCalls) {
+        for (const tc of step.toolCalls) {
+          const toolResult = step.toolResults?.find((r) => r.toolCallId === tc.toolCallId);
+          callbacks.onToolCall?.(
+            tc.toolName,
+            JSON.stringify(tc.args ?? tc.input ?? {}, null, 2),
+            toolResult ? String(toolResult.result ?? toolResult.output ?? '').slice(0, 500) : ''
+          );
+        }
+      }
+    }
+  });
+
+  // Keep full tool transcript for Stage 2+ (assistant + tool messages)
+  if (researchResult.response?.messages?.length) {
+    messages.push(...researchResult.response.messages);
+  } else if (researchResult.text) {
+    messages.push({ role: 'assistant', content: researchResult.text });
+  }
+
+  log(
+    `Research done steps=${researchStep}` +
+      ` earlyStop=${researchStoppedEarly}` +
+      ` finalText=${Boolean(researchResult.text)}` +
+      ` histMsgs=${messages.length}`
+  );
+}
+
+/**
+ * Stage 2 — Codemap structure generation (no tools).
+ * Extracts the CODEMAP JSON, builds the persistable stage12Context, and kicks
+ * off the parallel Mermaid diagram.
+ * @returns {{ resultCodemap: object, stage12Context: object, mermaidPromise: Promise }}
+ */
+async function runCodemapStage({ client, systemPrompt, messages, query, mode, workspaceRoot, currentDate, language, callbacks }) {
+  callbacks.onPhaseChange?.('Codemap Generation', 2);
+  messages.push({
+    role: 'user',
+    content: loadStagePrompt(2, { query, current_date: currentDate, language })
+  });
+
+  const stage2Result = await generateText({
+    model: client(getModelName()),
+    system: systemPrompt,
+    messages,
+    // no tools — structure only
+    maxSteps: 1
+  });
+
+  if (!stage2Result.text) {
+    throw new Error('Stage 2 returned empty response');
+  }
+
+  messages.push({ role: 'assistant', content: stage2Result.text });
+  callbacks.onMessage?.('assistant', stage2Result.text.slice(0, 2000));
+
+  const extracted = extractCodemapFromResponse(stage2Result.text);
+  if (!extracted) {
+    log('FAILED to extract codemap from stage 2');
+    throw new Error('Failed to extract CODEMAP JSON from model response');
+  }
+
+  const stage12Context = {
+    schemaVersion: 1,
+    createdAt: new Date().toISOString(),
+    query,
+    mode,
+    workspaceRoot,
+    currentDate,
+    language,
+    systemPrompt,
+    baseMessages: serializeBaseMessages(messages)
+  };
+
+  const resultCodemap = {
+    ...extracted,
+    query,
+    workspacePath: workspaceRoot,
+    mode,
+    stage12Context
+  };
+  callbacks.onCodemapUpdate?.(resultCodemap);
+  callbacks.onStage12ContextReady?.(stage12Context);
+
+  // Mermaid in parallel: as soon as it lands, push layout update (subgraph areas)
+  const mermaidPromise = processMermaidDiagram(
+    systemPrompt,
+    messages,
+    currentDate,
+    language,
+    callbacks
+  ).then((result) => {
+    if (result?.diagram && resultCodemap) {
+      resultCodemap.mermaidDiagram = result.diagram;
+      callbacks.onCodemapUpdate?.(resultCodemap);
+      log('Mermaid ready — area layout update emitted');
+    } else if (result?.error) {
+      callbacks.onMessage?.('error', `Mermaid: ${result.error}`);
+    }
+    return result;
+  });
+
+  return { resultCodemap, stage12Context, mermaidPromise };
+}
+
+/**
+ * Stages 3–5 (per-trace) + 6 (global Mermaid). Runs traces and the pending
+ * Mermaid promise in parallel and applies results back onto `resultCodemap`.
+ */
+async function runTraceAndMermaidStages({ resultCodemap, stage12Context, mermaidPromise, systemPrompt, messages, currentDate, language, callbacks }) {
+  if (!resultCodemap.traces?.length) return;
+
+  callbacks.onPhaseChange?.('Trace Processing', 3);
+  const tracePromises = resultCodemap.traces.map((trace) =>
+    processTraceStages(trace.id, systemPrompt, messages, currentDate, language, callbacks)
+  );
+
+  const [traceResults, mermaidResult] = await Promise.all([
+    Promise.all(tracePromises),
+    mermaidPromise || Promise.resolve(null)
+  ]);
+
+  for (const result of traceResults) {
+    if (result.error) {
+      callbacks.onMessage?.('error', `Trace ${result.traceId}: ${result.error}`);
+      continue;
+    }
+    const trace = resultCodemap.traces.find((t) => t.id === result.traceId);
+    if (!trace) continue;
+    if (result.diagram) trace.traceTextDiagram = result.diagram;
+    if (result.guide) trace.traceGuide = result.guide;
+  }
+
+  // mermaid already applied in .then above when ready; ensure still attached
+  if (mermaidResult?.diagram && !resultCodemap.mermaidDiagram) {
+    resultCodemap.mermaidDiagram = mermaidResult.diagram;
+  }
+
+  // Final structural update (guides/diagrams on traces + mermaid areas)
+  if (stage12Context) {
+    resultCodemap.stage12Context = stage12Context;
+  }
+  callbacks.onCodemapUpdate?.(resultCodemap);
+}
+
 async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks = {}) {
   log(`START mode=${mode} workspace=${workspaceRoot}`);
   log(`query=${query}`);
@@ -183,180 +369,37 @@ async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks =
   });
 
   const messages = [];
-  let resultCodemap = null;
-  let mermaidPromise = null;
-  /** @type {object|null} */
-  let stage12Context = null;
 
   callbacks.onMessage?.('system', `Starting ${mode} codemap generation...`);
 
   try {
-    // Stage 1 — ONE multi-step generateText with maxSteps.
-    // Bug before: outer while() never appended tool results → model re-researched
-    // from the same user prompt every iteration (20× API "DDoS").
-    callbacks.onPhaseChange?.('Research', 1);
-    messages.push({
-      role: 'user',
-      content: loadStagePrompt(1, { query, current_date: currentDate, language })
-    });
+    // Stage 1 — Research
+    await runResearchStage({ client, systemPrompt, messages, query, currentDate, language, callbacks });
 
-    const RESEARCH_MAX_STEPS = 12;
-    let researchStep = 0;
-    let researchStoppedEarly = false;
-
-    log(`Research start (maxSteps=${RESEARCH_MAX_STEPS})`);
-    const researchResult = await generateText({
-      model: client(getModelName()),
-      system: systemPrompt,
+    // Stage 2 — Codemap structure + parallel Mermaid kickoff
+    const { resultCodemap, stage12Context, mermaidPromise } = await runCodemapStage({
+      client,
+      systemPrompt,
       messages,
-      tools: allTools,
-      // Multi-step agentic loop: tool calls + results stay in one trajectory.
-      maxSteps: RESEARCH_MAX_STEPS,
-      onStepFinish: (step) => {
-        researchStep += 1;
-        const nTools = step.toolCalls?.length || 0;
-        log(
-          `Research step ${researchStep}/${RESEARCH_MAX_STEPS}` +
-            ` tools=${nTools}` +
-            (step.text ? ` text=${String(step.text).slice(0, 80).replace(/\s+/g, ' ')}` : '')
-        );
-
-        if (step.text) {
-          callbacks.onMessage?.('assistant', step.text);
-          if (isResearchComplete(step.text)) {
-            researchStoppedEarly = true;
-            log('Research complete phrase detected');
-          }
-        }
-        if (step.toolCalls) {
-          for (const tc of step.toolCalls) {
-            const toolResult = step.toolResults?.find((r) => r.toolCallId === tc.toolCallId);
-            callbacks.onToolCall?.(
-              tc.toolName,
-              JSON.stringify(tc.args ?? tc.input ?? {}, null, 2),
-              toolResult ? String(toolResult.result ?? toolResult.output ?? '').slice(0, 500) : ''
-            );
-          }
-        }
-      }
+      query,
+      mode,
+      workspaceRoot,
+      currentDate,
+      language,
+      callbacks
     });
 
-    // Keep full tool transcript for Stage 2+ (assistant + tool messages)
-    if (researchResult.response?.messages?.length) {
-      messages.push(...researchResult.response.messages);
-    } else if (researchResult.text) {
-      messages.push({ role: 'assistant', content: researchResult.text });
-    }
-
-    log(
-      `Research done steps=${researchStep}` +
-        ` earlyStop=${researchStoppedEarly}` +
-        ` finalText=${Boolean(researchResult.text)}` +
-        ` histMsgs=${messages.length}`
-    );
-
-    // Stage 2
-    callbacks.onPhaseChange?.('Codemap Generation', 2);
-    messages.push({
-      role: 'user',
-      content: loadStagePrompt(2, { query, current_date: currentDate, language })
-    });
-
-    const stage2Result = await generateText({
-      model: client(getModelName()),
-      system: systemPrompt,
+    // Stages 3–5 + 6 — traces + global Mermaid
+    await runTraceAndMermaidStages({
+      resultCodemap,
+      stage12Context,
+      mermaidPromise,
+      systemPrompt,
       messages,
-      // no tools — structure only
-      maxSteps: 1
+      currentDate,
+      language,
+      callbacks
     });
-
-    if (stage2Result.text) {
-      messages.push({ role: 'assistant', content: stage2Result.text });
-      callbacks.onMessage?.('assistant', stage2Result.text.slice(0, 2000));
-
-      const extracted = extractCodemapFromResponse(stage2Result.text);
-      if (extracted) {
-        stage12Context = {
-          schemaVersion: 1,
-          createdAt: new Date().toISOString(),
-          query,
-          mode,
-          workspaceRoot,
-          currentDate,
-          language,
-          systemPrompt,
-          baseMessages: serializeBaseMessages(messages)
-        };
-
-        resultCodemap = {
-          ...extracted,
-          query,
-          workspacePath: workspaceRoot,
-          mode,
-          stage12Context
-        };
-        callbacks.onCodemapUpdate?.(resultCodemap);
-        callbacks.onStage12ContextReady?.(stage12Context);
-
-        // Mermaid in parallel: as soon as it lands, push layout update (subgraph areas)
-        mermaidPromise = processMermaidDiagram(
-          systemPrompt,
-          messages,
-          currentDate,
-          language,
-          callbacks
-        ).then((result) => {
-          if (result?.diagram && resultCodemap) {
-            resultCodemap.mermaidDiagram = result.diagram;
-            callbacks.onCodemapUpdate?.(resultCodemap);
-            log('Mermaid ready — area layout update emitted');
-          } else if (result?.error) {
-            callbacks.onMessage?.('error', `Mermaid: ${result.error}`);
-          }
-          return result;
-        });
-      } else {
-        log('FAILED to extract codemap from stage 2');
-        throw new Error('Failed to extract CODEMAP JSON from model response');
-      }
-    } else {
-      throw new Error('Stage 2 returned empty response');
-    }
-
-    // Stages 3–5 + 6
-    if (resultCodemap.traces?.length) {
-      callbacks.onPhaseChange?.('Trace Processing', 3);
-      const tracePromises = resultCodemap.traces.map((trace) =>
-        processTraceStages(trace.id, systemPrompt, messages, currentDate, language, callbacks)
-      );
-
-      const [traceResults, mermaidResult] = await Promise.all([
-        Promise.all(tracePromises),
-        mermaidPromise || Promise.resolve(null)
-      ]);
-
-      for (const result of traceResults) {
-        if (result.error) {
-          callbacks.onMessage?.('error', `Trace ${result.traceId}: ${result.error}`);
-          continue;
-        }
-        const trace = resultCodemap.traces.find((t) => t.id === result.traceId);
-        if (!trace) continue;
-        if (result.diagram) trace.traceTextDiagram = result.diagram;
-        if (result.guide) trace.traceGuide = result.guide;
-      }
-
-      // mermaid already applied in .then above when ready; ensure still attached
-      if (mermaidResult?.diagram && !resultCodemap.mermaidDiagram) {
-        resultCodemap.mermaidDiagram = mermaidResult.diagram;
-      }
-
-      // Final structural update (guides/diagrams on traces + mermaid areas)
-      if (stage12Context) {
-        resultCodemap.stage12Context = stage12Context;
-      }
-      callbacks.onCodemapUpdate?.(resultCodemap);
-    }
 
     callbacks.onPhaseChange?.('Complete', 7);
     callbacks.onMessage?.('system', 'Codemap generation complete.');
