@@ -2097,13 +2097,21 @@ async function loadSettingsIntoForm() {
   try {
     const settings = await window.electronAPI.getSettings();
     const settingsPath = await window.electronAPI.getSettingsPath();
-    if (settingsApiKey) settingsApiKey.value = settings.openaiApiKey || '';
+    // The main process never sends the raw key; keep the field empty and use
+    // the hasApiKey flag for status. Leaving the field blank on save keeps the
+    // stored key untouched.
+    if (settingsApiKey) {
+      settingsApiKey.value = '';
+      settingsApiKey.placeholder = settings.hasApiKey
+        ? 'Ключ задан (оставьте пустым, чтобы не менять)'
+        : 'Введите API-ключ';
+    }
     if (settingsBaseUrl) settingsBaseUrl.value = settings.openaiBaseUrl || '';
     if (settingsModel) settingsModel.value = settings.model || '';
     if (settingsLanguage) settingsLanguage.value = settings.language || '';
     if (settingsPathLabel) settingsPathLabel.textContent = settingsPath;
     if (settingsKeyStatus) {
-      settingsKeyStatus.textContent = settings.openaiApiKey
+      settingsKeyStatus.textContent = settings.hasApiKey
         ? 'Ключ: задан'
         : 'Ключ: не задан';
     }

@@ -13,8 +13,9 @@ if (!electron || typeof electron !== 'object' || !electron.app) {
   process.exit(1);
 }
 
-const { app, BrowserWindow, dialog, ipcMain, Menu } = electron;
+const { app, BrowserWindow, dialog, ipcMain, Menu, session } = electron;
 const fs = require('fs/promises');
+const fsSync = require('fs');
 const path = require('path');
 const {
   initSettings,
@@ -157,7 +158,30 @@ process.on('unhandledRejection', (err) => {
   console.error('[code-canvas] unhandledRejection', err);
 });
 
+// Content-Security-Policy for the renderer. All assets are bundled locally, so
+// we lock down to 'self'. Monaco/mermaid need inline styles and blob workers.
+const CSP_POLICY = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self' data:",
+  "worker-src 'self' blob:",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "frame-src 'none'"
+].join('; ');
+
 app.whenReady().then(() => {
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [CSP_POLICY]
+      }
+    });
+  });
   initSettings();
   createWindow();
   app.on('activate', () => {
@@ -411,6 +435,41 @@ async function scanProject(folderPath) {
 }
 
 /**
+ * Assert that `resolved` stays inside `rootResolved`, following symlinks via
+ * realpath so a symlinked file/dir cannot escape the sandbox. When the target
+ * does not exist yet (write case), the nearest existing ancestor is realpath'd
+ * instead and the remaining tail is re-appended.
+ * @param {string} rootResolved absolute, resolved project root
+ * @param {string} resolved absolute, resolved candidate path
+ * @returns {string} the canonical absolute path that is safe to use
+ */
+function assertInsideRoot(rootResolved, resolved) {
+  const realRoot = fsSync.existsSync(rootResolved)
+    ? fsSync.realpathSync(rootResolved)
+    : rootResolved;
+
+  // Realpath the deepest existing ancestor, then re-append the missing tail.
+  let existing = resolved;
+  const tail = [];
+  while (!fsSync.existsSync(existing)) {
+    const parent = path.dirname(existing);
+    if (parent === existing) break;
+    tail.unshift(path.basename(existing));
+    existing = parent;
+  }
+  const realExisting = fsSync.existsSync(existing)
+    ? fsSync.realpathSync(existing)
+    : existing;
+  const canonical = tail.length ? path.join(realExisting, ...tail) : realExisting;
+
+  const rel = path.relative(realRoot, canonical);
+  if (rel !== '' && (rel.startsWith('..') || path.isAbsolute(rel))) {
+    throw new Error('Path is outside the open project');
+  }
+  return canonical;
+}
+
+/**
  * Resolve a path for reading and enforce project sandbox.
  * Absolute paths (as produced by codemap locations) are allowed only if they
  * resolve inside the open project root — never trust .canvas path fields blindly.
@@ -428,13 +487,15 @@ function resolveReadPath(targetPath, projectRoot = currentProjectPath) {
     ? path.resolve(targetPath)
     : path.resolve(rootResolved, String(targetPath).replace(/^\.\//, ''));
 
-  // path.relative escapes as ".." or absolute (other drive on Windows)
-  const rel = path.relative(rootResolved, resolved);
-  if (rel.startsWith('..') || path.isAbsolute(rel)) {
-    throw new Error('Path is outside the open project');
-  }
+  return assertInsideRoot(rootResolved, resolved);
+}
 
-  return resolved;
+/**
+ * Resolve a path for writing. Same sandbox rules as {@link resolveReadPath} but
+ * named explicitly so write call sites don't read as reads.
+ */
+function resolveWritePath(targetPath, projectRoot = currentProjectPath) {
+  return resolveReadPath(targetPath, projectRoot);
 }
 
 // ─── Project open (cache-first) ─────────────────────────────────
@@ -986,20 +1047,41 @@ ipcMain.handle('file:readWithDeps', async (_, targetPath, limit = 8) => {
 });
 
 ipcMain.handle('file:writeText', async (_, targetPath, content) => {
-  const absolute = resolveReadPath(targetPath);
+  const absolute = resolveWritePath(targetPath);
   await fs.writeFile(absolute, String(content ?? ''), 'utf8');
   return { path: absolute };
 });
 
 // ─── Settings (windsurf-compatible) ─────────────────────────────
 
-ipcMain.handle('settings:get', () => getSettings());
+// Never expose the raw API key to the renderer. Return a redacted view plus a
+// boolean flag so the UI can show "key set" state without holding the secret.
+ipcMain.handle('settings:get', () => {
+  const settings = getSettings();
+  const { openaiApiKey, ...rest } = settings;
+  return { ...rest, openaiApiKey: '', hasApiKey: Boolean(openaiApiKey) };
+});
 
 ipcMain.handle('settings:set', (_, key, value) => {
   if (typeof key === 'object' && key !== null) {
-    return setSettings(key);
+    const patch = { ...key };
+    // The renderer never holds the real key, so an empty string here means
+    // "leave the existing key untouched" rather than "clear it".
+    if ('openaiApiKey' in patch && !patch.openaiApiKey) {
+      delete patch.openaiApiKey;
+    }
+    const saved = setSettings(patch);
+    const { openaiApiKey, ...rest } = saved;
+    return { ...rest, openaiApiKey: '', hasApiKey: Boolean(openaiApiKey) };
   }
-  return setSetting(key, value);
+  if (key === 'openaiApiKey' && !value) {
+    const current = getSettings();
+    const { openaiApiKey, ...rest } = current;
+    return { ...rest, openaiApiKey: '', hasApiKey: Boolean(openaiApiKey) };
+  }
+  const saved = setSetting(key, value);
+  const { openaiApiKey, ...rest } = saved;
+  return { ...rest, openaiApiKey: '', hasApiKey: Boolean(openaiApiKey) };
 });
 
 ipcMain.handle('settings:getPath', () => getSettingsFilePath());

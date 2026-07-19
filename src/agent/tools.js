@@ -9,6 +9,40 @@ const { tool } = require('ai');
 
 const MAX_READ_BYTES = 32000;
 
+// --- Project sandbox -------------------------------------------------------
+// Agent tools may only touch files inside the active project root. This blocks
+// path-traversal / absolute-path escapes coming from the LLM's tool calls.
+let projectRoot = null;
+
+function setProjectRoot(root) {
+  projectRoot = root ? path.resolve(root) : null;
+}
+
+/**
+ * Resolves `target` and asserts it stays inside the project root.
+ * Follows symlinks (via realpath) to prevent link-based escapes.
+ * @param {string} target absolute or relative path from a tool call
+ * @returns {string} the resolved absolute path
+ * @throws if no project root is set or the path escapes the sandbox
+ */
+function resolveInsideProject(target) {
+  if (!projectRoot) {
+    throw new Error('Access denied: no project root configured');
+  }
+  const resolved = path.resolve(projectRoot, target);
+  const rootReal = fs.existsSync(projectRoot) ? fs.realpathSync(projectRoot) : projectRoot;
+  let candidate = resolved;
+  if (fs.existsSync(resolved)) {
+    candidate = fs.realpathSync(resolved);
+  }
+  const rel = path.relative(rootReal, candidate);
+  if (rel === '' ) return candidate;
+  if (rel.startsWith('..') || path.isAbsolute(rel)) {
+    throw new Error(`Access denied: path escapes project root: ${target}`);
+  }
+  return candidate;
+}
+
 const readFileTool = tool({
   description: `Reads a file at the specified path. Returns file content with line numbers.
 - The file_path parameter must be an absolute path
@@ -21,6 +55,7 @@ const readFileTool = tool({
   }),
   execute: async ({ file_path, offset, limit }) => {
     try {
+      file_path = resolveInsideProject(file_path);
       if (!fs.existsSync(file_path)) return `Error: File not found: ${file_path}`;
       const stat = fs.statSync(file_path);
       if (stat.size > MAX_READ_BYTES * 4 && (!offset || !limit)) {
@@ -50,6 +85,7 @@ const listDirTool = tool({
   }),
   execute: async ({ DirectoryPath }) => {
     try {
+      DirectoryPath = resolveInsideProject(DirectoryPath);
       if (!fs.existsSync(DirectoryPath)) return `Error: Directory not found: ${DirectoryPath}`;
       const entries = fs.readdirSync(DirectoryPath, { withFileTypes: true });
       const results = [`${DirectoryPath}/`];
@@ -93,6 +129,7 @@ const grepSearchTool = tool({
   }),
   execute: async ({ SearchPath, Query, CaseSensitive, IsRegex, Includes, MatchPerLine }) => {
     try {
+      SearchPath = resolveInsideProject(SearchPath);
       const results = [];
       const flags = CaseSensitive ? '' : 'i';
       const regex = IsRegex
@@ -182,6 +219,7 @@ const findByNameTool = tool({
   }),
   execute: async ({ SearchDirectory, Pattern, Type, MaxDepth, Extensions }) => {
     try {
+      SearchDirectory = resolveInsideProject(SearchDirectory);
       const results = [];
       const maxDepth = MaxDepth ?? 5;
       const matchesPattern = (name) => {
@@ -233,4 +271,4 @@ const allTools = {
   find_by_name: findByNameTool
 };
 
-module.exports = { allTools, readFileTool, listDirTool, grepSearchTool, findByNameTool };
+module.exports = { allTools, setProjectRoot, readFileTool, listDirTool, grepSearchTool, findByNameTool };

@@ -15,7 +15,7 @@ const {
   loadMermaidPrompt,
   loadMaximizeParallelToolCallsAddon
 } = require('./prompts');
-const { allTools } = require('./tools');
+const { allTools, setProjectRoot } = require('./tools');
 const {
   generateWorkspaceLayout,
   extractCodemapFromResponse,
@@ -158,6 +158,9 @@ async function processMermaidDiagram(systemPrompt, baseMessages, currentDate, la
 async function generateCodemap(query, workspaceRoot, mode = 'smart', callbacks = {}) {
   log(`START mode=${mode} workspace=${workspaceRoot}`);
   log(`query=${query}`);
+
+  // Sandbox all agent fs tools to the active workspace root.
+  setProjectRoot(workspaceRoot);
 
   if (!isConfigured()) {
     throw new Error('OpenAI API key not configured (~/.cometix/codemap/settings.json)');
