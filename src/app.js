@@ -722,6 +722,11 @@ function removeNodeById(nodeId) {
 // ─── Auto-save to project cache ────────────────────────────────
 
 let autoSaveTimer = null;
+// Guards against overlapping writes: while one flush is awaiting the IPC write,
+// any new scheduled save just sets `autoSaveDirty` so a single follow-up flush
+// runs after the current one completes, instead of racing a second write.
+let isAutoSaving = false;
+let autoSaveDirty = false;
 const AUTO_SAVE_DELAY_MS = 600;
 
 function updateAutoSaveIndicator() {
@@ -758,6 +763,13 @@ async function flushAutoSave() {
   if (!state.projectReady || !state.meta.sourceFolder) return;
   if (state.isGenerating) return;
 
+  // If a write is already in flight, mark dirty and let it re-flush on finish.
+  if (isAutoSaving) {
+    autoSaveDirty = true;
+    return;
+  }
+  isAutoSaving = true;
+
   state.autoSaveStatus = 'saving';
   updateAutoSaveIndicator();
 
@@ -774,8 +786,16 @@ async function flushAutoSave() {
     state.autoSaveStatus = 'error';
     state.autoSaveError = error?.message || String(error);
     setStatus(`Автосохранение: ${state.autoSaveError}`);
+  } finally {
+    isAutoSaving = false;
   }
   updateAutoSaveIndicator();
+
+  // A change arrived while we were writing — flush exactly once more.
+  if (autoSaveDirty) {
+    autoSaveDirty = false;
+    flushAutoSave();
+  }
 }
 
 // ─── Node inspector (CRUD popover) ─────────────────────────────
@@ -1483,10 +1503,6 @@ function setMode(mode) {
   buttons.linkMode.classList.toggle('active', mode === 'link');
   buttons.selectMode.classList.toggle('active', mode === 'select');
   setStatus(`Режим: ${mode}`);
-}
-
-function toggleSidebar() {
-  // No-op: sidebars removed in Phase A
 }
 
 function autoLayout() {
@@ -2612,7 +2628,7 @@ root.addEventListener(
 
 window.addEventListener('keydown', (event) => {
   if (event.key === 'Delete' || event.key === 'Backspace') {
-    if (document.activeElement.matches('input, textarea, select')) return;
+    if (document.activeElement?.matches?.('input, textarea, select')) return;
     removeSelected();
     render();
   }

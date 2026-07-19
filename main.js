@@ -43,6 +43,27 @@ const { isConfigured, refreshConfig } = require('./src/agent/baseClient');
 
 /** @type {boolean} */
 let isGenerating = false;
+/** @type {NodeJS.Timeout|null} Watchdog so a hung generation can't block forever. */
+let generatingWatchdog = null;
+const GENERATION_TIMEOUT_MS = 10 * 60 * 1000;
+
+function beginGenerating() {
+  isGenerating = true;
+  if (generatingWatchdog) clearTimeout(generatingWatchdog);
+  generatingWatchdog = setTimeout(() => {
+    console.error('[code-canvas] generation watchdog fired — clearing stuck isGenerating flag');
+    isGenerating = false;
+    generatingWatchdog = null;
+  }, GENERATION_TIMEOUT_MS);
+}
+
+function endGenerating() {
+  isGenerating = false;
+  if (generatingWatchdog) {
+    clearTimeout(generatingWatchdog);
+    generatingWatchdog = null;
+  }
+}
 
 const TEXT_EXTENSIONS = new Set([
   '.js',
@@ -307,7 +328,6 @@ function parseDependencies(baseDir, relPath, content) {
   const importRegex = /import\s+(?:[\s\S]*?\s+from\s+)?['"]([^'"]+)['"]/g;
   const requireRegex = /require\(\s*['"]([^'"]+)['"]\s*\)/g;
   const dynamicImportRegex = /import\(\s*['"]([^'"]+)['"]\s*\)/g;
-  const pythonImportRegex = /^\s*(?:from\s+([.\w/]+)\s+import|import\s+([.\w/]+))/gm;
 
   const collectors = [
     { regex: importRegex, type: 'import' },
@@ -322,11 +342,6 @@ function parseDependencies(baseDir, relPath, content) {
         edges.push({ from: relPath, to: target, kind: collector.type });
       }
     }
-  }
-
-  for (const match of content.matchAll(pythonImportRegex)) {
-    const importPath = match[1] || match[2];
-    if (!importPath || importPath.startsWith('.')) continue;
   }
 
   return edges;
@@ -634,7 +649,7 @@ ipcMain.handle('codemap:generate', async (event, { query, mode = 'smart' }) => {
   }
 
   const q = (query || '').trim() || 'Обзор архитектуры и основных потоков выполнения';
-  isGenerating = true;
+  beginGenerating();
 
   const sendProgress = (payload) => {
     try {
@@ -747,7 +762,7 @@ ipcMain.handle('codemap:generate', async (event, { query, mode = 'smart' }) => {
     sendProgress({ type: 'error', error: message });
     return { ok: false, error: message };
   } finally {
-    isGenerating = false;
+    endGenerating();
   }
 });
 
@@ -766,7 +781,7 @@ ipcMain.handle('codemap:retryTrace', async (event, { traceId, codemap }) => {
     return { ok: false, error: 'API key not configured' };
   }
 
-  isGenerating = true;
+  beginGenerating();
   const sendProgress = (payload) => {
     try {
       event.sender.send('codemap:progress', payload);
@@ -801,7 +816,7 @@ ipcMain.handle('codemap:retryTrace', async (event, { traceId, codemap }) => {
   } catch (error) {
     return { ok: false, error: error instanceof Error ? error.message : String(error) };
   } finally {
-    isGenerating = false;
+    endGenerating();
   }
 });
 
@@ -822,7 +837,7 @@ ipcMain.handle('codemap:retryMermaid', async (event, { codemap, force = true }) 
     return { ok: false, error: 'API key not configured' };
   }
 
-  isGenerating = true;
+  beginGenerating();
   const sendProgress = (payload) => {
     try {
       event.sender.send('codemap:progress', payload);
@@ -867,7 +882,7 @@ ipcMain.handle('codemap:retryMermaid', async (event, { codemap, force = true }) 
   } catch (error) {
     return { ok: false, error: error instanceof Error ? error.message : String(error) };
   } finally {
-    isGenerating = false;
+    endGenerating();
   }
 });
 
