@@ -105,6 +105,47 @@
             <div id="chat-panel-mount" class="chat-panel-mount"></div>
           </section>
 
+          <div id="node-inspector-popover" class="inspector-popover hidden">
+            <div class="inspector-popover-header">
+              <span id="node-inspector-title">Редактировать ноду</span>
+              <button id="node-inspector-close-btn" title="Закрыть">✕</button>
+            </div>
+            <label class="field">
+              <span>Тип</span>
+              <select id="node-inspector-type">
+                <option value="text">text (markdown)</option>
+                <option value="code">code</option>
+                <option value="file">file</option>
+                <option value="group">group (area)</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Заголовок</span>
+              <input id="node-inspector-title-input" type="text" />
+            </label>
+            <label class="field">
+              <span>Подзаголовок</span>
+              <input id="node-inspector-subtitle-input" type="text" />
+            </label>
+            <label class="field">
+              <span>Путь к файлу</span>
+              <input id="node-inspector-path-input" type="text" placeholder="src/foo.js" />
+            </label>
+            <label class="field">
+              <span>Язык</span>
+              <input id="node-inspector-language-input" type="text" placeholder="javascript" />
+            </label>
+            <label class="field">
+              <span>Содержимое</span>
+              <textarea id="node-inspector-content-input" rows="8"></textarea>
+            </label>
+            <div class="btn-row">
+              <button id="node-inspector-save-btn" class="primary">Сохранить</button>
+              <button id="node-inspector-delete-btn" class="danger">Удалить</button>
+            </div>
+            <div id="node-inspector-status" class="panel-copy muted-line"></div>
+          </div>
+
           <div id="settings-popover" class="inspector-popover hidden">
             <div class="inspector-popover-header">
               <span>AI / GPT Settings</span>
@@ -162,6 +203,10 @@
             <div class="node-subtitle"></div>
           </div>
           <div class="node-tag"></div>
+          <div class="node-actions">
+            <button type="button" class="node-action-btn node-edit-btn" title="Редактировать">✎</button>
+            <button type="button" class="node-action-btn node-close-btn" title="Удалить">✕</button>
+          </div>
         </div>
         <div class="node-body"></div>
         <div class="connector connector-left" data-side="left"></div>

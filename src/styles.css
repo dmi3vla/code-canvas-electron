@@ -555,6 +555,78 @@ button.active {
   border-radius: 999px;
 }
 
+.node-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+  pointer-events: none;
+}
+
+.node:hover .node-actions,
+.node.selected .node-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.node-action-btn {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(120, 148, 200, 0.28);
+  color: #cad6ee;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node-action-btn:hover {
+  background: rgba(89, 164, 255, 0.18);
+  border-color: rgba(89, 164, 255, 0.5);
+  color: #ffffff;
+}
+
+.node-action-btn.node-close-btn:hover {
+  background: rgba(255, 107, 107, 0.22);
+  border-color: rgba(255, 107, 107, 0.55);
+  color: #ffb4b4;
+}
+
+.area-group-actions {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.area-group:hover .area-group-actions,
+.area-group.selected .area-group-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+button.danger,
+.inspector-popover .btn-row button.danger {
+  background: rgba(255, 107, 107, 0.14);
+  border-color: rgba(255, 107, 107, 0.4);
+  color: #ffc4c4;
+}
+
+button.danger:hover {
+  background: rgba(255, 107, 107, 0.26);
+  color: #fff;
+}
+
 .node-body {
   padding: 14px;
   color: #d7def0;

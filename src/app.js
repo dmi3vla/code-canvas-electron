@@ -20,6 +20,19 @@ const canvasRootEl = document.getElementById('canvas-root');
 const settingsPopover = document.getElementById('settings-popover');
 const settingsPopoverCloseBtn = document.getElementById('settings-popover-close-btn');
 
+const nodeInspectorPopover = document.getElementById('node-inspector-popover');
+const nodeInspectorTitle = document.getElementById('node-inspector-title');
+const nodeInspectorCloseBtn = document.getElementById('node-inspector-close-btn');
+const nodeInspectorType = document.getElementById('node-inspector-type');
+const nodeInspectorTitleInput = document.getElementById('node-inspector-title-input');
+const nodeInspectorSubtitleInput = document.getElementById('node-inspector-subtitle-input');
+const nodeInspectorPathInput = document.getElementById('node-inspector-path-input');
+const nodeInspectorLanguageInput = document.getElementById('node-inspector-language-input');
+const nodeInspectorContentInput = document.getElementById('node-inspector-content-input');
+const nodeInspectorSaveBtn = document.getElementById('node-inspector-save-btn');
+const nodeInspectorDeleteBtn = document.getElementById('node-inspector-delete-btn');
+const nodeInspectorStatus = document.getElementById('node-inspector-status');
+
 const breadcrumb = document.getElementById('breadcrumb');
 const breadcrumbRootBtn = document.getElementById('breadcrumb-root-btn');
 const breadcrumbArea = document.getElementById('breadcrumb-area');
@@ -129,7 +142,12 @@ const state = {
   /** @type {string[]} paths recently opened in editor / from codemap */
   recentFiles: [],
   /** @type {Array<{id:string,text:string,sub?:string}>} */
-  suggestions: []
+  suggestions: [],
+  /** @type {string|null} id of node currently open in inspector popover */
+  editingNodeId: null,
+  /** @type {'idle'|'pending'|'saving'|'saved'|'error'} */
+  autoSaveStatus: 'idle',
+  autoSaveError: null
 };
 
 const RECENT_FILES_KEY = 'code-canvas-recent-files';
@@ -591,6 +609,12 @@ function highlightActForNode(node) {
 }
 
 function select(selectionType, id) {
+  // Skip re-render when the selection is unchanged. Re-rendering on every
+  // mousedown recreates node DOM between clicks, which prevents the browser
+  // from emitting `dblclick` on nodes (e.g. to open the deps legend/editor).
+  if (state.selection.type === selectionType && state.selection.id === id) {
+    return;
+  }
   state.selection = { type: selectionType, id };
   render();
   if (selectionType === 'node') {
@@ -599,6 +623,7 @@ function select(selectionType, id) {
 }
 
 function clearSelection() {
+  if (state.selection.type === null && state.selection.id === null) return;
   state.selection = { type: null, id: null };
   render();
 }
@@ -618,16 +643,13 @@ function addNode(partial) {
   state.nodes.push(node);
   select('node', node.id);
   setStatus(`Создана нода: ${node.title}`);
+  scheduleAutoSave();
   return node;
 }
 
 function removeSelected() {
   if (state.selection.type === 'node') {
-    const nodeId = state.selection.id;
-    state.nodes = state.nodes.filter((node) => node.id !== nodeId);
-    state.edges = state.edges.filter((edge) => edge.fromNode !== nodeId && edge.toNode !== nodeId);
-    clearSelection();
-    setStatus('Нода удалена');
+    removeNodeById(state.selection.id);
     return;
   }
 
@@ -635,7 +657,185 @@ function removeSelected() {
     state.edges = state.edges.filter((edge) => edge.id !== state.selection.id);
     clearSelection();
     setStatus('Связь удалена');
+    scheduleAutoSave();
   }
+}
+
+function removeNodeById(nodeId) {
+  if (!nodeId) return;
+  const node = getNodeById(nodeId);
+  if (!node) return;
+
+  // Group deletion also removes all child nodes belonging to that area
+  if (node.type === 'group') {
+    const areaKey = nodeAreaKey(node) || node.id;
+    const childIds = new Set(
+      state.nodes
+        .filter((n) => n.type !== 'group' && (nodeAreaKey(n) === areaKey))
+        .map((n) => n.id)
+    );
+    state.nodes = state.nodes.filter(
+      (n) => n.id !== nodeId && !childIds.has(n.id)
+    );
+    state.edges = state.edges.filter(
+      (edge) => !childIds.has(edge.fromNode) && !childIds.has(edge.toNode)
+    );
+    setStatus(`Область удалена: ${node.title || areaKey} (${childIds.size} нод)`);
+  } else {
+    state.nodes = state.nodes.filter((n) => n.id !== nodeId);
+    state.edges = state.edges.filter(
+      (edge) => edge.fromNode !== nodeId && edge.toNode !== nodeId
+    );
+    setStatus(`Нода удалена: ${node.title || nodeId}`);
+  }
+
+  if (state.editingNodeId === nodeId) {
+    closeNodeInspector();
+  }
+  clearSelection();
+  scheduleAutoSave();
+}
+
+// ─── Auto-save to project cache ────────────────────────────────
+
+let autoSaveTimer = null;
+const AUTO_SAVE_DELAY_MS = 600;
+
+function updateAutoSaveIndicator() {
+  if (!cacheStatusLabel) return;
+  const folder = state.meta.sourceFolder;
+  if (!folder) return;
+
+  const map = {
+    idle: state.cacheHit
+      ? 'Кэш: .code-canvas.canvas (без GPT)'
+      : 'Кэш отсутствует — нажмите Generate',
+    pending: 'Изменения не сохранены…',
+    saving: 'Сохранение…',
+    saved: 'Сохранено ✓',
+    error: `Ошибка сохранения: ${state.autoSaveError || ''}`
+  };
+  cacheStatusLabel.textContent = map[state.autoSaveStatus] || map.idle;
+}
+
+function scheduleAutoSave() {
+  if (!state.projectReady || !state.meta.sourceFolder) return;
+  if (state.isGenerating) return;
+  if (!window.electronAPI?.writeProjectCache) return;
+
+  state.autoSaveStatus = 'pending';
+  updateAutoSaveIndicator();
+
+  if (autoSaveTimer) clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(flushAutoSave, AUTO_SAVE_DELAY_MS);
+}
+
+async function flushAutoSave() {
+  autoSaveTimer = null;
+  if (!state.projectReady || !state.meta.sourceFolder) return;
+  if (state.isGenerating) return;
+
+  state.autoSaveStatus = 'saving';
+  updateAutoSaveIndicator();
+
+  try {
+    const canvas = serializeCanvas();
+    await window.electronAPI.writeProjectCache({
+      canvas,
+      codemap: state.codemap || null
+    });
+    state.cacheHit = true;
+    state.autoSaveStatus = 'saved';
+    state.autoSaveError = null;
+  } catch (error) {
+    state.autoSaveStatus = 'error';
+    state.autoSaveError = error?.message || String(error);
+    setStatus(`Автосохранение: ${state.autoSaveError}`);
+  }
+  updateAutoSaveIndicator();
+}
+
+// ─── Node inspector (CRUD popover) ─────────────────────────────
+
+function openNodeInspector(nodeId) {
+  const node = getNodeById(nodeId);
+  if (!node || !nodeInspectorPopover) return;
+
+  state.editingNodeId = nodeId;
+  nodeInspectorTitle.textContent =
+    node.type === 'group' ? 'Редактировать область' : 'Редактировать ноду';
+  nodeInspectorType.value = node.type || 'text';
+  nodeInspectorTitleInput.value = node.title || '';
+  nodeInspectorSubtitleInput.value = node.subtitle || '';
+  nodeInspectorPathInput.value = node.path || '';
+  nodeInspectorLanguageInput.value = node.language || '';
+  nodeInspectorContentInput.value = node.content || '';
+  nodeInspectorStatus.textContent = '';
+
+  const isGroup = node.type === 'group';
+  nodeInspectorPathInput.parentElement.style.display = isGroup ? 'none' : '';
+  nodeInspectorLanguageInput.parentElement.style.display = isGroup ? 'none' : '';
+  nodeInspectorContentInput.parentElement.style.display = isGroup ? 'none' : '';
+
+  nodeInspectorPopover.classList.remove('hidden');
+  positionInspectorNear(nodeId);
+  select('node', nodeId);
+}
+
+function positionInspectorNear(nodeId) {
+  if (!nodeInspectorPopover) return;
+  const el = contentLayer.querySelector(`[data-node-id="${cssEscape(nodeId)}"]`);
+  if (!el) {
+    nodeInspectorPopover.style.left = '50%';
+    nodeInspectorPopover.style.top = '80px';
+    nodeInspectorPopover.style.transform = 'translateX(-50%)';
+    return;
+  }
+  const rect = el.getBoundingClientRect();
+  const rootRect = root.getBoundingClientRect();
+  const popW = 320;
+  let left = rect.right - rootRect.left + 12;
+  let top = rect.top - rootRect.top;
+  if (left + popW > root.clientWidth - 20) {
+    left = Math.max(10, rect.left - rootRect.left - popW - 12);
+  }
+  top = Math.max(10, Math.min(top, root.clientHeight - 400));
+  nodeInspectorPopover.style.left = `${left}px`;
+  nodeInspectorPopover.style.top = `${top}px`;
+  nodeInspectorPopover.style.transform = '';
+}
+
+function cssEscape(value) {
+  if (window.CSS?.escape) return window.CSS.escape(value);
+  return String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
+}
+
+function closeNodeInspector() {
+  state.editingNodeId = null;
+  if (nodeInspectorPopover) nodeInspectorPopover.classList.add('hidden');
+}
+
+function applyNodeInspector() {
+  if (!state.editingNodeId) return;
+  const node = getNodeById(state.editingNodeId);
+  if (!node) return;
+
+  const newType = nodeInspectorType.value || node.type || 'text';
+  node.title = nodeInspectorTitleInput.value;
+  node.subtitle = nodeInspectorSubtitleInput.value;
+  if (newType !== 'group') {
+    node.path = nodeInspectorPathInput.value;
+    node.language = nodeInspectorLanguageInput.value;
+    node.content = nodeInspectorContentInput.value;
+  }
+  if (newType !== node.type && node.type !== 'group' && newType !== 'group') {
+    node.type = newType;
+  }
+
+  render();
+  nodeInspectorStatus.textContent = 'Изменения применены';
+  setStatus(`Обновлена нода: ${node.title || node.id}`);
+  scheduleAutoSave();
 }
 
 function renderEdges() {
@@ -800,9 +1000,46 @@ function renderGroup(node) {
     el.appendChild(sub);
   }
 
+  const actions = document.createElement('div');
+  actions.className = 'area-group-actions';
+  const editBtn = document.createElement('button');
+  editBtn.type = 'button';
+  editBtn.className = 'node-action-btn';
+  editBtn.title = 'Редактировать область';
+  editBtn.textContent = '✎';
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'node-action-btn node-close-btn';
+  closeBtn.title = 'Удалить область и ноды внутри';
+  closeBtn.textContent = '✕';
+  actions.appendChild(editBtn);
+  actions.appendChild(closeBtn);
+  el.appendChild(actions);
+
+  editBtn.addEventListener('mousedown', (e) => e.stopPropagation());
+  editBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openNodeInspector(node.id);
+  });
+  closeBtn.addEventListener('mousedown', (e) => e.stopPropagation());
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const childCount = state.nodes.filter(
+      (n) => n.type !== 'group' && nodeAreaKey(n) === (nodeAreaKey(node) || node.id)
+    ).length;
+    const label = node.title || node.id;
+    const ok = window.confirm(
+      childCount > 0
+        ? `Удалить область "${label}" и ${childCount} нод внутри?`
+        : `Удалить область "${label}"?`
+    );
+    if (ok) removeNodeById(node.id);
+  });
+
   // group is selectable / draggable as a unit (moves children in same area)
   // click (no drag) → zoom to area
   el.addEventListener('mousedown', (event) => {
+    if (event.target.closest('.area-group-actions')) return;
     event.stopPropagation();
     const world = worldFromClient(event.clientX, event.clientY);
     const groupKey = nodeAreaKey(node);
@@ -839,6 +1076,8 @@ function renderNode(node) {
   const leftConnector = fragment.querySelector('.connector-left');
   const rightConnector = fragment.querySelector('.connector-right');
   const resizeHandle = fragment.querySelector('.node-resize-handle');
+  const editBtn = fragment.querySelector('.node-edit-btn');
+  const closeBtn = fragment.querySelector('.node-close-btn');
 
   element.classList.add(node.type);
   if (state.selection.type === 'node' && state.selection.id === node.id) {
@@ -892,24 +1131,52 @@ function renderNode(node) {
   });
 
   element.addEventListener('mousedown', (event) => {
-    if (event.target.classList.contains('connector') || event.target.classList.contains('node-resize-handle')) return;
+    if (
+      event.target.classList.contains('connector') ||
+      event.target.classList.contains('node-resize-handle') ||
+      event.target.closest('.node-actions')
+    ) {
+      return;
+    }
     event.stopPropagation();
     const world = worldFromClient(event.clientX, event.clientY);
     select('node', node.id);
     state.interaction.drag = {
       nodeId: node.id,
       offsetX: world.x - node.x,
-      offsetY: world.y - node.y
+      offsetY: world.y - node.y,
+      // Track initial press so mouseup can distinguish click vs drag and
+      // trigger the same AST-deps frame that a mermaid node click builds.
+      clickStartX: event.clientX,
+      clickStartY: event.clientY,
+      canOpenDeps: node.type === 'file' || node.type === 'code'
     };
   });
 
   element.addEventListener('dblclick', (event) => {
     event.stopPropagation();
+    if (event.target.closest('.node-actions')) return;
     select('node', node.id);
     if (node.type === 'file' || node.type === 'code') {
       openNodeInEditor(node);
     }
   });
+
+  if (editBtn) {
+    editBtn.addEventListener('mousedown', (event) => event.stopPropagation());
+    editBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      openNodeInspector(node.id);
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('mousedown', (event) => event.stopPropagation());
+    closeBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      removeNodeById(node.id);
+    });
+  }
 
   contentLayer.appendChild(fragment);
 }
@@ -1371,6 +1638,7 @@ function addEdge(fromNodeId, toNodeId, fromSide = 'right', toSide = 'left', labe
     label
   });
   setStatus('Связь создана');
+  scheduleAutoSave();
 }
 
 function serializeCanvas() {
@@ -1504,6 +1772,8 @@ function updateProjectChrome() {
   if (cacheStatusLabel) {
     if (!folder) {
       cacheStatusLabel.textContent = '';
+    } else if (state.autoSaveStatus && state.autoSaveStatus !== 'idle') {
+      updateAutoSaveIndicator();
     } else if (state.cacheHit) {
       cacheStatusLabel.textContent = 'Кэш: .code-canvas.canvas (без GPT)';
     } else {
@@ -2023,10 +2293,30 @@ if (settingsPopoverCloseBtn) {
   });
 }
 
+// Node inspector popover
+if (nodeInspectorCloseBtn) {
+  nodeInspectorCloseBtn.addEventListener('click', () => closeNodeInspector());
+}
+if (nodeInspectorSaveBtn) {
+  nodeInspectorSaveBtn.addEventListener('click', () => applyNodeInspector());
+}
+if (nodeInspectorDeleteBtn) {
+  nodeInspectorDeleteBtn.addEventListener('click', () => {
+    if (!state.editingNodeId) return;
+    const node = getNodeById(state.editingNodeId);
+    const label = node?.title || state.editingNodeId;
+    const ok = window.confirm(`Удалить "${label}"?`);
+    if (ok) removeNodeById(state.editingNodeId);
+  });
+}
+
 // Close popovers on Escape
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     if (settingsPopover) settingsPopover.classList.add('hidden');
+    if (nodeInspectorPopover && !nodeInspectorPopover.classList.contains('hidden')) {
+      closeNodeInspector();
+    }
   }
 });
 
@@ -2035,6 +2325,14 @@ document.addEventListener('mousedown', (event) => {
   if (settingsPopover && !settingsPopover.classList.contains('hidden')) {
     if (!settingsPopover.contains(event.target) && event.target !== buttons.settings) {
       settingsPopover.classList.add('hidden');
+    }
+  }
+  if (nodeInspectorPopover && !nodeInspectorPopover.classList.contains('hidden')) {
+    const clickedInside = nodeInspectorPopover.contains(event.target);
+    const clickedEditBtn = event.target.closest?.('.node-edit-btn');
+    const clickedNode = event.target.closest?.('.node, .area-group');
+    if (!clickedInside && !clickedEditBtn && !clickedNode) {
+      closeNodeInspector();
     }
   }
 });
@@ -2048,8 +2346,27 @@ if (breadcrumbRootBtn) {
 }
 
 root.addEventListener('mousedown', (event) => {
-  const targetNode = event.target.closest('.node');
-  if (targetNode) return;
+  // Ignore if the press originated inside a node, area-group, connector,
+  // resize handle, or action button — those have their own handlers that set
+  // drag/resize/link interactions. Without this guard the root handler could
+  // still add `.panning` and pan interaction if node handlers didn't fully
+  // stop propagation (e.g. clicks on nested elements like `<pre>` inside a
+  // node body), causing pan to visually hijack node dragging.
+  if (
+    event.target.closest('.node') ||
+    event.target.closest('.area-group') ||
+    event.target.closest('.connector') ||
+    event.target.closest('.node-resize-handle') ||
+    event.target.closest('.node-actions') ||
+    event.target.closest('.area-group-actions')
+  ) {
+    return;
+  }
+
+  // Also guard against starting pan while another interaction is already active.
+  if (state.interaction.drag || state.interaction.resize || state.interaction.link) {
+    return;
+  }
 
   clearSelection();
 
@@ -2082,16 +2399,8 @@ root.addEventListener('dblclick', (event) => {
 });
 
 window.addEventListener('mousemove', (event) => {
-  if (state.interaction.pan) {
-    const dx = event.clientX - state.interaction.pan.startX;
-    const dy = event.clientY - state.interaction.pan.startY;
-    state.view.x = state.interaction.pan.viewX + dx;
-    state.view.y = state.interaction.pan.viewY + dy;
-    applyViewTransform();
-    renderEdges();
-    return;
-  }
-
+  // Node/resize/link interactions take priority over pan so that a stray
+  // pan-start (if it ever happens) can't hijack an active drag.
   if (state.interaction.drag) {
     const node = getNodeById(state.interaction.drag.nodeId);
     if (!node) return;
@@ -2116,6 +2425,16 @@ window.addEventListener('mousemove', (event) => {
     return;
   }
 
+  if (state.interaction.pan) {
+    const dx = event.clientX - state.interaction.pan.startX;
+    const dy = event.clientY - state.interaction.pan.startY;
+    state.view.x = state.interaction.pan.viewX + dx;
+    state.view.y = state.interaction.pan.viewY + dy;
+    applyViewTransform();
+    renderEdges();
+    return;
+  }
+
   if (state.interaction.resize) {
     const node = getNodeById(state.interaction.resize.nodeId);
     if (!node) return;
@@ -2133,6 +2452,8 @@ window.addEventListener('mousemove', (event) => {
 });
 
 window.addEventListener('mouseup', (event) => {
+  let mutated = false;
+
   // Check for group click (not drag) → zoom to area
   if (state.interaction.drag && state.interaction.drag.isGroup) {
     const dx = event.clientX - (state.interaction.drag.clickStartX || 0);
@@ -2146,7 +2467,27 @@ window.addEventListener('mouseup', (event) => {
         zoomToArea(areaKey, group.title);
       }
       // Don't clear drag yet — zoomToArea calls render() which needs clean state
+    } else {
+      mutated = true;
     }
+  } else if (state.interaction.drag) {
+    // Single-click on a file/code card (no drag) → open AST-deps frame,
+    // matching the behavior of clicking a node in the mermaid diagram.
+    const dx = event.clientX - (state.interaction.drag.clickStartX || 0);
+    const dy = event.clientY - (state.interaction.drag.clickStartY || 0);
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 5 && state.interaction.drag.canOpenDeps) {
+      const node = getNodeById(state.interaction.drag.nodeId);
+      if (node) {
+        openNodeInEditor(node);
+      }
+    } else if (dist >= 5) {
+      mutated = true;
+    }
+  }
+
+  if (state.interaction.resize) {
+    mutated = true;
   }
 
   if (state.interaction.link) {
@@ -2174,12 +2515,26 @@ window.addEventListener('mouseup', (event) => {
     }
   }
 
+  const hadLink = Boolean(state.interaction.link);
+  const hadPan = Boolean(state.interaction.pan);
+
   root.classList.remove('panning');
   state.interaction.pan = null;
   state.interaction.drag = null;
   state.interaction.link = null;
   state.interaction.resize = null;
-  render();
+
+  // Only re-render when something actually changed. A plain click (no drag,
+  // no link, no resize, no pan) must NOT rebuild the DOM — otherwise the
+  // node element from mousedown is replaced before the browser can emit
+  // `dblclick`, and double-click-to-open-deps stops firing.
+  if (mutated || hadLink || hadPan) {
+    render();
+  }
+
+  if (mutated || hadLink) {
+    scheduleAutoSave();
+  }
 });
 
 root.addEventListener(
