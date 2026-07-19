@@ -54,6 +54,29 @@ const settingsModel = document.getElementById('settings-model');
 const settingsLanguage = document.getElementById('settings-language');
 const settingsPathLabel = document.getElementById('settings-path-label');
 const settingsKeyStatus = document.getElementById('settings-key-status');
+const settingsCanvasBg = document.getElementById('settings-canvas-bg');
+
+// ─── Canvas background theme (grid | dark | light) ─────────────
+const CANVAS_BG_KEY = 'code-canvas-bg';
+const CANVAS_BG_VALUES = new Set(['grid', 'dark', 'light']);
+
+function getCanvasBg() {
+  try {
+    const v = localStorage.getItem(CANVAS_BG_KEY);
+    return CANVAS_BG_VALUES.has(v) ? v : 'grid';
+  } catch {
+    return 'grid';
+  }
+}
+
+function applyCanvasBg(mode) {
+  const value = CANVAS_BG_VALUES.has(mode) ? mode : 'grid';
+  document.body.setAttribute('data-canvas-bg', value);
+  try { localStorage.setItem(CANVAS_BG_KEY, value); } catch { /* ignore */ }
+}
+
+// Apply saved theme immediately on load so there's no flash.
+applyCanvasBg(getCanvasBg());
 
 const buttons = {
   openProject: document.getElementById('open-project-btn'),
@@ -2084,6 +2107,7 @@ async function loadSettingsIntoForm() {
         ? 'Ключ: задан'
         : 'Ключ: не задан';
     }
+    if (settingsCanvasBg) settingsCanvasBg.value = getCanvasBg();
   } catch (error) {
     setStatus(`Ошибка загрузки settings: ${error.message}`);
   }
@@ -2132,6 +2156,9 @@ buttons.settings?.addEventListener('click', () => {
   loadSettingsIntoForm();
 });
 buttons.settingsSave?.addEventListener('click', saveSettingsFromForm);
+settingsCanvasBg?.addEventListener('change', () => {
+  applyCanvasBg(settingsCanvasBg.value);
+});
 async function runCodemapGenerate({ overwrite = false } = {}) {
   if (!state.projectReady || !state.meta.sourceFolder) {
     setStatus('Сначала откройте папку проекта');
