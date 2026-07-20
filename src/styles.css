@@ -107,6 +107,17 @@ button.active {
   backdrop-filter: blur(14px);
   flex-wrap: wrap;
   min-height: 44px;
+  /* Frameless window: the toolbar background acts as the drag handle. */
+  -webkit-app-region: drag;
+}
+
+/* Interactive elements inside the toolbar must not drag the window. */
+.top-menu button,
+.top-menu .mode-stack,
+.top-menu-query,
+#codemap-query-input,
+#suggestions-list {
+  -webkit-app-region: no-drag;
 }
 
 .top-menu-section {
@@ -115,6 +126,37 @@ button.active {
   gap: 4px;
   padding: 0 6px;
   border-right: 1px solid rgba(103, 132, 193, 0.12);
+}
+
+.window-controls {
+  border-right: none;
+  border-left: 1px solid rgba(103, 132, 193, 0.12);
+  padding-left: 8px;
+  gap: 2px;
+}
+
+.window-control {
+  -webkit-app-region: no-drag;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+}
+
+.window-control:hover {
+  background: rgba(103, 132, 193, 0.16);
+  color: var(--text);
+}
+
+.window-control.window-close:hover {
+  background: #e5484d;
+  color: #fff;
 }
 
 .top-menu-section:last-child {

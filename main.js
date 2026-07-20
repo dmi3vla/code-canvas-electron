@@ -99,7 +99,7 @@ function createWindow() {
     width: 1600,
     height: 1000,
     backgroundColor: '#0b1020',
-    autoHideMenuBar: false,
+    frame: false,
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -112,6 +112,26 @@ function createWindow() {
     win.show();
   });
 
+  // Keep dev shortcuts working without a visible native menu.
+  win.webContents.on('before-input-event', (_e, input) => {
+    if (input.type !== 'keyDown') return;
+    const key = String(input.key || '').toLowerCase();
+    if (key === 'f12' || (input.control && input.shift && key === 'i')) {
+      win.webContents.toggleDevTools();
+    } else if (input.control && key === 'r') {
+      win.webContents.reload();
+    }
+  });
+
+  // Reflect maximize state to the renderer so the toolbar button can update.
+  const sendMaximizeState = () => {
+    if (!win.isDestroyed()) {
+      win.webContents.send('window:maximizeState', win.isMaximized());
+    }
+  };
+  win.on('maximize', sendMaximizeState);
+  win.on('unmaximize', sendMaximizeState);
+
   win.webContents.on('did-fail-load', (_e, code, desc, url) => {
     console.error('[code-canvas] did-fail-load', { code, desc, url });
   });
@@ -123,50 +143,6 @@ function createWindow() {
   win.on('unresponsive', () => {
     console.error('[code-canvas] window unresponsive');
   });
-
-  const menu = Menu.buildFromTemplate([
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'Open Project Folder',
-          click: () => win.webContents.send('menu-action', { type: 'open-project' })
-        },
-        {
-          label: 'Import Project Graph (structural)',
-          click: () => win.webContents.send('menu-action', { type: 'import-project' })
-        },
-        {
-          label: 'Open Canvas',
-          click: () => win.webContents.send('menu-action', { type: 'open-canvas' })
-        },
-        {
-          label: 'Save Canvas',
-          click: () => win.webContents.send('menu-action', { type: 'save-canvas' })
-        },
-        { type: 'separator' },
-        {
-          label: 'Settings…',
-          click: () => win.webContents.send('menu-action', { type: 'open-settings' })
-        },
-        { type: 'separator' },
-        { role: 'quit' }
-      ]
-    },
-    {
-      label: 'View',
-      submenu: [
-        { role: 'reload' },
-        { role: 'forceReload' },
-        { role: 'toggleDevTools' },
-        { type: 'separator' },
-        { role: 'resetZoom' },
-        { role: 'zoomIn' },
-        { role: 'zoomOut' }
-      ]
-    }
-  ]);
-  Menu.setApplicationMenu(menu);
 
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
 }
@@ -194,7 +170,27 @@ const CSP_POLICY = [
   "frame-src 'none'"
 ].join('; ');
 
+// Custom frameless window controls (minimize / maximize / close).
+ipcMain.on('window:minimize', (event) => {
+  BrowserWindow.fromWebContents(event.sender)?.minimize();
+});
+ipcMain.on('window:toggleMaximize', (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (!win) return;
+  if (win.isMaximized()) win.unmaximize();
+  else win.maximize();
+});
+ipcMain.on('window:close', (event) => {
+  BrowserWindow.fromWebContents(event.sender)?.close();
+});
+ipcMain.handle('window:isMaximized', (event) =>
+  Boolean(BrowserWindow.fromWebContents(event.sender)?.isMaximized())
+);
+
 app.whenReady().then(() => {
+  // No native menu bar — controls live in the in-app toolbar.
+  Menu.setApplicationMenu(null);
+
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {

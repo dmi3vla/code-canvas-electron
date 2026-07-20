@@ -46,6 +46,17 @@ contextBridge.exposeInMainWorld('electronAPI', {
     return () => ipcRenderer.removeListener('menu-action', listener);
   },
 
+  // Frameless window controls
+  windowMinimize: () => ipcRenderer.send('window:minimize'),
+  windowToggleMaximize: () => ipcRenderer.send('window:toggleMaximize'),
+  windowClose: () => ipcRenderer.send('window:close'),
+  isWindowMaximized: () => ipcRenderer.invoke('window:isMaximized'),
+  onWindowMaximizeState: (callback) => {
+    const listener = (_, isMaximized) => callback(isMaximized);
+    ipcRenderer.on('window:maximizeState', listener);
+    return () => ipcRenderer.removeListener('window:maximizeState', listener);
+  },
+
   // Chat
   sendChatMessage: (message, context) => ipcRenderer.invoke('agent:chatMessage', { message, context }),
   onChatChunk: (callback) => {

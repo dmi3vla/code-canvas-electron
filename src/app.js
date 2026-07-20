@@ -2642,6 +2642,26 @@ window.electronAPI.onMenuAction((payload) => {
   }
 });
 
+// Frameless window controls (minimize / maximize / close)
+(() => {
+  const minimizeBtn = document.getElementById('win-minimize-btn');
+  const maximizeBtn = document.getElementById('win-maximize-btn');
+  const closeBtn = document.getElementById('win-close-btn');
+
+  minimizeBtn?.addEventListener('click', () => window.electronAPI.windowMinimize());
+  maximizeBtn?.addEventListener('click', () => window.electronAPI.windowToggleMaximize());
+  closeBtn?.addEventListener('click', () => window.electronAPI.windowClose());
+
+  const applyMaximizeState = (isMaximized) => {
+    if (!maximizeBtn) return;
+    maximizeBtn.title = isMaximized ? 'Восстановить' : 'Развернуть';
+    maximizeBtn.setAttribute('aria-label', maximizeBtn.title);
+  };
+
+  window.electronAPI.onWindowMaximizeState?.(applyMaximizeState);
+  window.electronAPI.isWindowMaximized?.().then(applyMaximizeState).catch(() => {});
+})();
+
 async function init() {
   // Empty canvas until project is chosen (splash gate)
   state.nodes = [];
